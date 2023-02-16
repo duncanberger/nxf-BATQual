@@ -3,13 +3,16 @@
 [![run with conda](http://img.shields.io/badge/run%20with-conda-3EB049?labelColor=000000&logo=anaconda)](https://docs.conda.io/en/latest/)
 
 ## Table of contents 
-* [Introduction](https://github.com/duncanberger/nxf-bact_typ/#Introduction)
-* [Pipeline summary](https://github.com/duncanberger/nxf-bact_typ#Pipeline-summary)
+* [Introduction](#Introduction)
+* [Pipeline summary](#pipeline_summary)
+* [Installation](#Installation)
+* [Running nxf-bact_typ](#Running_nxf-bact_typ)
+* [Pipeline summary](#pipeline_summary)
 
-## Introduction
+## Introduction <a name="Introduction"></a>
 **nxf-bact_typ** is a Nextflow pipeline for performing assembling, annotation and typing bacterial genomes. 
 
-## Pipeline summary
+## Pipeline summary <a name="pipeline_summary"></a>
 When processing Illumina sequencing reads ('--mode fastq'), the pipeline will perform the following steps:
 
 1. Trim adaptors from reads ([`fastp`](https://github.com/OpenGene/fastp)).
@@ -33,7 +36,7 @@ When processing genome assemblies ('--mode fasta'), the pipeline will omit read-
 6. Assign Global Pneumococcal Sequence Clusters ([`GPSCs`](https://www.pneumogen.net/gps/)) using popunk ([`PopPunk`](https://poppunk.net/)) 
 7. Annotate each genome using ([`Prokka`](https://github.com/tseemann/prokka)) 
 
-## Installation
+## Installation <a name="Installation"></a>
 ### Software
 You will need to install [`Nextflow`](https://www.nextflow.io/) (version 21.10.3+).
 You will need to install [`pneumoKITy`](https://github.com/CarmenSheppard/PneumoKITy) manually.
@@ -66,7 +69,7 @@ mv refseq.genomes.k21s1000.msh DB/
 ```
 ```
 
-## Running nxf-bact_typ
+## Running nxf-bact_typ <a name="Running_nxf-bact_typ"></a>
 
 You can run the pipeline as follows:
 ```
