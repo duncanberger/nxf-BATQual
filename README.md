@@ -63,7 +63,7 @@ or
 The `-resume` parameter will re-start the pipeline if it has been previously run.
 
 
-## Required input
+### Required input
 - __fastq_files.csv__: Comma delineated list of fastq files, in the format: 'sample_id,read1,read2'. A header 'sample_id,read1,read2' must be included. 
   - `sample`: sample ID
   - `read1`: forward reads
@@ -72,22 +72,22 @@ The `-resume` parameter will re-start the pipeline if it has been previously run
   - `sample`: sample ID
   - `fasta`: fasta files
 
-## Optional input
-### Velvet assembly
+### Optional input
+#### Velvet assembly
 - `--min_k` : Minimum k-mer length for velvet genome assembly [90]. <br />
 - `--max_k` : Minimum k-mer length for velvet genome assembly [141].
 
-### BUSCO 
+#### BUSCO 
 - `--lineage` : Specify the BUSCO lineage to be used ["lactobacillales_odb10"].
 
-### Assembly filtering
+#### Assembly filtering
 - `--minContigLength` : Filter for minimum contig length in output [0].
 
-### Output
+#### Output
 - `--outdir` : The output directory where the results will be saved ["results"]. <br />
 - `--name` : Name for the pipeline run. If not specified, Nextflow will automatically generate a random mnemonic.
 
-## Pipeline results
+### Pipeline results
 The output will be written to results/$sample_ID/* which will contain the following results files:
 
 1. `$sample_ID.velvet_contigs.fa` : VelvetOptimiser genome assembly.
@@ -116,11 +116,11 @@ You can run the script as follows (where results is the name of the folder speci
 
     python scripts/filter.py --input results
 
-## Optional input
-### Output parameter
+### Optional input
+#### Output parameter
 - `--output` : Output file name [aggregated_stats.* ]
 
-### QC parameters
+#### QC parameters
 I've added extensive QC parameters, genomes not meeting these parameters will be marked as 'FAIL' in the aggregated summaries.
 
 - `--completeness_threshold` :            CheckM completeness threshold [99] <br />
@@ -141,7 +141,7 @@ I've added extensive QC parameters, genomes not meeting these parameters will be
 - `--scaffold_N50_threshold` :            Minimum scaffold N50 [24454] <br />
 - `--MASH_hit` :                          Closest MASH hit (top 5) [Streptococcus pneumoniae] <br />
 
-## Pipeline results
+### Output
 The output will be written to results/$sample_ID/* which will contain the following results files:
 
 1. `aggregated_stats.long.txt` :        Aggregated statistics row ('long') format.
