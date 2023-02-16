@@ -5,8 +5,8 @@
 ## Table of contents 
 * [Introduction](#Introduction)
 * [Pipeline summary](#pipeline_summary)
-* [XInstallation](#Installation)
-* [XRunning nxf-bact_typ](#Running_nxf-bact_typ)
+* [Installation](#Installation)
+* [Running nxf-bact_typ](#Runnxfbacttyp)
 * [Aggregation and quality control](#aggregate)
 
 
@@ -70,7 +70,7 @@ mv refseq.genomes.k21s1000.msh DB/
 ```
 ```
 
-## Running nxf-bact_typ <a name="Running_nxf-bact_typ"></a>
+## Running nxf-bact_typ <a name="Runnxfbacttyp"></a>
 
 You can run the pipeline as follows:
 ```
