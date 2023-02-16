@@ -58,6 +58,10 @@ mv refseq.genomes.k21s1000.msh DB/
 #### GPS
 ```
 ```
+#### BUSCO
+```
+```
+
 ## Running nxf-bact_typ
 
 You can run the pipeline as follows:
