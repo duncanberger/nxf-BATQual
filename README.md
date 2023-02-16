@@ -74,18 +74,18 @@ The `-resume` parameter will re-start the pipeline if it has been previously run
 
 ## Optional input
 ### Velvet assembly
-`--min_k` : Minimum k-mer length for velvet genome assembly [90]. <br />
-`--max_k` : Minimum k-mer length for velvet genome assembly [141].
+- `--min_k` : Minimum k-mer length for velvet genome assembly [90]. <br />
+- `--max_k` : Minimum k-mer length for velvet genome assembly [141].
 
 ### BUSCO 
-`--lineage` : Specify the BUSCO lineage to be used ["lactobacillales_odb10"].
+- `--lineage` : Specify the BUSCO lineage to be used ["lactobacillales_odb10"].
 
 ### Assembly filtering
-`--minContigLength` : Filter for minimum contig length in output [0].
+- `--minContigLength` : Filter for minimum contig length in output [0].
 
 ### Output
-`--outdir` : The output directory where the results will be saved ["results"]. <br />
-`--name` : Name for the pipeline run. If not specified, Nextflow will automatically generate a random mnemonic.
+- `--outdir` : The output directory where the results will be saved ["results"]. <br />
+- `--name` : Name for the pipeline run. If not specified, Nextflow will automatically generate a random mnemonic.
 
 ## Pipeline results
 The output will be written to results/$sample_ID/* which will contain the following results files:
@@ -118,28 +118,28 @@ You can run the script as follows (where results is the name of the folder speci
 
 ## Optional input
 ### Output parameter
-`--output` : Output file name [aggregated_stats.* ]
+- `--output` : Output file name [aggregated_stats.* ]
 
 ### QC parameters
 I've added extensive QC parameters, genomes not meeting these parameters will be marked as 'FAIL' in the aggregated summaries.
 
-`--completeness_threshold` :            CheckM completeness threshold [99] <br />
-`--contamination_threshold` :           CheckM contamination threshold [1] <br />
-`--strain_heterogeneity_threshold` :    CheckM heterogeneity threshold [0.1] <br />
-`--busco_completeness_threshold` :      BUSCO completeness threshold (%) [95] <br />
-`--busco_duplication_threshold` :       BUSCO duplication threshold (%) [1] <br />
-`--busco_fragmented_threshold` :        BUSCO fragmented threshold (%) [1] <br />
-`--busco_missing_threshold` :           BUSCO missing threshold (%) [1] <br />
-`--assembly_length_threshold_min` :     Assembly length, lower threshold (bp) [1945246] <br />
-`--assembly_length_threshold_max` :     Assembly length, upper threshold (bp) [2255392] <br />
-`--gc_threshold_min` :                  GC content, lower threshold (%) [39.2] <br />
-`--gc_threshold_max` :                  GC content, upper threshold (%) [40] <br />
-`--gap_sum_threshold` :                 Total gap length (bp) [5631] <br />
-`--gap_count_threshold` :               Total gap count [26] <br />
-`--perc_het_vars_threshold` :           Proportion of heterozygous variants (%) [15] <br />
-`--scaffold_count_threshold` :          Maximum number of scaffolds per assembly [286] <br />
-`--scaffold_N50_threshold` :            Minimum scaffold N50 [24454] <br />
-`--MASH_hit` :                          Closest MASH hit (top 5) [Streptococcus pneumoniae] <br />
+- `--completeness_threshold` :            CheckM completeness threshold [99] <br />
+- `--contamination_threshold` :           CheckM contamination threshold [1] <br />
+- `--strain_heterogeneity_threshold` :    CheckM heterogeneity threshold [0.1] <br />
+- `--busco_completeness_threshold` :      BUSCO completeness threshold (%) [95] <br />
+- `--busco_duplication_threshold` :       BUSCO duplication threshold (%) [1] <br />
+- `--busco_fragmented_threshold` :        BUSCO fragmented threshold (%) [1] <br />
+- `--busco_missing_threshold` :           BUSCO missing threshold (%) [1] <br />
+- `--assembly_length_threshold_min` :     Assembly length, lower threshold (bp) [1945246] <br />
+- `--assembly_length_threshold_max` :     Assembly length, upper threshold (bp) [2255392] <br />
+- `--gc_threshold_min` :                  GC content, lower threshold (%) [39.2] <br />
+- `--gc_threshold_max` :                  GC content, upper threshold (%) [40] <br />
+- `--gap_sum_threshold` :                 Total gap length (bp) [5631] <br />
+- `--gap_count_threshold` :               Total gap count [26] <br />
+- `--perc_het_vars_threshold` :           Proportion of heterozygous variants (%) [15] <br />
+- `--scaffold_count_threshold` :          Maximum number of scaffolds per assembly [286] <br />
+- `--scaffold_N50_threshold` :            Minimum scaffold N50 [24454] <br />
+- `--MASH_hit` :                          Closest MASH hit (top 5) [Streptococcus pneumoniae] <br />
 
 ## Pipeline results
 The output will be written to results/$sample_ID/* which will contain the following results files:
