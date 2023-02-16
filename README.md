@@ -5,8 +5,8 @@
 ## Table of contents 
 * [Introduction](#Introduction)
 * [Pipeline summary](#pipeline_summary)
-* [Installation](#Installation)
-* [Running nxf-bact_typ](#Running_nxf-bact_typ)
+* [XInstallation](#Installation)
+* [XRunning nxf-bact_typ](#Running_nxf-bact_typ)
 * [Aggregation and quality control](#aggregate)
 
 
