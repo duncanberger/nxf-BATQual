@@ -7,7 +7,8 @@
 * [Pipeline summary](#pipeline_summary)
 * [Installation](#Installation)
 * [Running nxf-bact_typ](#Running_nxf-bact_typ)
-* [Pipeline summary](#pipeline_summary)
+* [Aggregation and quality control](#aggregate)
+
 
 ## Introduction <a name="Introduction"></a>
 **nxf-bact_typ** is a Nextflow pipeline for performing assembling, annotation and typing bacterial genomes. 
@@ -129,7 +130,7 @@ Each file is formatted into columns as follows:
 3. `results`: Metric results
 4. `status`: QC status, unpopulated except for pneumoKITy QC, to be populated at the next stage. 
 
-## Aggregation and quality control
+## Aggregation and quality control <a name="aggregate"></a>
 To aggregate the results across multiple isolates and runs, I have written an accessory script to produce merged output tables and plot the results.
 
 You can run the script as follows (where results is the name of the folder specified by the '--output' parameter:
