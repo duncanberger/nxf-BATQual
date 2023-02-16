@@ -1,16 +1,11 @@
 # nxf-bact_typ
-
-
 [![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A521.10.3-23aa62.svg?labelColor=000000)](https://www.nextflow.io/)
 [![run with conda](http://img.shields.io/badge/run%20with-conda-3EB049?labelColor=000000&logo=anaconda)](https://docs.conda.io/en/latest/)
 
-
 ## Introduction
-
 **nxf-bact_typ** is a Nextflow pipeline for performing assembling, annotation and typing bacterial genomes. 
 
 ## Pipeline summary
-
 When processing Illumina sequencing reads ('--mode fastq'), the pipeline will perform the following steps:
 
 1. Trim adaptors from reads ([`fastp`](https://github.com/OpenGene/fastp)).
@@ -35,7 +30,6 @@ When processing genome assemblies ('--mode fasta'), the pipeline will omit read-
 7. Annotate each genome using ([`Prokka`](https://github.com/tseemann/prokka)) 
 
 ## Installation
-
 You will need to install [`Nextflow`](https://www.nextflow.io/) (version 21.10.3+).
 
 You can run the pipeline as follows:
@@ -47,7 +41,6 @@ or
 The `-resume` parameter will re-start the pipeline if it has been previously run.
 
 ## Required input
-
 - __fastq_files.csv__: Comma delineated list of fastq files, in the format: 'sample_id,read1,read2'. A header 'sample_id,read1,read2' must be included. 
   - `sample`: sample ID
   - `read1`: forward reads
@@ -57,7 +50,6 @@ The `-resume` parameter will re-start the pipeline if it has been previously run
   - `fasta`: fasta files
 
 ## Optional input
-
 ### Velvet assembly
 `--min_k` : Minimum k-mer length for velvet genome assembly [90]. <br />
 `--max_k` : Minimum k-mer length for velvet genome assembly [141].
@@ -73,14 +65,62 @@ The `-resume` parameter will re-start the pipeline if it has been previously run
 `--name` : Name for the pipeline run. If not specified, Nextflow will automatically generate a random mnemonic.
 
 ## Pipeline results
+The output will be written to results/$sample_ID/* which will contain the following results files:
 
-#1. __trim_galore__ directory containing adaptor-trimmed RNA-Seq files and FastQC results.
-#2. __read_counts__ directory containing:
-#    1. `ref_gene_df.tsv`: table of genes in the annotation.
-#    2. `gene_counts.tsv`: raw read counts per gene.
-#    3. `cpm_counts.tsv`: size factor scaled counts per million (CPM).
-#    4. `rpkm_counts.tsv`: size factor scaled and gene length-scaled counts, expressed as reads per kilobase per million mapped reads (RPKM).
-#3. __PCA_samples__ directory containing principal component analysis results.
-#4. __diff_expr__ directory containing differential expression results.
-#5. __func_enrich__ directory containing functional enrichment results (optional).
+1. `$sample_ID.velvet_contigs.fa` : VelvetOptimiser genome assembly.
+2. `$sample_ID.prokka.fna` : VelvetOptimiser genome assembly renamed by Prokka to match GFF file. 
+3. `$sample_ID.prokka.gff` : VelvetOptimiser genome annotation, in Prokka format.
+4. `$sample_ID.prokka_results.txt` : Counts of predicted genes. 
+5. `$sample_ID.hetperc_results.txt` : Estimated heterozygosity of sequencing reads.
+6. `$sample_ID.assembly_results.txt` : Assembly statistics.
+7. `$sample_ID.BUSCO_results.txt` : seroBA serotyping results 
+8. `$sample_ID.checkM_results.txt` : seroBA serotyping results .
+9. `$sample_ID.mash_results.txt` : seroBA serotyping results .
+10. `$sample_ID.seroBA_results.txt` : seroBA serotyping results .
+11. `$sample_ID.pneumoKITy_results.txt` : seroBA serotyping results .
+12. `$sample_ID.GPSC_results.txt` : seroBA serotyping results 
+
+Each file is formatted into columns as follows: 
+1. `sample_ID`: Isolate ID
+2. `metric`: Metric used for evaluation
+3. `results`: Metric results
+4. `status`: QC status, unpopulated except for pneumoKITy QC, to be populated at the next stage. 
+
+## Aggregation and quality control
+To aggregate the results across multiple isolates and runs, I have written an accessory script to produce merged output tables and plot the results.
+
+You can run the script as follows (where results is the name of the folder specified by the '--output' parameter:
+
+    python scripts/filter.py --input results
+
+## Optional input
+### Output parameter
+`--output` : Output file name [aggregated_stats.* ]
+
+### QC parameters
+I've added extensive QC parameters, genomes not meeting these parameters will be marked as 'FAIL' in the aggregated summaries.
+`--completeness_threshold` : CheckM completeness threshold [99] <br />
+`--contamination_threshold` : CheckM contamination threshold [1] <br />
+`--strain_heterogeneity_threshold` : CheckM heterogeneity threshold [0.1] <br />
+`--busco_completeness_threshold` : BUSCO completeness threshold (%) [95] <br />
+`--busco_duplication_threshold` : BUSCO duplication threshold (%) [1] <br />
+`--busco_fragmented_threshold` : BUSCO fragmented threshold (%) [1] <br />
+`--busco_missing_threshold` : BUSCO missing threshold (%) [1] <br />
+`--assembly_length_threshold_min` : Assembly length, lower threshold (bp) [1945246] <br />
+`--assembly_length_threshold_max` : Assembly length, upper threshold (bp) [2255392] <br />
+`--gc_threshold_min` : GC content, lower threshold (%) [39.2] <br />
+`--gc_threshold_max` : GC content, upper threshold (%) [40] <br />
+`--gap_sum_threshold` : Total gap length (bp) [5631] <br />
+`--gap_count_threshold` : Total gap count [26] <br />
+`--perc_het_vars_threshold` : Proportion of heterozygous variants (%) [15] <br />
+`--scaffold_count_threshold` : Maximum number of scaffolds per assembly [286] <br />
+`--scaffold_N50_threshold` : Minimum scaffold N50 [24454] <br />
+`--MASH_hit` : Closest MASH hit (top 5) [Streptococcus pneumoniae] <br />
+
+## Pipeline results
+The output will be written to results/$sample_ID/* which will contain the following results files:
+
+1. `aggregated_stats.long.txt` : Aggregated statistics row ('long') format.
+2. `aggregated_stats.wide.txt` : Aggregated statistics column ('wide') format.
+3. `aggregated_plots.pdf` : Plots of each metric, with relevant cutoffs plotted. 
 
