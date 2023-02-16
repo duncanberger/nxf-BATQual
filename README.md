@@ -32,6 +32,28 @@ When processing genome assemblies ('--mode fasta'), the pipeline will omit read-
 ## Installation
 You will need to install [`Nextflow`](https://www.nextflow.io/) (version 21.10.3+).
 
+You will need to install [`pneumoKITy`](https://github.com/CarmenSheppard/PneumoKITy) manually. 
+
+## Databases
+This pipeline uses a number of databases. The can be downloaded and made ready for analysis as follow:
+
+### RefSeq
+
+    nextflow run main.nf --input fastq_files.csv --mode fastq
+
+
+
+### seroBA
+
+### GPS
+
+
+
+
+
+
+## Running nxf-bact_typ
+
 You can run the pipeline as follows:
 
     nextflow run main.nf --input fastq_files.csv --mode fastq
@@ -39,6 +61,7 @@ or
     nextflow run main.nf --input fasta_files.csv --mode fasta
 
 The `-resume` parameter will re-start the pipeline if it has been previously run.
+
 
 ## Required input
 - __fastq_files.csv__: Comma delineated list of fastq files, in the format: 'sample_id,read1,read2'. A header 'sample_id,read1,read2' must be included. 
