@@ -30,22 +30,19 @@ When processing genome assemblies ('--mode fasta'), the pipeline will omit read-
 7. Annotate each genome using ([`Prokka`](https://github.com/tseemann/prokka)) 
 
 ## Installation
+### Software
 You will need to install [`Nextflow`](https://www.nextflow.io/) (version 21.10.3+).
 
 You will need to install [`pneumoKITy`](https://github.com/CarmenSheppard/PneumoKITy) manually. 
 
-## Databases
+### Databases
 This pipeline uses a number of databases. The can be downloaded and made ready for analysis as follow:
 
-### RefSeq
-
+#### RefSeq
     nextflow run main.nf --input fastq_files.csv --mode fastq
+#### seroBA
 
-
-
-### seroBA
-
-### GPS
+#### GPS
 
 
 
