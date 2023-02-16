@@ -5,8 +5,8 @@
 ## Table of contents 
 * [Introduction](#Introduction)
 * [Pipeline summary](#pipeline_summary)
-* [Installation](#Installation)
-* [Running nxf-bact_typ](#Runnxfbacttyp)
+* [Installation](#install)
+* [Running nxf-bact_typ](#run)
 * [Aggregation and quality control](#aggregate)
 
 
@@ -37,7 +37,7 @@ When processing genome assemblies ('--mode fasta'), the pipeline will omit read-
 6. Assign Global Pneumococcal Sequence Clusters ([`GPSCs`](https://www.pneumogen.net/gps/)) using popunk ([`PopPunk`](https://poppunk.net/)) 
 7. Annotate each genome using ([`Prokka`](https://github.com/tseemann/prokka)) 
 
-## Installation <a name="Installation"></a>
+## Installation <a name="install"></a>
 ### Software
 You will need to install [`Nextflow`](https://www.nextflow.io/) (version 21.10.3+).
 You will need to install [`pneumoKITy`](https://github.com/CarmenSheppard/PneumoKITy) manually.
@@ -70,7 +70,7 @@ mv refseq.genomes.k21s1000.msh DB/
 ```
 ```
 
-## Running nxf-bact_typ <a name="Runnxfbacttyp"></a>
+## Running nxf-bact_typ <a name="run"></a>
 
 You can run the pipeline as follows:
 ```
