@@ -32,30 +32,42 @@ When processing genome assemblies ('--mode fasta'), the pipeline will omit read-
 ## Installation
 ### Software
 You will need to install [`Nextflow`](https://www.nextflow.io/) (version 21.10.3+).
+You will need to install [`pneumoKITy`](https://github.com/CarmenSheppard/PneumoKITy) manually.
 
-You will need to install [`pneumoKITy`](https://github.com/CarmenSheppard/PneumoKITy) manually. 
+```
+# Clone this repo
+git clone https://github.com/duncanberger/nxf-bact_typ.git
 
+# Set up conda dependencies 
+conda create -n nxf-bact_typ -f environment.yml 
+```
 ### Databases
 This pipeline uses a number of databases. The can be downloaded and made ready for analysis as follow:
 
-#### RefSeq
-    nextflow run main.nf --input fastq_files.csv --mode fastq
+#### RefSeq MASH database
+```
+# Download a preformatted MASH database of RefSeq (release 70, if you want a more up to date version you'll need to build your own)
+wget https://gembox.cbcb.umd.edu/mash/refseq.genomes.k21s1000.msh
+
+# Move it to the database folder
+mv refseq.genomes.k21s1000.msh DB/
+```
 #### seroBA
-
+```
+```
 #### GPS
-
-
-
-
-
-
+```
+```
 ## Running nxf-bact_typ
 
 You can run the pipeline as follows:
-
-    nextflow run main.nf --input fastq_files.csv --mode fastq
+```
+nextflow run main.nf --input fastq_files.csv --mode fastq
+```
 or 
-    nextflow run main.nf --input fasta_files.csv --mode fasta
+```
+nextflow run main.nf --input fasta_files.csv --mode fasta
+```
 
 The `-resume` parameter will re-start the pipeline if it has been previously run.
 
@@ -110,9 +122,9 @@ Each file is formatted into columns as follows:
 To aggregate the results across multiple isolates and runs, I have written an accessory script to produce merged output tables and plot the results.
 
 You can run the script as follows (where results is the name of the folder specified by the '--output' parameter:
-
-    python scripts/filter.py --input results
-
+```
+python scripts/filter.py --input results
+```
 ### Optional input
 #### Output parameter
 - `--output` : Output file name [aggregated_stats.* ]
