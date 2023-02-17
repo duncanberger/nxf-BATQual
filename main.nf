@@ -71,6 +71,8 @@ workflow MAIN_A {
     PK(VELVET.out)
     MASH(VELVET.out)    
     GPSC(VELVET.out)
+    QUAST(VELVET.out)
+    MLST(fastas)
 }
 
 workflow MAIN_B {
@@ -89,6 +91,8 @@ workflow MAIN_B {
     PK(fastas)
     MASH(fastas)
     GPSC(fastas)
+    QUAST(fastas)
+    MLST(fastas)
 }
 
 
@@ -301,3 +305,38 @@ process GPSC {
     """
 }
 
+process QUAST {
+    cpus 1
+    tag "Assigning GPSCs to $sample_id"
+    publishDir "$params.outdir/${sample_id}", mode: 'copy'
+
+    input:
+    tuple val(sample_id), path("${sample_id}.velvet_contigs.fa")
+
+    output:
+    path "${sample_id}_quast"
+
+    script:
+    """
+    quast -o ${sample_id}_quast ${sample_id}.velvet_contigs.fa
+    """
+}
+
+process MLST {
+    cpus 1
+    tag "Assigned MLST alleles to $sample_id"
+    publishDir "$params.outdir/${sample_id}", mode: 'copy'
+
+    input:
+    tuple val(sample_id), path("${sample_id}.velvet_contigs.fa")
+
+    output:
+    path "${sample_id}_mlst_results.txt"
+
+    script:
+    """
+    mlst ${sample_id}.velvet_contigs.fa > ${sample_id}.temp
+    cat ${sample_id}.temp | sed 's/,/;/g' | tr '\t' '\n' | grep "("  | sed 's/^/${sample_id},mlst,/g' | sed 's/\$/,/g' >> ${sample_id}_mlst_results.txt
+    cat ${sample_id}.temp | head -2 | tail -1 | awk '{print "$sample_id","mlst",\$2,","}' OFS="," >> ${sample_id}_mlst_results.txt
+    """
+}
