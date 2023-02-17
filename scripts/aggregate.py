@@ -36,7 +36,7 @@ def main(argv,out):
 	dfx.columns =['sample', 'metric', 'result', 'status']
 	dfx.to_csv(args.output+".long.txt", sep=',', index=False)
 	rx3 = aggregate(dfx)
-	rx3.to_csv(args.output+".wide.txt", sep=',', index=False)
+	rx3.to_csv(args.output+".wide.txt", sep=',', index=True)
 	plot_all(rx3)
 
 def add_label_column(input, completeness_threshold, contamination_threshold, strain_heterogeneity_threshold, busco_completeness_threshold, busco_duplication_threshold, busco_fragmented_threshold, busco_missing_threshold, assembly_length_threshold_min, assembly_length_threshold_max, gc_threshold_min, gc_threshold_max, gap_sum_threshold, gap_count_threshold, perc_het_vars_threshold, scaffold_count_threshold, scaffold_N50_threshold, MASH_hit):
@@ -146,7 +146,7 @@ def aggregate(input):
 	return df3
 
 def plot_all(input):
-	df=input
+	df=pd.read_csv("aggregated_stats.wide.txt")
 	sns.set_style("white")
 	sns.set_theme()
 	sns.set(style="ticks")
@@ -155,7 +155,7 @@ def plot_all(input):
 	fig, ((axs1, axs2), (axs3, axs4), (axs5, axs6), (axs7, axs8)  ) = plt.subplots(4, 2, figsize=(8, 12))
 
 	if "assembly_length_bp" in df.columns:
-		sns.histplot(data=df, x="assembly_length_bp", binwidth=10000, ax=axs1)
+		sns.histplot(data=df, x="assembly_length_bp", bins=50, ax=axs1)
 		axs1.set_xlabel("Assembly length (bp)", fontsize=8, fontdict={"weight": "bold"})
 		axs1.set_ylabel("Frequency", fontsize=8, fontdict={"weight": "bold"})
 		axs1.axvline(x=1945246, color="grey", lw=1, linestyle="dashed")
@@ -166,7 +166,7 @@ def plot_all(input):
 		axs1.set_visible(False)
 
 	if "GC_perc" in df.columns:
-		sns.histplot(data=df, x="GC_perc", binwidth=0.1, ax=axs2)
+		sns.histplot(data=df, x="GC_perc", bins=50, ax=axs2)
 		axs2.set_xlabel("GC content (%)", fontsize=8, fontdict={"weight": "bold"})
 		axs2.set_ylabel("Frequency", fontsize=8, fontdict={"weight": "bold"})
 		axs2.axvline(x=40, color="grey", lw=1, linestyle="dashed")
@@ -177,7 +177,7 @@ def plot_all(input):
 		axs2.set_visible(False)
 
 	if "contig_count" in df.columns:
-		sns.histplot(data=df, x="contig_count", binwidth=10, ax=axs3)
+		sns.histplot(data=df, x="contig_count", bins=50, ax=axs3)
 		axs3.set_xlabel("Contigs (count)", fontsize=8, fontdict={"weight": "bold"})
 		axs3.set_ylabel("Frequency", fontsize=8, fontdict={"weight": "bold"})
 		axs3.tick_params(axis='x', labelsize=6)
@@ -186,7 +186,7 @@ def plot_all(input):
 		axs3.set_visible(False)
 
 	if "scaffold_count" in df.columns:
-		sns.histplot(data=df, x="scaffold_count", binwidth=10, ax=axs4)
+		sns.histplot(data=df, x="scaffold_count", bins=50, ax=axs4)
 		axs4.set_xlabel("Scaffold (count)", fontsize=8, fontdict={"weight": "bold"})
 		axs4.set_ylabel("Frequency", fontsize=8, fontdict={"weight": "bold"})
 		axs4.axvline(x=286, color="grey", lw=1, linestyle="dashed")
@@ -196,7 +196,7 @@ def plot_all(input):
 		axs4.set_visible(False)
 
 	if "contig_N50_bp" in df.columns:
-		sns.histplot(data=df, x="contig_N50_bp", binwidth=10000, ax=axs5)
+		sns.histplot(data=df, x="contig_N50_bp", bins=50, ax=axs5)
 		axs5.set_xlabel("Contig N50 (bp)", fontsize=8, fontdict={"weight": "bold"})
 		axs5.set_ylabel("Frequency", fontsize=8, fontdict={"weight": "bold"})
 		axs5.tick_params(axis='x', labelsize=6)
@@ -205,7 +205,7 @@ def plot_all(input):
 		axs5.set_visible(False)
 
 	if "scaffold_N50_bp" in df.columns:
-		sns.histplot(data=df, x="scaffold_N50_bp", binwidth=10000, ax=axs6)
+		sns.histplot(data=df, x="scaffold_N50_bp", bins=50, ax=axs6)
 		axs6.set_xlabel("Scaffold N50 (bp)", fontsize=8, fontdict={"weight": "bold"})
 		axs6.set_ylabel("Frequency", fontsize=8, fontdict={"weight": "bold"})
 		axs6.axvline(x=24454, color="grey", lw=1, linestyle="dashed")
@@ -215,7 +215,7 @@ def plot_all(input):
 		axs6.set_visible(False)
 
 	if "contig_N90_bp" in df.columns:
-		sns.histplot(data=df, x="contig_N90_bp", binwidth=10000, ax=axs7)
+		sns.histplot(data=df, x="contig_N90_bp", bins=50, ax=axs7)
 		axs7.set_xlabel("Contig N90 (bp)", fontsize=8, fontdict={"weight": "bold"})
 		axs7.set_ylabel("Frequency", fontsize=8, fontdict={"weight": "bold"})
 		axs7.tick_params(axis='x', labelsize=6)
@@ -224,7 +224,7 @@ def plot_all(input):
 		axs7.set_visible(False)
 
 	if "scaffold_N90_bp" in df.columns:
-		sns.histplot(data=df, x="scaffold_N90_bp", binwidth=10000, ax=axs8)
+		sns.histplot(data=df, x="scaffold_N90_bp", bins=50, ax=axs8)
 		axs8.set_xlabel("Scaffold N90 (bp)", fontsize=8, fontdict={"weight": "bold"})
 		axs8.set_ylabel("Frequency", fontsize=8, fontdict={"weight": "bold"})
 		axs8.tick_params(axis='x', labelsize=6)
