@@ -62,12 +62,28 @@ mv refseq.genomes.k21s1000.msh DB/
 ```
 #### seroBA
 ```
+# seroBA can be found here: https://github.com/sanger-pathogens/seroba.git but all we want is the database folder. You can either clone the whole repo
+git clone https://github.com/sanger-pathogens/seroba.git
+
+# Or you can download that folder specifically
+git init
+git remote add origin -f https://github.com/sanger-pathogens/seroba.git
+echo "database" > .git/info/sparse-checkout
+git config core.sparseCheckout true
+git pull origin master
+
+# In either case just move the database folder into the DB/ folder
+mv database DB/
 ```
 #### GPS
 ```
 ```
 #### BUSCO
 ```
+# By default BUSCO will download the relevant databases when trying to run, however, when running in nextflow it'll try to do that for every sample. A better solution is to download the relevant database prior to running the pipeline and specifying the relevant path. 
+wget https://busco-data.ezlab.org/v5/data/lineages/lactobacillales_odb10.2020-03-06.tar.gz
+mv lactobacillales_odb10.2020-03-06.tar.gz DB/
+tar xvf lactobacillales_odb10.2020-03-06.tar.gz
 ```
 
 ## Running nxf-bact_typ <a name="run"></a>
