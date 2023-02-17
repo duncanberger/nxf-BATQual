@@ -10,7 +10,7 @@
 
 
 ## Introduction <a name="Introduction"></a>
-**nxf-BATQual** is a Nextflow pipeline for performing assembling, annotation and typing bacterial genomes.
+**nxf-BATQual** is a Nextflow pipeline for performing assembling, annotation and typing bacterial genomes. It's designed to work on either Illumina short-reads or assembled genomes. It was primarily developed to assemble and type _Streptococcus pneumoniae_ genomes and so there is a specific mode '--pneumo' which will enable serotyping and cluster assignment tools specific to this species, if it's required. 
 
 ## Pipeline summary <a name="pipeline_summary"></a>
 When processing Illumina sequencing reads ('--mode fastq'), the pipeline will perform the following steps:
