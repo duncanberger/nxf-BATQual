@@ -1,4 +1,4 @@
-# nxf-BATQual [Pre-release]
+# BATQual [Pre-release]
 [![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A522.10.4-23aa62.svg?labelColor=000000)](https://www.nextflow.io/)
 
 ## Table of contents 
