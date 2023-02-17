@@ -94,7 +94,7 @@ mv GPS_v6* DB/
 cd DB/
 unzip GPS_v6.zip
 ```
-#### Reference genome
+#### Reference genome for the target species
 ```
 # Download any relevant reference assembly for your species. E.g: 
 wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/026/665/GCA_000026665.1_ASM2666v1/GCA_000026665.1_ASM2666v1_genomic.fna.gz 
@@ -110,6 +110,16 @@ mv GCA_000026665.1_ASM2666v1_genomic.fna DB/
 wget https://busco-data.ezlab.org/v5/data/lineages/lactobacillales_odb10.2020-03-06.tar.gz
 mv lactobacillales_odb10.2020-03-06.tar.gz DB/
 tar xvf lactobacillales_odb10.2020-03-06.tar.gz
+```
+### Kraken 2 database
+```
+# Download the Kraken DB (capped at 8 Gb):
+https://genome-idx.s3.amazonaws.com/kraken/k2_standard_08gb_20221209.tar.gz
+
+# Move to database directory and unpack
+mv k2_standard_08gb_20221209.tar.gz DB/
+cd DB/
+tar xvf k2_standard_08gb_20221209.tar.gz
 ```
 
 ## Running nxf-BATQual <a name="run"></a>
