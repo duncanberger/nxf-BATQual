@@ -44,7 +44,7 @@ When processing genome assemblies ('--mode fasta'), the pipeline will omit read-
 9. Annotate each genome using ([`Prokka`](https://github.com/tseemann/prokka)) 
 
 ### Schematic overview 
-![rect13856](https://user-images.githubusercontent.com/29282405/219708998-a233c56b-e3d8-4fe0-8c13-cc3c228ce853.png)
+![rect13856](https://user-images.githubusercontent.com/29282405/219715135-19a40350-f72f-4314-8b52-dd83388f1a5a.png)
 
 ## Installation <a name="install"></a>
 ### Software
