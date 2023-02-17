@@ -10,8 +10,6 @@
 
 
 ## Introduction <a name="Introduction"></a>
-
-**[NOTE: CURRENTLY IN ACTIVE DEVELOPMENT]** <br />
 **nxf-BATQual** is a Nextflow pipeline for performing assembling, annotation and typing bacterial genomes.
 
 ## Pipeline summary <a name="pipeline_summary"></a>
