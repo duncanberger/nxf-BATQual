@@ -18,6 +18,7 @@
 ![rect13856](https://user-images.githubusercontent.com/29282405/219794605-086076a0-2e6d-471b-8e48-501d00f853b2.png)
 
 ### Pipeline description
+#### FASTQ processing
 When processing Illumina sequencing reads ('--mode fastq'), the pipeline will perform the following steps:
 
 1. Trim adaptors from reads ([`fastp`](https://github.com/OpenGene/fastp)).
@@ -34,6 +35,7 @@ When processing Illumina sequencing reads ('--mode fastq'), the pipeline will pe
 12. Perform multilocus sequence typing using ([`mlst`](https://github.com/tseemann/mlst))
 13. Annotate each genome using ([`Prokka`](https://github.com/tseemann/prokka)) 
 
+#### FASTA processing
 When processing genome assemblies ('--mode fasta'), the pipeline will omit read-specific steps:
 1. Calculate standard assembly statistics
 2. Estimate assembly completeness using ([`BUSCO`](https://busco.ezlab.org/))
