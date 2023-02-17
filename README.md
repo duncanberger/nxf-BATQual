@@ -13,6 +13,11 @@
 **BATQual** is a Nextflow pipeline for performing assembling, annotation and typing bacterial genomes. It's designed to work on either Illumina short-reads or assembled genomes. It was primarily developed to assemble and type _Streptococcus pneumoniae_ genomes and so there is a specific mode '--pneumo' which will enable serotyping and cluster assignment tools specific to this species, if it's required. 
 
 ## Pipeline summary <a name="pipeline_summary"></a>
+
+### Schematic overview 
+![rect13856](https://user-images.githubusercontent.com/29282405/219794605-086076a0-2e6d-471b-8e48-501d00f853b2.png)
+
+### Pipeline description
 When processing Illumina sequencing reads ('--mode fastq'), the pipeline will perform the following steps:
 
 1. Trim adaptors from reads ([`fastp`](https://github.com/OpenGene/fastp)).
@@ -39,9 +44,6 @@ When processing genome assemblies ('--mode fasta'), the pipeline will omit read-
 7. Assign Global Pneumococcal Sequence Clusters ([`GPSCs`](https://www.pneumogen.net/gps/)) using popunk ([`PopPunk`](https://poppunk.net/)) 
 8. Perform multilocus sequence typing using ([`mlst_check`](https://github.com/sanger-pathogens/mlst_check))
 9. Annotate each genome using ([`Prokka`](https://github.com/tseemann/prokka)) 
-
-### Schematic overview 
-![rect13856](https://user-images.githubusercontent.com/29282405/219794605-086076a0-2e6d-471b-8e48-501d00f853b2.png)
 
 ## Installation <a name="install"></a>
 ### Software
