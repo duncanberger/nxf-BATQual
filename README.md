@@ -52,7 +52,7 @@ conda create -n nxf-BATQual -f environment.yml
 ### Databases
 This pipeline uses a number of databases, before running the pipeline you should check that version included below are the most relevant/up to date for your analyses.  The can be downloaded and made ready for analysis as follow:
 
-#### RefSeq MASH database
+#### RefSeq Mash database
 ```
 # Download a preformatted MASH database of RefSeq (release 70, if you want a more up to date version you'll need to build your own)
 wget https://gembox.cbcb.umd.edu/mash/refseq.genomes.k21s1000.msh
@@ -75,7 +75,7 @@ git pull origin master
 # In either case just move the database folder into the DB/ folder
 mv database DB/
 ```
-#### GPS
+#### Global Pneumococcal Sequencing (GPS) clusters
 ```
 # GPS reference database (n=42,163):
 wget https://gps-project.cog.sanger.ac.uk/GPS_v6.zip
@@ -87,7 +87,7 @@ mv GPS_v6* DB/
 cd DB/
 unzip GPS_v6.zip
 ```
-#### BUSCO
+#### Benchmarking Universal Single-Copy Orthologs (BUSCO)
 ```
 # By default BUSCO will download the relevant databases when trying to run, however, when running in nextflow it'll try to do that for every sample. A better solution is to download the relevant database prior to running the pipeline and specifying the relevant path. 
 wget https://busco-data.ezlab.org/v5/data/lineages/lactobacillales_odb10.2020-03-06.tar.gz
