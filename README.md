@@ -5,12 +5,12 @@
 * [Introduction](#Introduction)
 * [Pipeline summary](#pipeline_summary)
 * [Installation](#install)
-* [Running nxf-BATQual](#run)
+* [Running BATQual](#run)
 * [Aggregation and quality control](#aggregate)
 
 
 ## Introduction <a name="Introduction"></a>
-**nxf-BATQual** is a Nextflow pipeline for performing assembling, annotation and typing bacterial genomes. It's designed to work on either Illumina short-reads or assembled genomes. It was primarily developed to assemble and type _Streptococcus pneumoniae_ genomes and so there is a specific mode '--pneumo' which will enable serotyping and cluster assignment tools specific to this species, if it's required. 
+**BATQual** is a Nextflow pipeline for performing assembling, annotation and typing bacterial genomes. It's designed to work on either Illumina short-reads or assembled genomes. It was primarily developed to assemble and type _Streptococcus pneumoniae_ genomes and so there is a specific mode '--pneumo' which will enable serotyping and cluster assignment tools specific to this species, if it's required. 
 
 ## Pipeline summary <a name="pipeline_summary"></a>
 When processing Illumina sequencing reads ('--mode fastq'), the pipeline will perform the following steps:
@@ -120,7 +120,7 @@ cd DB/
 tar xvf k2_standard_08gb_20221209.tar.gz
 ```
 
-## Running nxf-BATQual <a name="run"></a>
+## Running BATQual <a name="run"></a>
 
 You can run the pipeline as follows:
 ```
