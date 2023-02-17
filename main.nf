@@ -63,6 +63,7 @@ workflow MAIN_A {
     FASTP(reads)
     VELVET(FASTP.out)
     SBA(reads)
+    KRAKEN(reads)
     BUSCO(VELVET.out)
     STATS(VELVET.out)
     PROKKA(VELVET.out)
@@ -72,7 +73,7 @@ workflow MAIN_A {
     MASH(VELVET.out)    
     GPSC(VELVET.out)
     QUAST(VELVET.out)
-    MLST(fastas)
+    MLST(VELVET.out)
 }
 
 workflow MAIN_B {
@@ -95,8 +96,6 @@ workflow MAIN_B {
     MLST(fastas)
 }
 
-
-
 workflow {
     if (params.mode == "fastq") {
         MAIN_A()}
@@ -107,9 +106,6 @@ workflow {
         exit 1
     }
 }
-
-
-
 // 66-90% of read length
 
 
@@ -146,6 +142,26 @@ process VELVET {
     rm ${sample_id}_data_*/*
     """
 }
+
+process KRAKEN {
+    cpus 2
+    tag "Running Kraken2 on $sample_id"
+    publishDir "$params.outdir/${sample_id}", mode: 'copy'
+
+    input:
+    tuple val(sample_id), path("${sample_id}_R1.fq.gz"), path("${sample_id}_R2.fq.gz")
+
+    output:
+    path("${sample_id}.kraken_results.txt")
+
+    script:
+    """
+    kraken2 --db $baseDir/DB/ --output txc --use-names --report ${sample_id}_kraken2.temp --paired ${sample_id}_R1.fq.gz ${sample_id}_R2.fq.gz
+    awk '\$4=="G"' ${sample_id}_kraken2.temp | sort -k4,4 -gr | awk '{print "sample_id","kraken2_genus",\$6":"\$1","}' OFS=","| head -1 > ${sample_id}.kraken_results.txt
+    awk '\$4=="S"' ${sample_id}_kraken2.temp | sort -k4,4 -gr | awk '{print "sample_id","kraken2_species",\$6 \$7":"\$1","}' OFS=","| head -1 >> ${sample_id}.kraken_results.txt
+    """
+}
+
 
 process PK {
     tag "Running pneumoKITy on $sample_id"
@@ -194,7 +210,7 @@ process SHET {
     script:
     """
     minimap2 -R '@RG\\tSM:DRAK\\tID:DRAK' -ax sr $baseDir/GCF_000026665.1_ASM2666v1_genomic.fna ${sample_id}_R1.fq.gz ${sample_id}_R2.fq.gz | samtools sort -O BAM -o ${sample_id}.bam - 
-    bcftools mpileup -f $baseDir/GCF_000026665.1_ASM2666v1_genomic.fna ${sample_id}.bam | bcftools call -mv - | bcftools view -i 'QUAL>=20' | bcftools query -f '[%GT]\n' - | awk '{if(\$0=="0/1" || \$0=="1/2"){nmw+=1}}END{print ((nmw*100)/NR)}' | awk '{print "${sample_id}","perc_het_vars",\$1,""}' OFS=',' > ${sample_id}.hetperc_results.txt
+    bcftools mpileup -f $baseDir/DB/$params.ref_assembly ${sample_id}.bam | bcftools call -mv - | bcftools view -i 'QUAL>=20' | bcftools query -f '[%GT]\n' - | awk '{if(\$0=="0/1" || \$0=="1/2"){nmw+=1}}END{print ((nmw*100)/NR)}' | awk '{print "${sample_id}","perc_het_vars",\$1,""}' OFS=',' > ${sample_id}.hetperc_results.txt
     rm ${sample_id}.bam
     """
 }
@@ -336,7 +352,7 @@ process MLST {
     script:
     """
     mlst ${sample_id}.velvet_contigs.fa > ${sample_id}.temp
-    cat ${sample_id}.temp | sed 's/,/;/g' | tr '\t' '\n' | grep "("  | sed 's/^/${sample_id},mlst,/g' | sed 's/\$/,/g' >> ${sample_id}_mlst_results.txt
-    cat ${sample_id}.temp | head -2 | tail -1 | awk '{print "$sample_id","mlst",\$2,","}' OFS="," >> ${sample_id}_mlst_results.txt
+    cat ${sample_id}.temp | sed 's/,/;/g' | tr '\t' '\n' | grep "("  | sed 's/^/${sample_id},mlst_species,/g' | sed 's/\$/,/g' >> ${sample_id}_mlst_results.txt
+    cat ${sample_id}.temp | head -2 | tail -1 | awk '{print "$sample_id","mlst_allele",\$2,","}' OFS="," >> ${sample_id}_mlst_results.txt
     """
 }
