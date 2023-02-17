@@ -29,7 +29,7 @@ When processing Illumina sequencing reads ('--mode fastq'), the pipeline will pe
 9. Perform read-based pneumococcal serotyping using ([`seroBA`](https://github.com/sanger-pathogens/seroba))
 10. Perform assembly-based pneumococcal serotyping using ([`pneumoKITy`](https://github.com/sanger-pathogens/seroba))
 11. Assign Global Pneumococcal Sequence Clusters ([`GPSCs`](https://www.pneumogen.net/gps/)) using popunk ([`PopPunk`](https://poppunk.net/)) 
-12. Perform multilocus sequence typing using ([`mlst_check`](https://github.com/sanger-pathogens/mlst_check))
+12. Perform multilocus sequence typing using ([`mlst`](https://github.com/tseemann/mlst))
 13. Annotate each genome using ([`Prokka`](https://github.com/tseemann/prokka)) 
 
 When processing genome assemblies ('--mode fasta'), the pipeline will omit read-specific steps:
