@@ -39,8 +39,7 @@ When processing genome assemblies ('--mode fasta'), the pipeline will omit read-
 6. Assign Global Pneumococcal Sequence Clusters ([`GPSCs`](https://www.pneumogen.net/gps/)) using popunk ([`PopPunk`](https://poppunk.net/)) 
 7. Annotate each genome using ([`Prokka`](https://github.com/tseemann/prokka)) 
 
-![rect13856](https://user-images.githubusercontent.com/29282405/219708619-37afb574-3067-4f3c-ab54-9305ac5973fd.png)
-
+![rect13856](https://user-images.githubusercontent.com/29282405/219708998-a233c56b-e3d8-4fe0-8c13-cc3c228ce853.png)
 
 ## Installation <a name="install"></a>
 ### Software
