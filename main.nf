@@ -62,19 +62,19 @@ workflow MAIN_A {
     main:
     FASTP(reads)
     FASTQC(reads)
-//    VELVET(FASTP.out)
-//    SBA(reads)
-//    KRAKEN(reads)
-//    BUSCO(VELVET.out)
-//    STATS(VELVET.out)
-//    PROKKA(VELVET.out)
-//    CHECKM(VELVET.out)
-//    SHET(FASTP.out)
-//    PK(VELVET.out)
-//    MASH(VELVET.out)    
-//    GPSC(VELVET.out)
-//    QUAST(VELVET.out)
-//    MLST(VELVET.out)
+    VELVET(FASTP.out)
+    SBA(reads)
+    KRAKEN(reads)
+    BUSCO(VELVET.out)
+    STATS(VELVET.out)
+    PROKKA(VELVET.out)
+    CHECKM(VELVET.out)
+    SHET(FASTP.out)
+    PK(VELVET.out)
+    MASH(VELVET.out)    
+    GPSC(VELVET.out)
+    QUAST(VELVET.out)
+    MLST(VELVET.out)
 }
 
 workflow MAIN_B {
@@ -108,7 +108,6 @@ workflow {
     }
 }
 // 66-90% of read length
-
 
 process FASTP {
     cpus = 2
