@@ -1,4 +1,4 @@
-# nxf-BATQual
+# nxf-BATQual [Pre-release]
 [![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A521.10.3-23aa62.svg?labelColor=000000)](https://www.nextflow.io/)
 [![run with conda](http://img.shields.io/badge/run%20with-conda-3EB049?labelColor=000000&logo=anaconda)](https://docs.conda.io/en/latest/)
 
@@ -11,7 +11,9 @@
 
 
 ## Introduction <a name="Introduction"></a>
-**nxf-BATQual** is a Nextflow pipeline for performing assembling, annotation and typing bacterial genomes. 
+
+[NOTE: CURRENTLY IN ACTIVE DEVELOPMENT]
+**nxf-BATQual** is a Nextflow pipeline for performing assembling, annotation and typing bacterial genomes.
 
 ## Pipeline summary <a name="pipeline_summary"></a>
 When processing Illumina sequencing reads ('--mode fastq'), the pipeline will perform the following steps:
