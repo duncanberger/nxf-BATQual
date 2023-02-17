@@ -111,7 +111,7 @@ wget https://busco-data.ezlab.org/v5/data/lineages/lactobacillales_odb10.2020-03
 mv lactobacillales_odb10.2020-03-06.tar.gz DB/
 tar xvf lactobacillales_odb10.2020-03-06.tar.gz
 ```
-### Kraken 2 database
+#### Kraken 2 database
 ```
 # Download the Kraken DB (capped at 8 Gb):
 https://genome-idx.s3.amazonaws.com/kraken/k2_standard_08gb_20221209.tar.gz
