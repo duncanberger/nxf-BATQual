@@ -24,20 +24,24 @@ When processing Illumina sequencing reads ('--mode fastq'), the pipeline will pe
 4. Calculate standard assembly statistics
 5. Estimate assembly completeness using ([`BUSCO`](https://busco.ezlab.org/))
 6. Check for assembly completeness and contamination using ([`CheckM`](https://github.com/Ecogenomics/CheckM))
-7. Estimate most likely species based on the closet ([`MASH`](https://github.com/marbl/Mash)) hits in the RefSeq database. 
-8. Perform read-based pneumococcal serotyping using ([`seroBA`](https://github.com/sanger-pathogens/seroba))
-9. Perform assembly-based pneumococcal serotyping using ([`pneumoKITy`](https://github.com/sanger-pathogens/seroba))
-10. Assign Global Pneumococcal Sequence Clusters ([`GPSCs`](https://www.pneumogen.net/gps/)) using popunk ([`PopPunk`](https://poppunk.net/)) 
-11. Annotate each genome using ([`Prokka`](https://github.com/tseemann/prokka)) 
+7. Evaluate assembly using ([`QUAST`](https://quast.sourceforge.net/)) 
+8. Estimate most likely species based on the closet ([`MASH`](https://github.com/marbl/Mash)) hits in the RefSeq database. 
+9. Perform read-based pneumococcal serotyping using ([`seroBA`](https://github.com/sanger-pathogens/seroba))
+10. Perform assembly-based pneumococcal serotyping using ([`pneumoKITy`](https://github.com/sanger-pathogens/seroba))
+11. Assign Global Pneumococcal Sequence Clusters ([`GPSCs`](https://www.pneumogen.net/gps/)) using popunk ([`PopPunk`](https://poppunk.net/)) 
+12. Perform multilocus sequence typing using ([`mlst_check`](https://github.com/sanger-pathogens/mlst_check))
+13. Annotate each genome using ([`Prokka`](https://github.com/tseemann/prokka)) 
 
 When processing genome assemblies ('--mode fasta'), the pipeline will omit read-specific steps:
 1. Calculate standard assembly statistics
 2. Estimate assembly completeness using ([`BUSCO`](https://busco.ezlab.org/))
 3. Check for assembly completeness and contamination using ([`CheckM`](https://github.com/Ecogenomics/CheckM))
-4. Estimate most likely species based on the closet ([`MASH`](https://github.com/marbl/Mash)) hits in the RefSeq database. 
-5. Perform assembly-based pneumococcal serotyping using ([`pneumoKITy`](https://github.com/sanger-pathogens/seroba))
-6. Assign Global Pneumococcal Sequence Clusters ([`GPSCs`](https://www.pneumogen.net/gps/)) using popunk ([`PopPunk`](https://poppunk.net/)) 
-7. Annotate each genome using ([`Prokka`](https://github.com/tseemann/prokka)) 
+4. Evaluate assembly using ([`QUAST`](https://quast.sourceforge.net/)) 
+5. Estimate most likely species based on the closet ([`MASH`](https://github.com/marbl/Mash)) hits in the RefSeq database. 
+6. Perform assembly-based pneumococcal serotyping using ([`pneumoKITy`](https://github.com/sanger-pathogens/seroba))
+7. Assign Global Pneumococcal Sequence Clusters ([`GPSCs`](https://www.pneumogen.net/gps/)) using popunk ([`PopPunk`](https://poppunk.net/)) 
+8. Perform multilocus sequence typing using ([`mlst_check`](https://github.com/sanger-pathogens/mlst_check))
+9. Annotate each genome using ([`Prokka`](https://github.com/tseemann/prokka)) 
 
 ![rect13856](https://user-images.githubusercontent.com/29282405/219708998-a233c56b-e3d8-4fe0-8c13-cc3c228ce853.png)
 
