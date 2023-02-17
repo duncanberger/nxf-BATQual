@@ -43,6 +43,7 @@ When processing genome assemblies ('--mode fasta'), the pipeline will omit read-
 8. Perform multilocus sequence typing using ([`mlst_check`](https://github.com/sanger-pathogens/mlst_check))
 9. Annotate each genome using ([`Prokka`](https://github.com/tseemann/prokka)) 
 
+### Schematic overview 
 ![rect13856](https://user-images.githubusercontent.com/29282405/219708998-a233c56b-e3d8-4fe0-8c13-cc3c228ce853.png)
 
 ## Installation <a name="install"></a>
