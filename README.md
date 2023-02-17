@@ -57,7 +57,7 @@ git clone https://github.com/duncanberger/nxf-BATQual.git
 conda create -n nxf-BATQual -f environment.yml 
 ```
 ### Databases
-This pipeline uses a number of databases, before running the pipeline you should check that version included below are the most relevant/up to date for your analyses.  The can be downloaded and made ready for analysis as follow:
+This pipeline uses a number of databases, before running the pipeline you should check that version included below are the most relevant/up to date for your analyses.  The can be downloaded and made ready for analysis as follows:
 
 #### RefSeq Mash database
 ```
