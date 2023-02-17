@@ -1,4 +1,4 @@
-# nxf-bact_typ
+# nxf-BATQual
 [![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A521.10.3-23aa62.svg?labelColor=000000)](https://www.nextflow.io/)
 [![run with conda](http://img.shields.io/badge/run%20with-conda-3EB049?labelColor=000000&logo=anaconda)](https://docs.conda.io/en/latest/)
 
@@ -6,12 +6,12 @@
 * [Introduction](#Introduction)
 * [Pipeline summary](#pipeline_summary)
 * [Installation](#install)
-* [Running nxf-bact_typ](#run)
+* [Running nxf-BATQual](#run)
 * [Aggregation and quality control](#aggregate)
 
 
 ## Introduction <a name="Introduction"></a>
-**nxf-bact_typ** is a Nextflow pipeline for performing assembling, annotation and typing bacterial genomes. 
+**nxf-BATQual** is a Nextflow pipeline for performing assembling, annotation and typing bacterial genomes. 
 
 ## Pipeline summary <a name="pipeline_summary"></a>
 When processing Illumina sequencing reads ('--mode fastq'), the pipeline will perform the following steps:
@@ -44,13 +44,13 @@ You will need to install [`pneumoKITy`](https://github.com/CarmenSheppard/Pneumo
 
 ```
 # Clone this repo
-git clone https://github.com/duncanberger/nxf-bact_typ.git
+git clone https://github.com/duncanberger/nxf-BATQual.git
 
 # Set up conda dependencies 
-conda create -n nxf-bact_typ -f environment.yml 
+conda create -n nxf-BATQual -f environment.yml 
 ```
 ### Databases
-This pipeline uses a number of databases. The can be downloaded and made ready for analysis as follow:
+This pipeline uses a number of databases, before running the pipeline you should check that version included below are the most relevant/up to date for your analyses.  The can be downloaded and made ready for analysis as follow:
 
 #### RefSeq MASH database
 ```
@@ -77,6 +77,15 @@ mv database DB/
 ```
 #### GPS
 ```
+# GPS reference database (n=42,163):
+wget https://gps-project.cog.sanger.ac.uk/GPS_v6.zip
+
+# GPS designation (933 GPSCs):
+wget https://www.pneumogen.net/gps/GPS_v6_external_clusters.csv
+
+mv GPS_v6* DB/
+cd DB/
+unzip GPS_v6.zip
 ```
 #### BUSCO
 ```
@@ -86,7 +95,7 @@ mv lactobacillales_odb10.2020-03-06.tar.gz DB/
 tar xvf lactobacillales_odb10.2020-03-06.tar.gz
 ```
 
-## Running nxf-bact_typ <a name="run"></a>
+## Running nxf-BATQual <a name="run"></a>
 
 You can run the pipeline as follows:
 ```
