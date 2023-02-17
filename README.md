@@ -39,7 +39,9 @@ When processing genome assemblies ('--mode fasta'), the pipeline will omit read-
 6. Assign Global Pneumococcal Sequence Clusters ([`GPSCs`](https://www.pneumogen.net/gps/)) using popunk ([`PopPunk`](https://poppunk.net/)) 
 7. Annotate each genome using ([`Prokka`](https://github.com/tseemann/prokka)) 
 
-![pipeline](https://user-images.githubusercontent.com/29282405/219708195-121c82b1-d555-4cd7-9a9f-81f343cbbe72.png)
+![rect13856](https://user-images.githubusercontent.com/29282405/219708619-37afb574-3067-4f3c-ab54-9305ac5973fd.png)
+
+
 ## Installation <a name="install"></a>
 ### Software
 You will need to install [`Nextflow`](https://www.nextflow.io/) (version 21.10.3+).
