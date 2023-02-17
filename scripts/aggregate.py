@@ -146,12 +146,12 @@ def aggregate(input):
 	return df3
 
 def plot_all(input):
-	df=pd.read_csv("ex1.csv")
+	df=input
 	sns.set_style("white")
 	sns.set_theme()
 	sns.set(style="ticks")
 
-	pdf_pages = PdfPages("myplots.pdf")
+	pdf_pages = PdfPages("aggregated_plots.pdf")
 	fig, ((axs1, axs2), (axs3, axs4), (axs5, axs6), (axs7, axs8)  ) = plt.subplots(4, 2, figsize=(8, 12))
 
 	if "assembly_length_bp" in df.columns:
