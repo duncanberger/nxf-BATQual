@@ -20,7 +20,7 @@ When processing Illumina sequencing reads ('--mode fastq'), the pipeline will pe
 1. Trim adaptors from reads ([`fastp`](https://github.com/OpenGene/fastp)).
 2. Assemble one genome per-isolate using ([`VelvetOptimiser`](https://github.com/tseemann/VelvetOptimiser)).
 3. Estimate heterozygosity with the read data to check for contamination using ([`minimap`](https://github.com/lh3/minimap2)) and ([`BCFtools`](https://samtools.github.io/bcftools/bcftools.html)).
-4. Calculate standard assembly statistics
+4. Calculate standard assembly statistics.
 5. Estimate assembly completeness using ([`BUSCO`](https://busco.ezlab.org/))
 6. Check for assembly completeness and contamination using ([`CheckM`](https://github.com/Ecogenomics/CheckM))
 7. Evaluate assembly using ([`QUAST`](https://quast.sourceforge.net/)) 
