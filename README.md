@@ -94,6 +94,16 @@ mv GPS_v6* DB/
 cd DB/
 unzip GPS_v6.zip
 ```
+#### Reference genome
+```
+# Download any relevant reference assembly for your species. E.g: 
+wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/026/665/GCA_000026665.1_ASM2666v1/GCA_000026665.1_ASM2666v1_genomic.fna.gz 
+gunzip GCA_000026665.1_ASM2666v1_genomic.fna.gz
+mv GCA_000026665.1_ASM2666v1_genomic.fna DB/
+
+# Then add the assembly name to 'main.config' file at the 'ref_assembly=' row
+```
+
 #### Benchmarking Universal Single-Copy Orthologs (BUSCO)
 ```
 # By default BUSCO will download the relevant databases when trying to run, however, when running in nextflow it'll try to do that for every sample. A better solution is to download the relevant database prior to running the pipeline and specifying the relevant path. 
