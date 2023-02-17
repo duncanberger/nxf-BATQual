@@ -61,19 +61,20 @@ workflow MAIN_A {
      .set {reads}
     main:
     FASTP(reads)
-    VELVET(FASTP.out)
-    SBA(reads)
-    KRAKEN(reads)
-    BUSCO(VELVET.out)
-    STATS(VELVET.out)
-    PROKKA(VELVET.out)
-    CHECKM(VELVET.out)
-    SHET(FASTP.out)
-    PK(VELVET.out)
-    MASH(VELVET.out)    
-    GPSC(VELVET.out)
-    QUAST(VELVET.out)
-    MLST(VELVET.out)
+    FASTQC(reads)
+//    VELVET(FASTP.out)
+//    SBA(reads)
+//    KRAKEN(reads)
+//    BUSCO(VELVET.out)
+//    STATS(VELVET.out)
+//    PROKKA(VELVET.out)
+//    CHECKM(VELVET.out)
+//    SHET(FASTP.out)
+//    PK(VELVET.out)
+//    MASH(VELVET.out)    
+//    GPSC(VELVET.out)
+//    QUAST(VELVET.out)
+//    MLST(VELVET.out)
 }
 
 workflow MAIN_B {
@@ -122,6 +123,27 @@ process FASTP {
     script:
     """
     fastp -w 2 -i ${read1} -I ${read2} -o ${sample_id}_R1.fq.gz -O ${sample_id}_R2.fq.gz
+    """
+}
+
+process FASTQC {
+    cpus = 1
+    tag "Running FastQC on $sample_id"
+    publishDir "$params.outdir/${sample_id}", mode: 'copy'
+
+    input:
+    tuple val(sample_id), path(read1), path(read2)
+
+    output:
+    tuple path("${sample_id}_R1_fastqc.zip"), path("${sample_id}_R2_fastqc.zip")
+
+    script:
+    """
+    fastqc ${read1}
+    mv *.zip ${sample_id}_R1_fastqc.tx1
+    fastqc ${read2}
+    mv *.zip ${sample_id}_R2_fastqc.zip
+    mv *.tx1 ${sample_id}_R1_fastqc.zip
     """
 }
 
