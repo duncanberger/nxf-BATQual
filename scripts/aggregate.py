@@ -7,7 +7,8 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 
-def main(argv,out):
+def main(argv,out): 
+	# Add input arguments
 	if not len(argv):
 		argv.append('-h')
 	parser = argparse.ArgumentParser()
@@ -30,13 +31,19 @@ def main(argv,out):
 	parser.add_argument('--scaffold_count_threshold', help="Maximum number of scaffolds per assembly [286]", default=286)
 	parser.add_argument('--scaffold_N50_threshold', help="Minimum scaffold N50 [24454]", default=24454)
 	parser.add_argument('--MASH_hit', help="Closest MASH hit (top 5) [Streptococcus pneumoniae]", default="Streptococcus pneumoniae")
+
 	args = parser.parse_args(argv)
+	# Run the first function, to parse output files, aggregate results, identify failed assemblies
 	result = add_label_column(args.input, args.completeness_threshold, args.contamination_threshold, args.strain_heterogeneity_threshold, args.busco_completeness_threshold, args.busco_duplication_threshold, args.busco_fragmented_threshold, args.busco_missing_threshold, args.assembly_length_threshold_min, args.assembly_length_threshold_max, args.gc_threshold_min, args.gc_threshold_max, args.gap_sum_threshold, args.gap_count_threshold, args.perc_het_vars_threshold, args.scaffold_count_threshold, args.scaffold_N50_threshold, args.MASH_hit)
+	# Reformat output
 	dfx = pd.DataFrame([sub.split(",") for sub in result])
 	dfx.columns =['sample', 'metric', 'result', 'status']
+	# Write to file
 	dfx.to_csv(args.output+".long.txt", sep=',', index=False)
+	# Aggregate results to a reformatted table and write to file
 	rx3 = aggregate(dfx)
 	rx3.to_csv(args.output+".wide.txt", sep=',', index=True)
+	# Make plots
 	plot_all(rx3)
 
 def add_label_column(input, completeness_threshold, contamination_threshold, strain_heterogeneity_threshold, busco_completeness_threshold, busco_duplication_threshold, busco_fragmented_threshold, busco_missing_threshold, assembly_length_threshold_min, assembly_length_threshold_max, gc_threshold_min, gc_threshold_max, gap_sum_threshold, gap_count_threshold, perc_het_vars_threshold, scaffold_count_threshold, scaffold_N50_threshold, MASH_hit):
