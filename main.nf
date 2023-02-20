@@ -72,7 +72,7 @@ workflow MAIN_A {
     SHET(FASTP.out)
     PK(VELVET.out)
     MASH(VELVET.out)    
-    GPSC(VELVET.out)
+//    GPSC(VELVET.out)
     QUAST(VELVET.out)
     MLST(VELVET.out)
 }
@@ -92,7 +92,7 @@ workflow MAIN_B {
     CHECKM(fastas)
     PK(fastas)
     MASH(fastas)
-    GPSC(fastas)
+//    GPSC(fastas)
     QUAST(fastas)
     MLST(fastas)
 }
@@ -108,6 +108,7 @@ workflow {
     }
 }
 // 66-90% of read length
+
 
 process FASTP {
     cpus = 2
@@ -178,8 +179,8 @@ process KRAKEN {
     script:
     """
     kraken2 --db $baseDir/DB/ --output txc --use-names --report ${sample_id}_kraken2.temp --paired ${sample_id}_R1.fq.gz ${sample_id}_R2.fq.gz
-    awk '\$4=="G"' ${sample_id}_kraken2.temp | sort -k4,4 -gr | awk '{print "sample_id","kraken2_genus",\$6":"\$1","}' OFS=","| head -1 > ${sample_id}.kraken_results.txt
-    awk '\$4=="S"' ${sample_id}_kraken2.temp | sort -k4,4 -gr | awk '{print "sample_id","kraken2_species",\$6 \$7":"\$1","}' OFS=","| head -1 >> ${sample_id}.kraken_results.txt
+    awk '\$4=="G"' ${sample_id}_kraken2.temp | sort -k4,4 -gr | awk '{print "$sample_id","kraken2_genus",\$6":"\$1","}' OFS=","| head -1 > ${sample_id}.kraken_results.txt
+    awk '\$4=="S"' ${sample_id}_kraken2.temp | sort -k4,4 -gr | awk '{print "$sample_id","kraken2_species",\$6 \$7":"\$1","}' OFS=","| head -1 >> ${sample_id}.kraken_results.txt
     """
 }
 
@@ -209,12 +210,12 @@ process CHECKM {
     tuple val(sample_id), path("${sample_id}.velvet_contigs.fa")
 
     output:
-    path "${sample_id}.checkM_results.tbl"
+    path "${sample_id}.checkM_results.txt"
 
     script:
     """
     checkm taxonomy_wf -x fa --tab_table -f ${sample_id}_check.tbl species "Streptococcus pneumoniae" ./ ${sample_id}_test
-    cat ${sample_id}_check.tbl | cut -f12,13,14 | sed 's/ /_/g' | awk -F'\t' '{ for (i=1; i<=NF; i++) a[i]= (a[i]? a[i] FS \$i: \$i) } END{ for (i in a) print a[i] }'| awk '{print "${sample_id},CHECKM_"\$1,\$2}' OFS="," > ${sample_id}.checkM_results.tbl
+    cat ${sample_id}_check.tbl | cut -f12,13,14 | sed 's/ /_/g' | awk -F'\t' '{ for (i=1; i<=NF; i++) a[i]= (a[i]? a[i] FS \$i: \$i) } END{ for (i in a) print a[i] }'| awk '{print "${sample_id},CHECKM_"\$1,\$2,""}' OFS="," > ${sample_id}.checkM_results.txt
     """
 }
 
@@ -230,9 +231,9 @@ process SHET {
 
     script:
     """
-    minimap2 -R '@RG\\tSM:DRAK\\tID:DRAK' -ax sr $baseDir/GCF_000026665.1_ASM2666v1_genomic.fna ${sample_id}_R1.fq.gz ${sample_id}_R2.fq.gz | samtools sort -O BAM -o ${sample_id}.bam - 
-    bcftools mpileup -f $baseDir/DB/$params.ref_assembly ${sample_id}.bam | bcftools call -mv - | bcftools view -i 'QUAL>=20' | bcftools query -f '[%GT]\n' - | awk '{if(\$0=="0/1" || \$0=="1/2"){nmw+=1}}END{print ((nmw*100)/NR)}' | awk '{print "${sample_id}","perc_het_vars",\$1,""}' OFS=',' > ${sample_id}.hetperc_results.txt
-    rm ${sample_id}.bam
+    minimap2 -R '@RG\\tSM:DRAK\\tID:DRAK' -ax sr $baseDir/DB/$params.ref_assembly ${sample_id}_R1.fq.gz ${sample_id}_R2.fq.gz | samtools sort -O BAM -o ${sample_id}.bam - 
+    bcftools mpileup -I -f $baseDir/DB/$params.ref_assembly ${sample_id}.bam | bcftools call -mv - | bcftools view -i 'QUAL>=20' | bcftools query -f '[%GT]\n' - | awk '{if(\$0=="0/1" || \$0=="1/2"){nmw+=1}}END{print ((nmw*100)/NR)}' | awk '{print "${sample_id}","perc_het_vars",\$1,""}' OFS=',' > ${sample_id}.hetperc_results.txt
+#    rm ${sample_id}.bam
     """
 }
 
@@ -368,12 +369,12 @@ process MLST {
     tuple val(sample_id), path("${sample_id}.velvet_contigs.fa")
 
     output:
-    path "${sample_id}_mlst_results.txt"
+    path "${sample_id}.mlst_results.txt"
 
     script:
     """
     mlst ${sample_id}.velvet_contigs.fa > ${sample_id}.temp
-    cat ${sample_id}.temp | sed 's/,/;/g' | tr '\t' '\n' | grep "("  | sed 's/^/${sample_id},mlst_species,/g' | sed 's/\$/,/g' >> ${sample_id}_mlst_results.txt
-    cat ${sample_id}.temp | head -2 | tail -1 | awk '{print "$sample_id","mlst_allele",\$2,","}' OFS="," >> ${sample_id}_mlst_results.txt
+    cat ${sample_id}.temp | sed 's/,/;/g' | tr '\t' '\n' | grep "("  | sed 's/^/${sample_id},mlst_allele_/g' | sed 's/\$/,/g' | sed 's/(/,/g' | sed 's/)/,/g' >> ${sample_id}.mlst_results.txt
+    cat ${sample_id}.temp | head -2 | tail -1 | awk '{print "$sample_id","mlst_species",\$2,","}' OFS="," | sed 's/)//g' | sed 's/(/,/g' >> ${sample_id}.mlst_results.txt
     """
 }
