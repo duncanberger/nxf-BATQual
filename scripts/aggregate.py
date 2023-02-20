@@ -47,15 +47,17 @@ def main(argv,out):
 	plot_all(rx3, args.completeness_threshold, args.contamination_threshold, args.strain_heterogeneity_threshold, args.busco_completeness_threshold, args.busco_duplication_threshold, args.busco_fragmented_threshold, args.busco_missing_threshold, args.assembly_length_threshold_min, args.assembly_length_threshold_max, args.gc_threshold_min, args.gc_threshold_max, args.gap_sum_threshold, args.gap_count_threshold, args.perc_het_vars_threshold, args.scaffold_count_threshold, args.scaffold_N50_threshold)
 
 def add_label_column(input, completeness_threshold, contamination_threshold, strain_heterogeneity_threshold, busco_completeness_threshold, busco_duplication_threshold, busco_fragmented_threshold, busco_missing_threshold, assembly_length_threshold_min, assembly_length_threshold_max, gc_threshold_min, gc_threshold_max, gap_sum_threshold, gap_count_threshold, perc_het_vars_threshold, scaffold_count_threshold, scaffold_N50_threshold, MASH_hit):
-	input2 = input
+	# Organise the importatation of data from multiple folders
 	pattern = f"{input2}/*/*_results.txt"
 	file_paths = glob.glob(pattern)
 	contents = ""
+	# Read data in and split lines
 	for path in file_paths:
 		with open(path, "r") as f:
 			contents += f.read()
 	lines = contents.splitlines()
 	result = []
+	# For each relevant metric, identify whether it's a PASS or FAIL based on default or user defined thresholds
 	for line in lines:
 		columns = line.strip().split(',')
 		sample_id, metric, value, backup = columns[0], columns[1], columns[2], columns[3]
@@ -144,6 +146,7 @@ def add_label_column(input, completeness_threshold, contamination_threshold, str
 	return result
 
 def aggregate(input):
+	# Merge data table from add_label_column with a table of counts of FAIL metrics (per-sample)
 	df = input
 	df2 = df.pivot(index='sample', columns='metric', values='result')
 	xf1 = df.loc[df['status']=='FAIL'].groupby('sample')['status'].agg({'count'})
@@ -157,7 +160,7 @@ def plot_all(input, completeness_threshold, contamination_threshold, strain_hete
 	sns.set_style("white")
 	sns.set_theme()
 	sns.set(style="ticks")
-
+	# Open PDF and plot figures across 3 pages (up to 8 plots per page)
 	pdf_pages = PdfPages("aggregated_plots.pdf")
 	fig, ((axs1, axs2), (axs3, axs4), (axs5, axs6), (axs7, axs8)  ) = plt.subplots(4, 2, figsize=(8, 12))
 
@@ -331,7 +334,9 @@ def plot_all(input, completeness_threshold, contamination_threshold, strain_hete
 	else:
 		bsx9.set_visible(False)
 
+	# Remove extra axes
 	sns.despine()
+	# Fix spacing on page and between plots
 	fig.subplots_adjust(left=0.1, right=0.9, bottom=0.2, top=0.9, wspace=0.1)
 	fig.subplots_adjust(hspace=0.4, wspace =0.4)
 	pdf_pages.savefig(fig)
@@ -444,10 +449,13 @@ def plot_all(input, completeness_threshold, contamination_threshold, strain_hete
 	else:
 		csx8.set_visible(False)
 	
+	# Remove spacing
 	sns.despine()
+	# Fix spacing on page and between plots
 	fig.subplots_adjust(left=0.1, right=0.9, bottom=0.2, top=0.9, wspace=0.1)
 	fig.subplots_adjust(hspace=0.8, wspace =0.4)
 	pdf_pages.savefig(fig)
+	# Close PDF
 	pdf_pages.close()
 
 if __name__ == '__main__':
