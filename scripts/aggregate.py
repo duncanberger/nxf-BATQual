@@ -44,7 +44,7 @@ def main(argv,out):
 	rx3 = aggregate(dfx)
 	rx3.to_csv(args.output+".wide.txt", sep=',', index=True)
 	# Make plots
-	plot_all(rx3)
+	plot_all(rx3, args.completeness_threshold, args.contamination_threshold, args.strain_heterogeneity_threshold, args.busco_completeness_threshold, args.busco_duplication_threshold, args.busco_fragmented_threshold, args.busco_missing_threshold, args.assembly_length_threshold_min, args.assembly_length_threshold_max, args.gc_threshold_min, args.gc_threshold_max, args.gap_sum_threshold, args.gap_count_threshold, args.perc_het_vars_threshold, args.scaffold_count_threshold, args.scaffold_N50_threshold)
 
 def add_label_column(input, completeness_threshold, contamination_threshold, strain_heterogeneity_threshold, busco_completeness_threshold, busco_duplication_threshold, busco_fragmented_threshold, busco_missing_threshold, assembly_length_threshold_min, assembly_length_threshold_max, gc_threshold_min, gc_threshold_max, gap_sum_threshold, gap_count_threshold, perc_het_vars_threshold, scaffold_count_threshold, scaffold_N50_threshold, MASH_hit):
 	input2 = input
@@ -69,7 +69,7 @@ def add_label_column(input, completeness_threshold, contamination_threshold, str
 				result.append(f"{sample_id},{metric},{value},PASS")
 			else:
 				result.append(f"{sample_id},{metric},{value},FAIL")
-		elif metric == "CHECKM_Strain_heterogeneity":
+		elif metric == "v":
 			if float(value) <= strain_heterogeneity_threshold:
 				result.append(f"{sample_id},{metric},{value},PASS")
 			else:
@@ -152,7 +152,7 @@ def aggregate(input):
 	df3 = df3.rename(columns={'count': 'fail_counts'})
 	return df3
 
-def plot_all(input):
+def plot_all(input, completeness_threshold, contamination_threshold, strain_heterogeneity_threshold, busco_completeness_threshold, busco_duplication_threshold, busco_fragmented_threshold, busco_missing_threshold, assembly_length_threshold_min, assembly_length_threshold_max, gc_threshold_min, gc_threshold_max, gap_sum_threshold, gap_count_threshold, perc_het_vars_threshold, scaffold_count_threshold, scaffold_N50_threshold):
 	df=pd.read_csv("aggregated_stats.wide.txt")
 	sns.set_style("white")
 	sns.set_theme()
@@ -165,8 +165,8 @@ def plot_all(input):
 		sns.histplot(data=df, x="assembly_length_bp", bins=50, ax=axs1)
 		axs1.set_xlabel("Assembly length (bp)", fontsize=8, fontdict={"weight": "bold"})
 		axs1.set_ylabel("Frequency", fontsize=8, fontdict={"weight": "bold"})
-		axs1.axvline(x=1945246, color="grey", lw=1, linestyle="dashed")
-		axs1.axvline(x=2255392, color="grey", lw=1, linestyle="dashed")
+		axs1.axvline(x=assembly_length_threshold_min, color="grey", lw=1, linestyle="dashed")
+		axs1.axvline(x=assembly_length_threshold_max, color="grey", lw=1, linestyle="dashed")
 		axs1.tick_params(axis='x', labelsize=6)
 		axs1.tick_params(axis='y', labelsize=6)
 	else:
@@ -176,8 +176,8 @@ def plot_all(input):
 		sns.histplot(data=df, x="GC_perc", bins=50, ax=axs2)
 		axs2.set_xlabel("GC content (%)", fontsize=8, fontdict={"weight": "bold"})
 		axs2.set_ylabel("Frequency", fontsize=8, fontdict={"weight": "bold"})
-		axs2.axvline(x=40, color="grey", lw=1, linestyle="dashed")
-		axs2.axvline(x=39.2, color="grey", lw=1, linestyle="dashed")
+		axs2.axvline(x=gc_threshold_max, color="grey", lw=1, linestyle="dashed")
+		axs2.axvline(x=gc_threshold_min, color="grey", lw=1, linestyle="dashed")
 		axs2.tick_params(axis='x', labelsize=6)
 		axs2.tick_params(axis='y', labelsize=6)
 	else:
@@ -196,7 +196,7 @@ def plot_all(input):
 		sns.histplot(data=df, x="scaffold_count", bins=50, ax=axs4)
 		axs4.set_xlabel("Scaffold (count)", fontsize=8, fontdict={"weight": "bold"})
 		axs4.set_ylabel("Frequency", fontsize=8, fontdict={"weight": "bold"})
-		axs4.axvline(x=286, color="grey", lw=1, linestyle="dashed")
+		axs4.axvline(x=scaffold_count_threshold, color="grey", lw=1, linestyle="dashed")
 		axs4.tick_params(axis='x', labelsize=6)
 		axs4.tick_params(axis='y', labelsize=6)
 	else:
@@ -215,7 +215,7 @@ def plot_all(input):
 		sns.histplot(data=df, x="scaffold_N50_bp", bins=50, ax=axs6)
 		axs6.set_xlabel("Scaffold N50 (bp)", fontsize=8, fontdict={"weight": "bold"})
 		axs6.set_ylabel("Frequency", fontsize=8, fontdict={"weight": "bold"})
-		axs6.axvline(x=24454, color="grey", lw=1, linestyle="dashed")
+		axs6.axvline(x=scaffold_N50_threshold, color="grey", lw=1, linestyle="dashed")
 		axs6.tick_params(axis='x', labelsize=6)
 		axs6.tick_params(axis='y', labelsize=6)
 	else:
@@ -244,13 +244,13 @@ def plot_all(input):
 	fig.subplots_adjust(hspace=0.4, wspace =0.4)
 	pdf_pages.savefig(fig)
 
-	fig, ((bsx7,bsx8), (bsx1, bsx2), (bsx3, bsx4), (bsx5, bsx6)  ) = plt.subplots(4, 2, figsize=(8, 12))
+	fig, ((bsx7,bsx8), (bsx1, bsx2), (bsx3, bsx4), (bsx9, bsx10)  ) = plt.subplots(4, 2, figsize=(8, 12))
 
 	if "gaps_count" in df.columns:
-		sns.histplot(data=df, x="gaps_count", binwidth=0.1, ax=bsx7)
+		sns.histplot(data=df, x="gaps_count", bins=50, ax=bsx7)
 		bsx7.set_xlabel("Gaps (count)", fontsize=8, fontdict={"weight": "bold"})
 		bsx7.set_ylabel("Frequency", fontsize=8, fontdict={"weight": "bold"})
-		bsx7.axvline(x=26, color="grey", lw=1, linestyle="dashed")
+		bsx7.axvline(x=gap_count_threshold, color="grey", lw=1, linestyle="dashed")
 		bsx7.tick_params(axis='x', labelsize=6)
 		bsx7.tick_params(axis='y', labelsize=6)
 		sns.despine()
@@ -258,10 +258,10 @@ def plot_all(input):
 		bsx7.set_visible(False)
 
 	if "gaps_sum_bp" in df.columns:
-		sns.histplot(data=df, x="gaps_sum_bp", binwidth=1000, ax=bsx8)
+		sns.histplot(data=df, x="gaps_sum_bp", bins=50, ax=bsx8)
 		bsx8.set_xlabel("Gap length (bp)", fontsize=8, fontdict={"weight": "bold"})
 		bsx8.set_ylabel("Frequency", fontsize=8, fontdict={"weight": "bold"})
-		bsx8.axvline(x=5631, color="grey", lw=1, linestyle="dashed")
+		bsx8.axvline(x=gap_sum_threshold, color="grey", lw=1, linestyle="dashed")
 		bsx8.tick_params(axis='x', labelsize=6)
 		bsx8.tick_params(axis='y', labelsize=6)
 		sns.despine()
@@ -269,10 +269,10 @@ def plot_all(input):
 		bsx8.set_visible(False)
 
 	if "BUSCO_complete_single_copy" in df.columns:
-		sns.histplot(data=df, x="BUSCO_complete_single_copy", binwidth=0.1, ax=bsx1)
+		sns.histplot(data=df, x="BUSCO_complete_single_copy", bins=30, ax=bsx1)
 		bsx1.set_xlabel("BUSCO: Complete and single-copy (%)", fontsize=8, fontdict={"weight": "bold"})
 		bsx1.set_ylabel("Frequency", fontsize=8, fontdict={"weight": "bold"})
-		bsx1.axvline(x=95, color="grey", lw=1, linestyle="dashed")
+		bsx1.axvline(x=busco_completeness_threshold, color="grey", lw=1, linestyle="dashed")
 		bsx1.tick_params(axis='x', labelsize=6)
 		bsx1.tick_params(axis='y', labelsize=6)
 		sns.despine()
@@ -280,20 +280,20 @@ def plot_all(input):
 		bsx1.set_visible(False)
 
 	if "BUSCO_complete_duplicated" in df.columns:
-		sns.histplot(data=df, x="BUSCO_complete_duplicated", binwidth=0.1, ax=bsx2)
+		sns.histplot(data=df, x="BUSCO_complete_duplicated", bins=30, ax=bsx2)
 		bsx2.set_xlabel("BUSCO: Complete and duplicated (%)", fontsize=8, fontdict={"weight": "bold"})
 		bsx2.set_ylabel("Frequency", fontsize=8, fontdict={"weight": "bold"})
-		bsx2.axvline(x=1, color="grey", lw=1, linestyle="dashed")
+		bsx2.axvline(x=busco_duplication_threshold, color="grey", lw=1, linestyle="dashed")
 		bsx2.tick_params(axis='x', labelsize=6)
 		bsx2.tick_params(axis='y', labelsize=6)
 	else:
 		bsx2.set_visible(False)
 
 	if "BUSCO_fragmented" in df.columns:
-		sns.histplot(data=df, x="BUSCO_fragmented", binwidth=0.1, ax=bsx3)
+		sns.histplot(data=df, x="BUSCO_fragmented", bins=30, ax=bsx3)
 		bsx3.set_xlabel("BUSCO: Fragmented (%)", fontsize=8, fontdict={"weight": "bold"})
 		bsx3.set_ylabel("Frequency", fontsize=8, fontdict={"weight": "bold"})
-		bsx3.axvline(x=1, color="grey", lw=1, linestyle="dashed")
+		bsx3.axvline(x=busco_fragmented_threshold, color="grey", lw=1, linestyle="dashed")
 		bsx3.tick_params(axis='x', labelsize=6)
 		bsx3.tick_params(axis='y', labelsize=6)
 		sns.despine()
@@ -301,46 +301,53 @@ def plot_all(input):
 		bsx3.set_visible(False)
 
 	if "BUSCO_missing" in df.columns:
-		sns.histplot(data=df, x="BUSCO_missing", binwidth=0.1, ax=bsx4)
+		sns.histplot(data=df, x="BUSCO_missing", bins=30, ax=bsx4)
 		bsx4.set_xlabel("BUSCO: Missing (%)", fontsize=8, fontdict={"weight": "bold"})
 		bsx4.set_ylabel("Frequency", fontsize=8, fontdict={"weight": "bold"})
-		bsx4.axvline(x=1, color="grey", lw=1, linestyle="dashed")
+		bsx4.axvline(x=busco_missing_threshold, color="grey", lw=1, linestyle="dashed")
 		bsx4.tick_params(axis='x', labelsize=6)
 		bsx4.tick_params(axis='y', labelsize=6)
 	else:
 		bsx4.set_visible(False)
 
-	if "perc_het_vars" in df.columns:
-		sns.histplot(data=df, x="perc_het_vars", binwidth=0.1, ax=bsx5)
-		bsx5.set_xlabel("Proportion of heterozygous variants (%)", fontsize=8, fontdict={"weight": "bold"})
-		bsx5.set_ylabel("Frequency", fontsize=8, fontdict={"weight": "bold"})
-		bsx5.axvline(x=10, color="grey", lw=1, linestyle="dashed")
-		bsx5.tick_params(axis='x', labelsize=6)
-		bsx5.tick_params(axis='y', labelsize=6)
+	if "CHECKM_Completeness" in df.columns:
+		sns.histplot(data=df, x="CHECKM_Completeness", bins=30, ax=bsx10)
+		bsx10.set_xlabel("CHECKM completeness (%)", fontsize=8, fontdict={"weight": "bold"})
+		bsx10.set_ylabel("Frequency", fontsize=8, fontdict={"weight": "bold"})
+		bsx10.axvline(x=completeness_threshold, color="grey", lw=1, linestyle="dashed")
+		bsx10.tick_params(axis='x', labelsize=6)
+		bsx10.tick_params(axis='y', labelsize=6)
+		sns.despine()
 	else:
-		bsx5.set_visible(False)
+		bsx10.set_visible(False)
 
-	if "MASH_hit" in df.columns:
-		counts = df["MASH_hit"].value_counts().reset_index()
-		counts.columns = ['MASH_hit', 'countz']
-		sns.barplot(counts, x="MASH_hit", y='countz', ax=bsx6)
-		bsx6.set_xlabel("Top 5 MASH hits", fontsize=8, fontdict={"weight": "bold"})
-		bsx6.set_ylabel("Frequency", fontsize=8, fontdict={"weight": "bold"})
-		bsx6.tick_params(axis='x', labelsize=6, rotation=45)
-		labels = bsx6.get_xticklabels()
-		for label in labels:
-			label.set_ha('right')
-		bsx6.set_xticklabels(labels)
-		bsx6.tick_params(axis='y', labelsize=6)
+	if "CHECKM_Contamination" in df.columns:
+		sns.histplot(data=df, x="CHECKM_Contamination", bins=30, ax=bsx9)
+		bsx9.set_xlabel("CHECKM contamination (%)", fontsize=8, fontdict={"weight": "bold"})
+		bsx9.set_ylabel("Frequency", fontsize=8, fontdict={"weight": "bold"})
+		bsx9.axvline(x=contamination_threshold, color="grey", lw=1, linestyle="dashed")
+		bsx9.tick_params(axis='x', labelsize=6)
+		bsx9.tick_params(axis='y', labelsize=6)
 	else:
-		bsx6.set_visible(False)
+		bsx9.set_visible(False)
 
 	sns.despine()
 	fig.subplots_adjust(left=0.1, right=0.9, bottom=0.2, top=0.9, wspace=0.1)
 	fig.subplots_adjust(hspace=0.4, wspace =0.4)
 	pdf_pages.savefig(fig)
 
-	fig, ((csv1, csv2),(csv5,_), (csv3,csv4)) = plt.subplots(3, 2, figsize=(8, 9))
+	fig, ((csx12,csx7),(csx8, csv1),(csv2,csv5), (csv3,csv4)) = plt.subplots(4, 2, figsize=(8, 12))
+
+	if "CHECKM_Strain_heterogeneity" in df.columns:
+		sns.histplot(data=df, x="CHECKM_Strain_heterogeneity", bins=30, ax=csx12)
+		csx12.set_xlabel("CHECKM strain heterogeneity (%)", fontsize=8, fontdict={"weight": "bold"})
+		csx12.set_ylabel("Frequency", fontsize=8, fontdict={"weight": "bold"})
+		csx12.axvline(x=strain_heterogeneity_threshold, color="grey", lw=1, linestyle="dashed")
+		csx12.tick_params(axis='x', labelsize=6)
+		csx12.tick_params(axis='y', labelsize=6)
+	else:
+		csx12.set_visible(False)
+
 
 	if "pneumoKITy_serotype" in df.columns:
 		top_serotypes = df["pneumoKITy_serotype"].value_counts().nlargest(10).index.tolist()
@@ -394,7 +401,7 @@ def plot_all(input):
 		csv5.set_visible(False)
 
 	if "n_genes" in df.columns:
-		sns.histplot(data=df, x="n_genes", binwidth=1, ax=csv3)
+		sns.histplot(data=df, x="n_genes", bins=50, ax=csv3)
 		csv3.set_xlabel("Predicted genes (count)", fontsize=8, fontdict={"weight": "bold"})
 		csv3.set_ylabel("Frequency", fontsize=8, fontdict={"weight": "bold"})
 		csv3.tick_params(axis='x', labelsize=6)
@@ -402,8 +409,8 @@ def plot_all(input):
 	else:
 		csv3.set_visible(False)
 
-	if "n_genes" in df.columns:
-		sns.histplot(data=df, x="fail_counts", binwidth=1, ax=csv4)
+	if "fail_counts" in df.columns:
+		sns.histplot(data=df, x="fail_counts", bins=50, ax=csv4)
 		csv4.set_xlabel("Failures per sample", fontsize=8, fontdict={"weight": "bold"})
 		csv4.set_ylabel("Frequency", fontsize=8, fontdict={"weight": "bold"})
 		csv4.tick_params(axis='x', labelsize=6)
@@ -411,17 +418,35 @@ def plot_all(input):
 	else:
 		csv4.set_visible(False)
 
-	_.set_visible(False)
-	_.spines["left"].set_visible(False)
-	_.spines["right"].set_visible(False)
-	_.spines["top"].set_visible(False)
-	_.spines["bottom"].set_visible(False)
-	_.xaxis.set_visible(False)
-	_.yaxis.set_visible(False)
+	if "perc_het_vars" in df.columns:
+		print(df)
+		sns.histplot(data=df, x="perc_het_vars", bins=30, ax=csx7)
+		csx7.set_xlabel("Proportion of heterozygous variants (%)", fontsize=8, fontdict={"weight": "bold"})
+		csx7.set_ylabel("Frequency", fontsize=8, fontdict={"weight": "bold"})
+		csx7.axvline(x=perc_het_vars_threshold, color="grey", lw=1, linestyle="dashed")
+		csx7.tick_params(axis='x', labelsize=6)
+		csx7.tick_params(axis='y', labelsize=6)
+	else:
+		csx7.set_visible(False)
+
+	if "MASH_hit" in df.columns:
+		counts = df["MASH_hit"].value_counts().reset_index()
+		counts.columns = ['MASH_hit', 'countz']
+		sns.barplot(counts, x="MASH_hit", y='countz', ax=csx8)
+		csx8.set_xlabel("Top 5 MASH hits", fontsize=8, fontdict={"weight": "bold"})
+		csx8.set_ylabel("Frequency", fontsize=8, fontdict={"weight": "bold"})
+		csx8.tick_params(axis='x', labelsize=5, rotation=45)
+		labels = csx8.get_xticklabels()
+		for label in labels:
+			label.set_ha('right')
+		csx8.set_xticklabels(labels)
+		csx8.tick_params(axis='y', labelsize=6)
+	else:
+		csx8.set_visible(False)
 	
 	sns.despine()
 	fig.subplots_adjust(left=0.1, right=0.9, bottom=0.2, top=0.9, wspace=0.1)
-	fig.subplots_adjust(hspace=0.4, wspace =0.4)
+	fig.subplots_adjust(hspace=0.8, wspace =0.4)
 	pdf_pages.savefig(fig)
 	pdf_pages.close()
 
