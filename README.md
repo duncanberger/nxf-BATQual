@@ -26,7 +26,7 @@ When processing Illumina sequencing reads ('--mode fastq'), the pipeline will pe
 3. Assemble one genome per-isolate using ([`VelvetOptimiser`](https://github.com/tseemann/VelvetOptimiser)).
 4. Estimate heterozygosity with the read data to check for contamination using ([`minimap`](https://github.com/lh3/minimap2)) and ([`BCFtools`](https://samtools.github.io/bcftools/bcftools.html)).
 5. Estimate read contamination using([`Kraken2`](https://github.com/DerrickWood/kraken2))
-6. Calculate standard assembly statistics using a custom script ([`asm_stats`](https://github.com/duncanberger/nxf-BATQual/blob/main/scripts/asm_stats.py))
+6. Calculate standard assembly statistics using a custom script ([`asm_stats.py`](https://github.com/duncanberger/nxf-BATQual/blob/main/scripts/asm_stats.py))
 7. Estimate assembly completeness using ([`BUSCO`](https://busco.ezlab.org/))
 8. Check for assembly completeness and contamination using ([`CheckM`](https://github.com/Ecogenomics/CheckM))
 9. Evaluate assembly using ([`QUAST`](https://quast.sourceforge.net/)) 
@@ -39,7 +39,7 @@ When processing Illumina sequencing reads ('--mode fastq'), the pipeline will pe
 
 #### FASTA processing
 When processing genome assemblies ('--mode fasta'), the pipeline will omit read-specific steps:
-1. Calculate standard assembly statistics using a custom script ([`asm_stats`](https://github.com/duncanberger/nxf-BATQual/blob/main/scripts/asm_stats.py))
+1. Calculate standard assembly statistics using a custom script ([`asm_stats.py`](https://github.com/duncanberger/nxf-BATQual/blob/main/scripts/asm_stats.py))
 2. Estimate assembly completeness using ([`BUSCO`](https://busco.ezlab.org/))
 3. Check for assembly completeness and contamination using ([`CheckM`](https://github.com/Ecogenomics/CheckM))
 4. Evaluate assembly using ([`QUAST`](https://quast.sourceforge.net/)) 
