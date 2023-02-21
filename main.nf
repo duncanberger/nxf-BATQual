@@ -147,10 +147,10 @@ process FASTQC {
     script:
     """
     fastqc ${read1}
-    mv *.zip ${sample_id}_R1_fastqc.tx1
+    mv *.zip ${sample_id}.R1_fastqc.tx1
     fastqc ${read2}
-    mv *.zip ${sample_id}_R2_fastqc.zip
-    mv *.tx1 ${sample_id}_R1_fastqc.zip
+    mv *.zip ${sample_id}.R2_fastqc.zip
+    mv *.tx1 ${sample_id}.R1_fastqc.zip
     """
 }
 
@@ -358,11 +358,11 @@ process QUAST {
     tuple val(sample_id), path("${sample_id}.velvet_contigs.fa")
 
     output:
-    path "${sample_id}_quast"
+    path "${sample_id}.quast"
 
     script:
     """
-    quast -o ${sample_id}_quast ${sample_id}.velvet_contigs.fa
+    quast -o ${sample_id}.quast ${sample_id}.velvet_contigs.fa
     """
 }
 
