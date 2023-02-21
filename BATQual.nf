@@ -1,7 +1,6 @@
 #!/usr/bin/env nextflow
 
 def helpMessage() {
-    //log.info nfcoreHeader()
 	log.info"""
 Usage:
 	nextflow run batqual.nf --input read_locations.csv --mode fastq
@@ -33,13 +32,17 @@ Skip metrics:
     """.stripIndent()
 }
 
+// Set default params for relevant inputs
 params.help = null
 params.input = null
 params.mode = null
 params.no_GPSC = true
 params.pneumo = false
 params.run_GPSC = false
+input_dir = file(params.inputdir)
+params.index = file(params.input)
 
+// Set up error message for mandatory params
 if (params.help){
     helpMessage()
     exit 0
@@ -55,12 +58,10 @@ if (!params.mode){
     exit 0
 }
 
-input_dir = file(params.inputdir)
-params.index = file(params.input)
-// 66-90% of read length
-
+// FASTQ workflow with conditional execution of processes specific to Streptococcus pneumoniae
 workflow MAIN_A {
     Boolean flag = false
+// Read file and split input csv into columns of sample_id, forward and reverse reads
     Channel
      .fromPath(params.index)
      .ifEmpty {exit 1, log.info "Cannot find path file ${tsvFile}"}
@@ -91,8 +92,10 @@ workflow MAIN_A {
     QUAST(VELVET.out)
 }
 
+// FASTA workflow with conditional execution of processes specific to Streptococcus pneumoniae
 workflow MAIN_B {
     Boolean flag = false
+// Read file and split input csv into columns of sample_id, FASTA file
     Channel
      .fromPath(params.index)
      .ifEmpty {exit 1, log.info "Cannot find path file ${tsvFile}"}
@@ -117,6 +120,7 @@ workflow MAIN_B {
     MLST(fastas)
 }
 
+// Run either workflow depending on input mode
 workflow {
     if (params.mode == "fastq") {
         MAIN_A()}
@@ -127,9 +131,8 @@ workflow {
         exit 1
     }
 }
-// 66-90% of read length
 
-
+// Run fastp
 process FASTP {
     cpus = 2
     tag "Running fastp on $sample_id"
@@ -146,6 +149,7 @@ process FASTP {
     """
 }
 
+// Run FASTQC, FASTQC doesn't let you specify output file names for each run, so some slightly inelegant renaming is required
 process FASTQC {
     cpus = 1
     tag "Running FastQC on $sample_id"
@@ -167,6 +171,7 @@ process FASTQC {
     """
 }
 
+// Run Velvet for the specific kmer range - default will be 66-90% of read length
 process VELVET {
     cpus 2
     tag "Running Velvet on $sample_id"
@@ -185,6 +190,7 @@ process VELVET {
     """
 }
 
+// Run kraken2, writing both genus and species assignments to file
 process KRAKEN {
     cpus 2
     tag "Running Kraken2 on $sample_id"
@@ -204,6 +210,7 @@ process KRAKEN {
     """
 }
 
+// Run pneumoKITy
 process PK {
     tag "Running pneumoKITy on $sample_id"
     publishDir "$params.outdir/${sample_id}", mode: 'copy'
@@ -221,6 +228,7 @@ process PK {
     """
 }
 
+// Run CheckM
 process CHECKM {
     tag "Running CHECKM on $sample_id"
     publishDir "$params.outdir/${sample_id}", mode: 'copy'
@@ -238,6 +246,7 @@ process CHECKM {
     """
 }
 
+// Calculate variant site heterozygosity using minimap2 and BCFtools. Deleting BAMs at the end to save space. 
 process SHET {
     tag "Calculating heterozygosity of $sample_id"
     publishDir "$params.outdir/${sample_id}", mode: 'copy'
@@ -252,10 +261,11 @@ process SHET {
     """
     minimap2 -R '@RG\\tSM:DRAK\\tID:DRAK' -ax sr $baseDir/DB/$params.ref_assembly ${sample_id}_R1.fq.gz ${sample_id}_R2.fq.gz | samtools sort -O BAM -o ${sample_id}.bam - 
     bcftools mpileup -I -f $baseDir/DB/$params.ref_assembly ${sample_id}.bam | bcftools call -mv - | bcftools view -i 'QUAL>=20' | bcftools query -f '[%GT]\n' - | awk '{if(\$0=="0/1" || \$0=="1/2"){nmw+=1}}END{print ((nmw*100)/NR)}' | awk '{print "${sample_id}","perc_het_vars",\$1,""}' OFS=',' > ${sample_id}.hetperc_results.txt
-#    rm ${sample_id}.bam
+    rm ${sample_id}.bam
     """
 }
 
+// Run seroBA
 process SBA {
     tag "Running seroBA on $sample_id"
     publishDir "$params.outdir/${sample_id}", mode: 'copy'
@@ -273,6 +283,7 @@ process SBA {
     """
 }
 
+// Use a custom python script to calculate assembly statistics
 process STATS {
     tag "Calculating assembly stats of $sample_id"
     publishDir "$params.outdir/${sample_id}", mode: 'copy'
@@ -289,6 +300,7 @@ process STATS {
     """
 }
 
+// Run BUSCO using the specified database (config file)
 process BUSCO {
     tag "Running BUSCO on $sample_id"
     publishDir "$params.outdir/${sample_id}", mode: 'copy'
@@ -306,6 +318,7 @@ process BUSCO {
     """
 }
 
+// Run Prokka
 process PROKKA {
     cpus 4
     tag "Running Prokka on $sample_id"
@@ -325,6 +338,7 @@ process PROKKA {
     """
 }
 
+// Run Mash
 process MASH {
     cpus 1
     tag "Running Mash on $sample_id"
@@ -343,6 +357,7 @@ process MASH {
     """
 }
 
+// Assign GPS clusters
 process GPSC {
     cpus 1
     tag "Assigning GPSCs to $sample_id"
@@ -362,6 +377,7 @@ process GPSC {
     """
 }
 
+// Run QUAST
 process QUAST {
     cpus 1
     tag "Assigning GPSCs to $sample_id"
@@ -379,6 +395,7 @@ process QUAST {
     """
 }
 
+// Assign MLST alleles
 process MLST {
     cpus 1
     tag "Assigned MLST alleles to $sample_id"
