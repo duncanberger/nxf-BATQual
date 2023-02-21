@@ -30,11 +30,14 @@ def main(argv,out):
 	parser.add_argument('--perc_het_vars_threshold', help="Proportion of heterozygous variants (%) [15]", default=15)
 	parser.add_argument('--scaffold_count_threshold', help="Maximum number of scaffolds per assembly [286]", default=286)
 	parser.add_argument('--scaffold_N50_threshold', help="Minimum scaffold N50 [24454]", default=24454)
-	parser.add_argument('--MASH_hit', help="Closest MASH hit (top 5) [Streptococcus pneumoniae]", default="Streptococcus pneumoniae")
+	parser.add_argument('--target_species', help="Closest MASH hit (top 5) [Streptococcus pneumoniae]", default="Streptococcus pneumoniae")
+	parser.add_argument('--target_genus', help="Closest MASH hit (top 5) [Streptococcus]", default="Streptococcus")
+	parser.add_argument('--kraken_match_threshold_species', help="Minimum percentage of reads coverged by the --target_species [50]", default=50)
+	parser.add_argument('--kraken_match_threshold_genus', help="Minimum percentage of reads coverged by the --target_genus [50]", default=50)
 
 	args = parser.parse_args(argv)
 	# Run the first function, to parse output files, aggregate results, identify failed assemblies
-	result = add_label_column(args.input, args.completeness_threshold, args.contamination_threshold, args.strain_heterogeneity_threshold, args.busco_completeness_threshold, args.busco_duplication_threshold, args.busco_fragmented_threshold, args.busco_missing_threshold, args.assembly_length_threshold_min, args.assembly_length_threshold_max, args.gc_threshold_min, args.gc_threshold_max, args.gap_sum_threshold, args.gap_count_threshold, args.perc_het_vars_threshold, args.scaffold_count_threshold, args.scaffold_N50_threshold, args.MASH_hit)
+	result = add_label_column(args.input, args.completeness_threshold, args.contamination_threshold, args.strain_heterogeneity_threshold, args.busco_completeness_threshold, args.busco_duplication_threshold, args.busco_fragmented_threshold, args.busco_missing_threshold, args.assembly_length_threshold_min, args.assembly_length_threshold_max, args.gc_threshold_min, args.gc_threshold_max, args.gap_sum_threshold, args.gap_count_threshold, args.perc_het_vars_threshold, args.scaffold_count_threshold, args.scaffold_N50_threshold, args.target_species, args.kraken_match_threshold_species, args.kraken_match_threshold_genus, args.target_genus)
 	# Reformat output
 	dfx = pd.DataFrame([sub.split(",") for sub in result])
 	dfx.columns =['sample', 'metric', 'result', 'status']
@@ -46,9 +49,9 @@ def main(argv,out):
 	# Make plots
 	plot_all(rx3, args.completeness_threshold, args.contamination_threshold, args.strain_heterogeneity_threshold, args.busco_completeness_threshold, args.busco_duplication_threshold, args.busco_fragmented_threshold, args.busco_missing_threshold, args.assembly_length_threshold_min, args.assembly_length_threshold_max, args.gc_threshold_min, args.gc_threshold_max, args.gap_sum_threshold, args.gap_count_threshold, args.perc_het_vars_threshold, args.scaffold_count_threshold, args.scaffold_N50_threshold)
 
-def add_label_column(input, completeness_threshold, contamination_threshold, strain_heterogeneity_threshold, busco_completeness_threshold, busco_duplication_threshold, busco_fragmented_threshold, busco_missing_threshold, assembly_length_threshold_min, assembly_length_threshold_max, gc_threshold_min, gc_threshold_max, gap_sum_threshold, gap_count_threshold, perc_het_vars_threshold, scaffold_count_threshold, scaffold_N50_threshold, MASH_hit):
+def add_label_column(input, completeness_threshold, contamination_threshold, strain_heterogeneity_threshold, busco_completeness_threshold, busco_duplication_threshold, busco_fragmented_threshold, busco_missing_threshold, assembly_length_threshold_min, assembly_length_threshold_max, gc_threshold_min, gc_threshold_max, gap_sum_threshold, gap_count_threshold, perc_het_vars_threshold, scaffold_count_threshold, scaffold_N50_threshold, target_species, kraken_match_threshold_species, kraken_match_threshold_genus, target_genus):
 	# Organise the importatation of data from multiple folders
-	pattern = f"{input2}/*/*_results.txt"
+	pattern = f"{input}/*/*_results.txt"
 	file_paths = glob.glob(pattern)
 	contents = ""
 	# Read data in and split lines
@@ -137,10 +140,26 @@ def add_label_column(input, completeness_threshold, contamination_threshold, str
 			else:
 				result.append(f"{sample_id},{metric},{value},FAIL")
 		elif metric == "MASH_hit":
-			if str(value) == MASH_hit:
+			if str(value) == target_species:
 				result.append(f"{sample_id},{metric},{value},PASS")
 			else:
 				result.append(f"{sample_id},{metric},{value},FAIL")
+		elif metric == "kraken2_species":
+			colx = value.strip().split(':')
+			species,perc = colx[0], colx[1]
+			print(target_species)
+			if str(species) == target_species and float(perc)>=kraken_match_threshold_species :
+				result.append(f"{sample_id},{metric},{species},PASS")
+			else:
+				result.append(f"{sample_id},{metric},{species},FAIL")
+		elif metric == "kraken2_genus":
+			colx = value.strip().split(':')
+			species,perc = colx[0], colx[1]
+			print(target_species)
+			if str(species) == target_genus and float(perc)>=kraken_match_threshold_genus :
+				result.append(f"{sample_id},{metric},{species},PASS")
+			else:
+				result.append(f"{sample_id},{metric},{species},FAIL")
 		else:
 			result.append(f"{sample_id},{metric},{value},NA")
 	return result
@@ -341,7 +360,7 @@ def plot_all(input, completeness_threshold, contamination_threshold, strain_hete
 	fig.subplots_adjust(hspace=0.4, wspace =0.4)
 	pdf_pages.savefig(fig)
 
-	fig, ((csx12,csx7),(csx8, csv1),(csv2,csv5), (csv3,csv4)) = plt.subplots(4, 2, figsize=(8, 12))
+	fig, ((csx12,csx7),(csx8, csx13),(csx14,csv5), (csv3,csv4)) = plt.subplots(4, 2, figsize=(8, 12))
 
 	if "CHECKM_Strain_heterogeneity" in df.columns:
 		sns.histplot(data=df, x="CHECKM_Strain_heterogeneity", bins=30, ax=csx12)
@@ -352,41 +371,6 @@ def plot_all(input, completeness_threshold, contamination_threshold, strain_hete
 		csx12.tick_params(axis='y', labelsize=6)
 	else:
 		csx12.set_visible(False)
-
-
-	if "pneumoKITy_serotype" in df.columns:
-		top_serotypes = df["pneumoKITy_serotype"].value_counts().nlargest(10).index.tolist()
-		df_top = df[df["pneumoKITy_serotype"].isin(top_serotypes)]
-		counts = df_top["pneumoKITy_serotype"].value_counts().reset_index()
-		counts.columns = ['pneumoKITy_serotype', 'countz']
-		sns.barplot(counts, x="pneumoKITy_serotype", y='countz', ax=csv1)
-		csv1.set_xlabel("PnuemoKITy serotype", fontsize=8, fontdict={"weight": "bold"})
-		csv1.set_ylabel("Frequency", fontsize=8, fontdict={"weight": "bold"})
-		csv1.tick_params(axis='x', labelsize=6, rotation=45)
-		labels = csv1.get_xticklabels()
-		for label in labels:
-			label.set_ha('right')
-		csv1.set_xticklabels(labels)
-		csv1.tick_params(axis='y', labelsize=6)
-	else:
-		csv1.set_visible(False)
-
-	if "seroBA_serotype" in df.columns:
-		top_serotypes = df["seroBA_serotype"].value_counts().nlargest(10).index.tolist()
-		df_top = df[df["seroBA_serotype"].isin(top_serotypes)]
-		counts = df_top["seroBA_serotype"].value_counts().reset_index()
-		counts.columns = ['seroBA_serotype', 'countz']
-		sns.barplot(counts, x="seroBA_serotype", y='countz', ax=csv2)
-		csv2.set_xlabel("seroBA serotype", fontsize=8, fontdict={"weight": "bold"})
-		csv2.set_ylabel("Frequency", fontsize=8, fontdict={"weight": "bold"})
-		csv2.tick_params(axis='x', labelsize=6, rotation=45)
-		labels = csv2.get_xticklabels()
-		for label in labels:
-			label.set_ha('right')
-		csv2.set_xticklabels(labels)
-		csv2.tick_params(axis='y', labelsize=6)
-	else:
-		csv2.set_visible(False)
 
 	if "GPSC" in df.columns:
 		top_GPSC = df["GPSC"].value_counts().nlargest(10).index.tolist()
@@ -448,13 +432,86 @@ def plot_all(input, completeness_threshold, contamination_threshold, strain_hete
 		csx8.tick_params(axis='y', labelsize=6)
 	else:
 		csx8.set_visible(False)
-	
+
+	if "kraken2_species" in df.columns:
+		counts = df["kraken2_species"].value_counts().reset_index()
+		counts.columns = ['kraken2_species', 'countz']
+		sns.barplot(counts, x="kraken2_species", y='countz', ax=csx13)
+		csx13.set_xlabel("Top Kraken2 species match", fontsize=8, fontdict={"weight": "bold"})
+		csx13.set_ylabel("Frequency", fontsize=8, fontdict={"weight": "bold"})
+		csx13.tick_params(axis='x', labelsize=5, rotation=45)
+		labels = csx13.get_xticklabels()
+		for label in labels:
+			label.set_ha('right')
+		csx13.set_xticklabels(labels)
+		csx13.tick_params(axis='y', labelsize=6)
+	else:
+		csx13.set_visible(False)
+
+	if "kraken2_genus" in df.columns:
+		counts = df["kraken2_genus"].value_counts().reset_index()
+		counts.columns = ['kraken2_genus', 'countz']
+		sns.barplot(counts, x="kraken2_genus", y='countz', ax=csx14)
+		csx14.set_xlabel("Top Kraken2 genus match", fontsize=8, fontdict={"weight": "bold"})
+		csx14.set_ylabel("Frequency", fontsize=8, fontdict={"weight": "bold"})
+		csx14.tick_params(axis='x', labelsize=5, rotation=45)
+		labels = csx14.get_xticklabels()
+		for label in labels:
+			label.set_ha('right')
+		csx14.set_xticklabels(labels)
+		csx14.tick_params(axis='y', labelsize=6)
+	else:
+		csx14.set_visible(False)
 	# Remove spacing
 	sns.despine()
 	# Fix spacing on page and between plots
 	fig.subplots_adjust(left=0.1, right=0.9, bottom=0.2, top=0.9, wspace=0.1)
 	fig.subplots_adjust(hspace=0.8, wspace =0.4)
 	pdf_pages.savefig(fig)
+
+	fig, (dsx1,dsx2) = plt.subplots(1, 2, figsize=(8, 3))
+
+
+	if "pneumoKITy_serotype" in df.columns:
+		top_serotypes = df["pneumoKITy_serotype"].value_counts().nlargest(10).index.tolist()
+		df_top = df[df["pneumoKITy_serotype"].isin(top_serotypes)]
+		counts = df_top["pneumoKITy_serotype"].value_counts().reset_index()
+		counts.columns = ['pneumoKITy_serotype', 'countz']
+		sns.barplot(counts, x="pneumoKITy_serotype", y='countz', ax=dsx1)
+		dsx1.set_xlabel("PneumoKITy serotype", fontsize=8, fontdict={"weight": "bold"})
+		dsx1.set_ylabel("Frequency", fontsize=8, fontdict={"weight": "bold"})
+		dsx1.tick_params(axis='x', labelsize=6, rotation=45)
+		labels = dsx1.get_xticklabels()
+		for label in labels:
+			label.set_ha('right')
+		dsx1.set_xticklabels(labels)
+		dsx1.tick_params(axis='y', labelsize=6)
+	else:
+		dsx1.set_visible(False)
+
+	if "seroBA_serotype" in df.columns:
+		top_serotypes = df["seroBA_serotype"].value_counts().nlargest(10).index.tolist()
+		df_top = df[df["seroBA_serotype"].isin(top_serotypes)]
+		counts = df_top["seroBA_serotype"].value_counts().reset_index()
+		counts.columns = ['seroBA_serotype', 'countz']
+		sns.barplot(counts, x="seroBA_serotype", y='countz', ax=dsx2)
+		dsx2.set_xlabel("seroBA serotype", fontsize=8, fontdict={"weight": "bold"})
+		dsx2.set_ylabel("Frequency", fontsize=8, fontdict={"weight": "bold"})
+		dsx2.tick_params(axis='x', labelsize=6, rotation=45)
+		labels = dsx2.get_xticklabels()
+		for label in labels:
+			label.set_ha('right')
+		dsx2.set_xticklabels(labels)
+		dsx2.tick_params(axis='y', labelsize=6)
+	else:
+		dsx2.set_visible(False)
+
+	sns.despine()
+	# Fix spacing on page and between plots
+	fig.subplots_adjust(left=0.1, right=0.9, bottom=0.2, top=0.9, wspace=0.1)
+	fig.subplots_adjust(hspace=0.8, wspace =0.4)
+	pdf_pages.savefig(fig)
+
 	# Close PDF
 	pdf_pages.close()
 
