@@ -5,6 +5,7 @@ import argparse
 import sys
 
 def main(argv, out):
+# Write help message and set arguments
 	if not len(argv):
 		argv.append('-h')
 	parser = argparse.ArgumentParser()
@@ -13,10 +14,13 @@ def main(argv, out):
 	parser.add_argument('--gap', help="Minimum gap length to be considered a scaffold (optional) [2]", default=2)
 	parser.add_argument('--output', help="Output file name (optional) ['asmstats.txt']", default="asmstats")
 	args = parser.parse_args(argv)
+# Run each function and select relevant outputs
 	count, s_n50, gap_sum, total_asm, s_n90, gc_cont, gap_perc = calculate_scaffold_stats(args.fasta)
 	c_count, c_n50, gap_count, c_n90 = calculate_contig_stats(args.fasta, args.gap)
+# Write outputs to file
 	write_stats_to_file(args.isolate, args.output+".txt", count, s_n50, c_count, c_n50, gap_count, gap_sum, total_asm, s_n90, c_n90, gc_cont, gap_perc)
 
+# Calculate common scaffold statistics
 def calculate_scaffold_stats(fasta_file):
 	records = list(SeqIO.parse(fasta_file, "fasta"))
 	count = len(records) # Number of scaffolds 
@@ -32,6 +36,7 @@ def calculate_scaffold_stats(fasta_file):
 	gap_perc = round((gap_sum/total_asm)*100, 2) # Total gap count
 	return count, s_n50, gap_sum, total_asm, s_n90, gc_cont, gap_perc
 
+# Calculate common contig statistics, splitting the scaffolds on gaps of N's of user defined length
 def calculate_contig_stats(fasta_file, gap_size):
 	records = [record for record in SeqIO.parse(fasta_file, "fasta")]
 	new_records = []
