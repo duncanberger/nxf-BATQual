@@ -29,6 +29,7 @@ Filtering options:
 
 Skip metrics:
 	--run_GPSC	Run GPSC estimation [false]
+	--pneumo	Run tools specific to Streptococcus pnuemoniae [false]
 	
     """.stripIndent()
 }
@@ -36,7 +37,9 @@ Skip metrics:
 params.help = null
 params.input = null
 params.mode = null
-params.no_GPSC = null
+params.no_GPSC = true
+params.pneumo = false
+params.run_GPSC = false
 
 if (params.help){
     helpMessage()
@@ -67,21 +70,26 @@ workflow MAIN_A {
      .set {reads}
     main:
     FASTP(reads)
-//    FASTQC(reads)
-//    VELVET(FASTP.out)
-//    SBA(reads)
+    FASTQC(reads)
+    VELVET(FASTP.out)
     KRAKEN(reads)
-//    BUSCO(VELVET.out)
-//    STATS(VELVET.out)
-//    PROKKA(VELVET.out)
-//    CHECKM(VELVET.out)
-//    SHET(FASTP.out)
-//    PK(VELVET.out)
-//    MASH(VELVET.out)    
-//    if (params.run_GPSC == true) {
-//        GPSC(VELVET.out)}
-//	else {}
-//    QUAST(VELVET.out)
+    BUSCO(VELVET.out)
+    STATS(VELVET.out)
+    PROKKA(VELVET.out)
+    CHECKM(VELVET.out)
+    SHET(FASTP.out)
+    MASH(VELVET.out)
+    if (params.pneumo == true & params.run_GPSC == true ) {
+        GPSC(VELVET.out)
+		PK(VELVET.out)
+		SBA(reads)
+		}
+	else if (params.pneumo == true & params.run_GPSC == false ) {
+		PK(VELVET.out)
+		SBA(reads)
+		}
+	else {}
+    QUAST(VELVET.out)
 }
 
 workflow MAIN_B {
@@ -97,9 +105,15 @@ workflow MAIN_B {
     STATS(fastas)
     PROKKA(fastas)
     CHECKM(fastas)
-    PK(fastas)
     MASH(fastas)
-//    GPSC(fastas)
+	if (params.pneumo == true & params.run_GPSC == true ) {
+        GPSC(VELVET.out)
+		PK(VELVET.out)
+		}
+	else if (params.pneumo == true & params.run_GPSC == false ) {
+		PK(VELVET.out)
+		}
+	else {}
     QUAST(fastas)
     MLST(fastas)
 }
