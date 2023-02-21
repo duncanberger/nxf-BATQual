@@ -1,6 +1,7 @@
 import argparse
 import sys
 import glob
+import subprocess
 import pandas as pd
 from  collections import Counter
 import seaborn as sns
@@ -36,16 +37,22 @@ def main(argv,out):
 	parser.add_argument('--kraken_match_threshold_genus', help="Minimum percentage of reads coverged by the --target_genus [50]", default=50)
 
 	args = parser.parse_args(argv)
+	# Make a directory for the aggregated output files
+	instring="mkdir -p "+args.input+"/"+args.output+"/"
+	subprocess.call(instring, shell=True)
+	# Write a command and run multiqc
+	mqc = "multiqc --outdir "+args.input+"/"+args.output+"/ "+args.input+"/*/"
+	subprocess.call(mqc, shell=True)
 	# Run the first function, to parse output files, aggregate results, identify failed assemblies
 	result = add_label_column(args.input, args.completeness_threshold, args.contamination_threshold, args.strain_heterogeneity_threshold, args.busco_completeness_threshold, args.busco_duplication_threshold, args.busco_fragmented_threshold, args.busco_missing_threshold, args.assembly_length_threshold_min, args.assembly_length_threshold_max, args.gc_threshold_min, args.gc_threshold_max, args.gap_sum_threshold, args.gap_count_threshold, args.perc_het_vars_threshold, args.scaffold_count_threshold, args.scaffold_N50_threshold, args.target_species, args.kraken_match_threshold_species, args.kraken_match_threshold_genus, args.target_genus)
 	# Reformat output
 	dfx = pd.DataFrame([sub.split(",") for sub in result])
 	dfx.columns =['sample', 'metric', 'result', 'status']
 	# Write to file
-	dfx.to_csv(args.output+".long.txt", sep=',', index=False)
+	dfx.to_csv(args.input+"/"+args.output+"/"+args.output+".long.txt", sep=',', index=False)
 	# Aggregate results to a reformatted table and write to file
 	rx3 = aggregate(dfx)
-	rx3.to_csv(args.output+".wide.txt", sep=',', index=True)
+	rx3.to_csv(args.input+"/"+args.output+"/"+args.output+".wide.txt", sep=',', index=True)
 	# Make plots
 	plot_all(rx3, args.completeness_threshold, args.contamination_threshold, args.strain_heterogeneity_threshold, args.busco_completeness_threshold, args.busco_duplication_threshold, args.busco_fragmented_threshold, args.busco_missing_threshold, args.assembly_length_threshold_min, args.assembly_length_threshold_max, args.gc_threshold_min, args.gc_threshold_max, args.gap_sum_threshold, args.gap_count_threshold, args.perc_het_vars_threshold, args.scaffold_count_threshold, args.scaffold_N50_threshold)
 
@@ -147,7 +154,6 @@ def add_label_column(input, completeness_threshold, contamination_threshold, str
 		elif metric == "kraken2_species":
 			colx = value.strip().split(':')
 			species,perc = colx[0], colx[1]
-			print(target_species)
 			if str(species) == target_species and float(perc)>=kraken_match_threshold_species :
 				result.append(f"{sample_id},{metric},{species},PASS")
 			else:
@@ -155,7 +161,6 @@ def add_label_column(input, completeness_threshold, contamination_threshold, str
 		elif metric == "kraken2_genus":
 			colx = value.strip().split(':')
 			species,perc = colx[0], colx[1]
-			print(target_species)
 			if str(species) == target_genus and float(perc)>=kraken_match_threshold_genus :
 				result.append(f"{sample_id},{metric},{species},PASS")
 			else:
@@ -408,7 +413,6 @@ def plot_all(input, completeness_threshold, contamination_threshold, strain_hete
 		csv4.set_visible(False)
 
 	if "perc_het_vars" in df.columns:
-		print(df)
 		sns.histplot(data=df, x="perc_het_vars", bins=30, ax=csx7)
 		csx7.set_xlabel("Proportion of heterozygous variants (%)", fontsize=8, fontdict={"weight": "bold"})
 		csx7.set_ylabel("Frequency", fontsize=8, fontdict={"weight": "bold"})
