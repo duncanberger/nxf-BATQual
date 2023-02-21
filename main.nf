@@ -3,15 +3,6 @@
 def helpMessage() {
     //log.info nfcoreHeader()
 	log.info"""
-
-    =/\                 /\=
-    / \'._   (\_/)   _.'/ \
-   / .''._'--(o.o)--'_.''. \
-  /.' _/ |`'=/ " \='`| \_ `.\
- /` .' `\;-,'\___/',-;/` '. '\
-/.-'       `\(-V-)/`       `-.\
-`            "   "            `
-
 Usage:
 	nextflow run batqual.nf --input read_locations.csv --mode fastq
 	nextflow run batqual.nf --input fasta_locations.csv --mode fasta
