@@ -28,7 +28,7 @@ When processing Illumina sequencing reads ('--mode fastq'), the pipeline will pe
 5. Estimate assembly completeness using ([`BUSCO`](https://busco.ezlab.org/))
 6. Check for assembly completeness and contamination using ([`CheckM`](https://github.com/Ecogenomics/CheckM))
 7. Evaluate assembly using ([`QUAST`](https://quast.sourceforge.net/)) 
-8. Estimate most likely species based on the closet ([`MASH`](https://github.com/marbl/Mash)) hits in the RefSeq database. 
+8. Estimate most likely species based on the closet ([`MASH`](https://github.com/marbl/Mash)) hits in the RefSeq database
 9. Perform read-based pneumococcal serotyping using ([`seroBA`](https://github.com/sanger-pathogens/seroba))
 10. Perform assembly-based pneumococcal serotyping using ([`pneumoKITy`](https://github.com/sanger-pathogens/seroba))
 11. Assign Global Pneumococcal Sequence Clusters ([`GPSCs`](https://www.pneumogen.net/gps/)) using popunk ([`PopPunk`](https://poppunk.net/)) 
@@ -41,7 +41,7 @@ When processing genome assemblies ('--mode fasta'), the pipeline will omit read-
 2. Estimate assembly completeness using ([`BUSCO`](https://busco.ezlab.org/))
 3. Check for assembly completeness and contamination using ([`CheckM`](https://github.com/Ecogenomics/CheckM))
 4. Evaluate assembly using ([`QUAST`](https://quast.sourceforge.net/)) 
-5. Estimate most likely species based on the closet ([`MASH`](https://github.com/marbl/Mash)) hits in the RefSeq database. 
+5. Estimate most likely species based on the closet ([`MASH`](https://github.com/marbl/Mash)) hits in the RefSeq database
 6. Perform assembly-based pneumococcal serotyping using ([`pneumoKITy`](https://github.com/sanger-pathogens/seroba))
 7. Assign Global Pneumococcal Sequence Clusters ([`GPSCs`](https://www.pneumogen.net/gps/)) using popunk ([`PopPunk`](https://poppunk.net/)) 
 8. Perform multilocus sequence typing using ([`mlst_check`](https://github.com/sanger-pathogens/mlst_check))
@@ -49,8 +49,8 @@ When processing genome assemblies ('--mode fasta'), the pipeline will omit read-
 
 ## Installation <a name="install"></a>
 ### Software
-You will need to install [`Nextflow`](https://www.nextflow.io/) (version 21.10.3+).
-You will need to install [`pneumoKITy`](https://github.com/CarmenSheppard/PneumoKITy) manually.
+You will need to install [`Nextflow`](https://www.nextflow.io/) (version 21.10.3+), instructions can be found on the Nextflow website. 
+You will need to install [`pneumoKITy`](https://github.com/CarmenSheppard/PneumoKITy), instructions can be found on the PneumoKITy github. 
 ```
 # Clone this repo
 git clone https://github.com/duncanberger/nxf-BATQual.git
@@ -71,17 +71,17 @@ mv refseq.genomes.k21s1000.msh DB/
 ```
 #### seroBA
 ```
-# seroBA can be found here: https://github.com/sanger-pathogens/seroba.git but all we want is the database folder. You can either clone the whole repo
+# seroBA can be found here: https://github.com/sanger-pathogens/seroba.git but all we want is the database folder. You can either clone the whole repo, and grab the database folder (and delete the rest):
 git clone https://github.com/sanger-pathogens/seroba.git
 
-# Or you can download that folder specifically
+# Or you can download that folder specifically:
 git init
 git remote add origin -f https://github.com/sanger-pathogens/seroba.git
 echo "database" > .git/info/sparse-checkout
 git config core.sparseCheckout true
 git pull origin master
 
-# In either case just move the database folder into the DB/ folder
+# In either case just move the database folder into the DB/ folder:
 mv database DB/
 ```
 #### Global Pneumococcal Sequencing (GPS) clusters
@@ -165,18 +165,23 @@ The `-resume` parameter will re-start the pipeline if it has been previously run
 ### Pipeline results
 The output will be written to results/$sample_ID/* which will contain the following results files:
 
-1. `$sample_ID.velvet_contigs.fa` : VelvetOptimiser genome assembly.
-2. `$sample_ID.prokka.fna` : VelvetOptimiser genome assembly renamed by Prokka to match GFF file. 
-3. `$sample_ID.prokka.gff` : VelvetOptimiser genome annotation, in Prokka format.
-4. `$sample_ID.prokka_results.txt` : Counts of predicted genes. 
-5. `$sample_ID.hetperc_results.txt` : Estimated heterozygosity of sequencing reads.
-6. `$sample_ID.assembly_results.txt` : Assembly statistics.
+1. `$sample_ID.velvet_contigs.fa` : VelvetOptimiser genome assembly
+2. `$sample_ID.prokka.fna` : VelvetOptimiser genome assembly renamed by Prokka to match GFF file
+3. `$sample_ID.prokka.gff` : VelvetOptimiser genome annotation, in Prokka format
+4. `$sample_ID.prokka_results.txt` : Counts of predicted genes
+5. `$sample_ID.hetperc_results.txt` : Estimated heterozygosity of sequencing reads
+6. `$sample_ID.assembly_results.txt` : Assembly statistics
 7. `$sample_ID.BUSCO_results.txt` : seroBA serotyping results 
-8. `$sample_ID.checkM_results.txt` : seroBA serotyping results .
-9. `$sample_ID.mash_results.txt` : seroBA serotyping results .
-10. `$sample_ID.seroBA_results.txt` : seroBA serotyping results .
-11. `$sample_ID.pneumoKITy_results.txt` : seroBA serotyping results .
+8. `$sample_ID.checkM_results.txt` : seroBA serotyping results
+9. `$sample_ID.mash_results.txt` : seroBA serotyping results
+10. `$sample_ID.seroBA_results.txt` : seroBA serotyping results
+11. `$sample_ID.pneumoKITy_results.txt` : seroBA serotyping results
 12. `$sample_ID.GPSC_results.txt` : seroBA serotyping results 
+13. `$sample_ID.kraken2_results.txt` : Kraken2 read screening results 
+14. `$sample_ID.kraken2.out` : Raw Kraken2 output
+14. `$sample_ID.R*_fastqc.zipt` : Raw FASTQC results 
+14. `$sample_ID.quast` : QUAST output directory
+
 
 Each file is formatted into columns as follows: 
 1. `sample_ID`: Isolate ID
