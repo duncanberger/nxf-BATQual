@@ -19,19 +19,25 @@ Velvet options:
 BUSCO options:
 	--lineage		Specify the BUSCO lineage to be used ["lactobacillales_odb10"]
 
-Options:
-	--minContigLength	Filter for minimum contig length in output [0]
+Run options:
 	--threads		Number of threads to use [3]
-
-Other options:
-	--outdir		The output directory where the results will be saved ["results"]
 	--name			Name for the pipeline run. If not specified, Nextflow will automatically generate a random mnemonic.
+	--outdir		The output directory where the results will be saved ["results"]
+
+Filtering options:
+	--minContigLength	Filter for minimum contig length in output [0]
+
+Skip metrics:
+	--run_GPSC	Run GPSC estimation [false]
+	
     """.stripIndent()
 }
 
 params.help = null
 params.input = null
 params.mode = null
+params.no_GPSC = null
+
 if (params.help){
     helpMessage()
     exit 0
@@ -61,20 +67,21 @@ workflow MAIN_A {
      .set {reads}
     main:
     FASTP(reads)
-    FASTQC(reads)
-    VELVET(FASTP.out)
-    SBA(reads)
+//    FASTQC(reads)
+//    VELVET(FASTP.out)
+//    SBA(reads)
     KRAKEN(reads)
-    BUSCO(VELVET.out)
-    STATS(VELVET.out)
-    PROKKA(VELVET.out)
-    CHECKM(VELVET.out)
-    SHET(FASTP.out)
-    PK(VELVET.out)
-    MASH(VELVET.out)    
-//    GPSC(VELVET.out)
-    QUAST(VELVET.out)
-    MLST(VELVET.out)
+//    BUSCO(VELVET.out)
+//    STATS(VELVET.out)
+//    PROKKA(VELVET.out)
+//    CHECKM(VELVET.out)
+//    SHET(FASTP.out)
+//    PK(VELVET.out)
+//    MASH(VELVET.out)    
+//    if (params.run_GPSC == true) {
+//        GPSC(VELVET.out)}
+//	else {}
+//    QUAST(VELVET.out)
 }
 
 workflow MAIN_B {
@@ -174,16 +181,15 @@ process KRAKEN {
     tuple val(sample_id), path("${sample_id}_R1.fq.gz"), path("${sample_id}_R2.fq.gz")
 
     output:
-    path("${sample_id}.kraken_results.txt")
+    tuple path("${sample_id}.kraken2_results.txt"), path("${sample_id}.kraken2.out")
 
     script:
     """
-    kraken2 --db $baseDir/DB/ --output txc --use-names --report ${sample_id}_kraken2.temp --paired ${sample_id}_R1.fq.gz ${sample_id}_R2.fq.gz
-    awk '\$4=="G"' ${sample_id}_kraken2.temp | sort -k4,4 -gr | awk '{print "$sample_id","kraken2_genus",\$6":"\$1","}' OFS=","| head -1 > ${sample_id}.kraken_results.txt
-    awk '\$4=="S"' ${sample_id}_kraken2.temp | sort -k4,4 -gr | awk '{print "$sample_id","kraken2_species",\$6 \$7":"\$1","}' OFS=","| head -1 >> ${sample_id}.kraken_results.txt
+    kraken2 --db $baseDir/DB/ --output txc --use-names --report ${sample_id}_kraken2.out --paired ${sample_id}_R1.fq.gz ${sample_id}_R2.fq.gz
+    awk '\$4=="G"' ${sample_id}_kraken2.out | sort -k4,4 -gr | awk '{print "$sample_id","kraken2_genus",\$6":"\$1","}' OFS=","| head -1 > ${sample_id}.kraken2_results.txt
+    awk '\$4=="S"' ${sample_id}_kraken2.tout | sort -k4,4 -gr | awk '{print "$sample_id","kraken2_species",\$6" "\$7":"\$1","}' OFS=","| head -1 >> ${sample_id}.kraken2_results.txt
     """
 }
-
 
 process PK {
     tag "Running pneumoKITy on $sample_id"
