@@ -36,11 +36,6 @@ Skip metrics:
 params.help = null
 params.input = null
 params.mode = null
-params.no_GPSC = true
-params.pneumo = false
-params.run_GPSC = false
-input_dir = file(params.inputdir)
-params.index = file(params.input)
 
 // Set up error message for mandatory params
 if (params.help){
@@ -57,6 +52,14 @@ if (!params.mode){
     helpMessage()
     exit 0
 }
+
+// Set default params for relevant inputs
+params.no_GPSC = true
+params.pneumo = false
+params.run_GPSC = false
+input_dir = file(params.inputdir)
+params.index = file(params.input)
+
 
 // FASTQ workflow with conditional execution of processes specific to Streptococcus pneumoniae
 workflow MAIN_A {
