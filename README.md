@@ -53,7 +53,7 @@ When processing genome assemblies ('--mode fasta'), the pipeline will omit read-
 
 ## Installation <a name="install"></a>
 ### Software
-You will need to install [`Nextflow`](https://www.nextflow.io/) (version 22.10.4+), instructions can be found on the Nextflow website. <br />
+You will need to install [`Conda`](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html) and/or [`Mamba`](https://github.com/conda-forge/miniforge#mambaforge). <br />
 
 You will need to install [`pneumoKITy`](https://github.com/CarmenSheppard/PneumoKITy), instructions can be found on the PneumoKITy github. 
 
