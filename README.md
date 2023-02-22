@@ -132,6 +132,7 @@ samtools index GCA_000026665.1_ASM2666v1_genomic.fna
 wget https://busco-data.ezlab.org/v5/data/lineages/lactobacillales_odb10.2020-03-06.tar.gz
 mv lactobacillales_odb10.2020-03-06.tar.gz DB/
 tar xvf lactobacillales_odb10.2020-03-06.tar.gz
+rm lactobacillales_odb10.2020-03-06.tar.gz
 ```
 #### Kraken 2 database
 ```
