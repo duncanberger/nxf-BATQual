@@ -137,7 +137,7 @@ rm lactobacillales_odb10.2020-03-06.tar.gz
 #### Kraken 2 database
 ```
 # Download the Kraken DB (capped at 8 Gb):
-https://genome-idx.s3.amazonaws.com/kraken/k2_standard_08gb_20221209.tar.gz
+wget https://genome-idx.s3.amazonaws.com/kraken/k2_standard_08gb_20221209.tar.gz
 
 # Move to database directory and unpack
 mv k2_standard_08gb_20221209.tar.gz DB/
