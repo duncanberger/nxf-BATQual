@@ -83,6 +83,9 @@ wget https://gembox.cbcb.umd.edu/mash/refseq.genomes.k21s1000.msh
 
 # Move it to the database folder
 mv refseq.genomes.k21s1000.msh DB/
+
+# Download a file containing database IDs and species'
+wget ftp://ftp.ncbi.nlm.nih.gov/genomes/genbank/assembly_summary_genbank.txt
 ```
 #### seroBA
 ```
