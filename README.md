@@ -107,6 +107,10 @@ wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/026/665/GCA_000026665.1_ASM2
 gunzip GCA_000026665.1_ASM2666v1_genomic.fna.gz
 mv GCA_000026665.1_ASM2666v1_genomic.fna DB/
 
+# Index the FASTA
+cd DB/
+samtools index GCA_000026665.1_ASM2666v1_genomic.fna
+
 # Then add the assembly name to 'main.config' file at the 'ref_assembly=' row
 ```
 
