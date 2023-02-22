@@ -207,9 +207,9 @@ process KRAKEN {
 
     script:
     """
-    kraken2 --db $baseDir/DB/ --output txc --use-names --report ${sample_id}_kraken2.out --paired ${sample_id}_R1.fq.gz ${sample_id}_R2.fq.gz
-    awk '\$4=="G"' ${sample_id}_kraken2.out | sort -k4,4 -gr | awk '{print "$sample_id","kraken2_genus",\$6":"\$1","}' OFS=","| head -1 > ${sample_id}.kraken2_results.txt
-    awk '\$4=="S"' ${sample_id}_kraken2.tout | sort -k4,4 -gr | awk '{print "$sample_id","kraken2_species",\$6" "\$7":"\$1","}' OFS=","| head -1 >> ${sample_id}.kraken2_results.txt
+    kraken2 --db $baseDir/DB/ --output txc --use-names --report ${sample_id}.kraken2.out --paired ${sample_id}_R1.fq.gz ${sample_id}_R2.fq.gz
+    awk '\$4=="G"' ${sample_id}.kraken2.out | sort -k4,4 -gr | awk '{print "$sample_id","kraken2_genus",\$6":"\$1","}' OFS=","| head -1 > ${sample_id}.kraken2_results.txt
+    awk '\$4=="S"' ${sample_id}.kraken2.tout | sort -k4,4 -gr | awk '{print "$sample_id","kraken2_species",\$6" "\$7":"\$1","}' OFS=","| head -1 >> ${sample_id}.kraken2_results.txt
     """
 }
 
