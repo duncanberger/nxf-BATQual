@@ -71,6 +71,11 @@ conda activate nxf-BATQual
 ### Databases
 This pipeline uses a number of databases, before running the pipeline you should check that version included below are the most relevant/up to date for your analyses.  The can be downloaded and made ready for analysis as follows:
 
+```
+# If not already present make a folder for your databases in the nxf-BATQual folder
+mkdir -p DB/
+```
+
 #### RefSeq Mash database
 ```
 # Download a preformatted MASH database of RefSeq (release 70, if you want a more up to date version you'll need to build your own)
