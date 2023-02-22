@@ -91,6 +91,7 @@ git clone https://github.com/sanger-pathogens/seroba.git
 
 # Or you can download that folder specifically:
 git init
+git remote remove origin
 git remote add origin -f https://github.com/sanger-pathogens/seroba.git
 echo "database" > .git/info/sparse-checkout
 git config core.sparseCheckout true
@@ -147,11 +148,11 @@ tar xvf k2_standard_08gb_20221209.tar.gz
 
 You can run the pipeline as follows:
 ```
-nextflow run main.nf --input fastq_files.csv --mode fastq
+nextflow run BATQual.nf --input fastq_files.csv --mode fastq
 ```
 or 
 ```
-nextflow run main.nf --input fasta_files.csv --mode fasta
+nextflow run BATQual.nf --input fasta_files.csv --mode fasta
 ```
 
 The `-resume` parameter will re-start the pipeline if it has been previously run.
