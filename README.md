@@ -63,7 +63,7 @@ You will need to install [`pneumoKITy`](https://github.com/CarmenSheppard/Pneumo
 git clone https://github.com/duncanberger/nxf-BATQual.git
 
 # Set up conda dependencies 
-conda env create -f environment.yaml 
+conda env create -f environment.yml 
 
 # Activate environment
 conda activate nxf-BATQual
