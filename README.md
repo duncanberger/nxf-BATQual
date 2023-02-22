@@ -60,7 +60,7 @@ You will need to install [`pneumoKITy`](https://github.com/CarmenSheppard/Pneumo
 git clone https://github.com/duncanberger/nxf-BATQual.git
 
 # Set up conda dependencies 
-conda create -n nxf-BATQual -f environment.yml 
+conda env create -f environment.yaml 
 ```
 ### Databases
 This pipeline uses a number of databases, before running the pipeline you should check that version included below are the most relevant/up to date for your analyses.  The can be downloaded and made ready for analysis as follows:
