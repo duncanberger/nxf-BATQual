@@ -54,13 +54,19 @@ When processing genome assemblies ('--mode fasta'), the pipeline will omit read-
 ## Installation <a name="install"></a>
 ### Software
 You will need to install [`Nextflow`](https://www.nextflow.io/) (version 21.10.3+), instructions can be found on the Nextflow website. <br />
+
 You will need to install [`pneumoKITy`](https://github.com/CarmenSheppard/PneumoKITy), instructions can be found on the PneumoKITy github. 
+
+### Installing BATQual
 ```
 # Clone this repo
 git clone https://github.com/duncanberger/nxf-BATQual.git
 
 # Set up conda dependencies 
 conda env create -f environment.yaml 
+
+# Activate environment
+conda activate nxf-BATQual
 ```
 ### Databases
 This pipeline uses a number of databases, before running the pipeline you should check that version included below are the most relevant/up to date for your analyses.  The can be downloaded and made ready for analysis as follows:
