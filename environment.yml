@@ -1,4 +1,4 @@
-name: nf_6
+name: nxf_BATQual
 channels:
   - anaconda
   - conda-forge
