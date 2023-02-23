@@ -8,6 +8,7 @@
 * [Running BATQual](#run)
 * [Aggregation and quality control](#aggregate)
 * [Tips: Memory use and efficiency](#mem)
+* [Tips: Adjusting config files](#tips_adj)
 * [Components](#components)
 
 
@@ -259,5 +260,7 @@ The output will be written to results/$sample_ID/* which will contain the follow
 3. `aggregated_plots.pdf` :             Plots of each metric, with relevant cutoffs plotted. 
 
 ## Tips: Memory use and efficiency <a name="mem"></a>
+
+## [Tips: Adjusting config files]<a name="tips_adj"></a>
 
 ## Components <a name="components"></a>
