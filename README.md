@@ -7,6 +7,8 @@
 * [Installation](#install)
 * [Running BATQual](#run)
 * [Aggregation and quality control](#aggregate)
+* [Tips: Memory use and efficiency](#mem)
+* [Components](#components)
 
 
 ## Introduction <a name="Introduction"></a>
@@ -256,3 +258,6 @@ The output will be written to results/$sample_ID/* which will contain the follow
 2. `aggregated_stats.wide.txt` :        Aggregated statistics column ('wide') format.
 3. `aggregated_plots.pdf` :             Plots of each metric, with relevant cutoffs plotted. 
 
+## Tips: Memory use and efficiency <a name="mem"></a>
+
+## Components <a name="components"></a>
