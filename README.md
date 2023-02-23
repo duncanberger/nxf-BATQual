@@ -261,6 +261,6 @@ The output will be written to results/$sample_ID/* which will contain the follow
 
 ## Tips: Memory use and efficiency <a name="mem"></a>
 
-## [Tips: Adjusting config files]<a name="tips_adj"></a>
+## Tips: Adjusting config files <a name="tips_adj"></a>
 
 ## Components <a name="components"></a>
