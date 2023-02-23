@@ -162,7 +162,7 @@ process FASTQC {
     tuple val(sample_id), path(read1), path(read2)
 
     output:
-    tuple path("${sample_id}_R1_fastqc.zip"), path("${sample_id}_R2_fastqc.zip")
+    tuple path("${sample_id}.R1_fastqc.zip"), path("${sample_id}.R2_fastqc.zip")
 
     script:
     """
