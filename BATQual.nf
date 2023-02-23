@@ -73,15 +73,15 @@ workflow MAIN_A {
      .set {reads}
     main:
     FASTP(reads)
-    FASTQC(reads)
+//    FASTQC(reads)
     VELVET(FASTP.out)
-    KRAKEN(reads)
+//    KRAKEN(reads)
     BUSCO(VELVET.out)
     STATS(VELVET.out)
-    PROKKA(VELVET.out)
-    CHECKM(VELVET.out)
-    SHET(FASTP.out)
-    MASH(VELVET.out)
+//    PROKKA(VELVET.out)
+//    CHECKM(VELVET.out)
+//    SHET(FASTP.out)
+//    MASH(VELVET.out)
     if (params.pneumo == true & params.run_GPSC == true ) {
         GPSC(VELVET.out)
 		PK(VELVET.out)
@@ -93,7 +93,7 @@ workflow MAIN_A {
 		}
 	else {}
     QUAST(VELVET.out)
-}
+    }
 
 // FASTA workflow with conditional execution of processes specific to Streptococcus pneumoniae
 workflow MAIN_B {
@@ -137,6 +137,7 @@ workflow {
 
 // Run fastp
 process FASTP {
+    errorStrategy 'ignore'
     cpus = 2
     tag "Running fastp on $sample_id"
  
@@ -144,16 +145,17 @@ process FASTP {
     tuple val(sample_id), path(read1), path(read2)
  
     output:
-    tuple val(sample_id), path("${sample_id}_R1.fq.gz"), path("${sample_id}_R2.fq.gz")
-
+    tuple val(sample_id), path("${sample_id}.R1.fq.gz"), path("${sample_id}.R2.fq.gz")
+ 
     script:
     """
-    fastp -w 2 -i ${read1} -I ${read2} -o ${sample_id}_R1.fq.gz -O ${sample_id}_R2.fq.gz
+    fastp -w 2 -i ${read1} -I ${read2} -o ${sample_id}.R1.fq.gz -O ${sample_id}.R2.fq.gz
     """
 }
 
 // Run FASTQC, FASTQC doesn't let you specify output file names for each run, so some slightly inelegant renaming is required
 process FASTQC {
+    errorStrategy 'ignore'
     cpus = 1
     tag "Running FastQC on $sample_id"
     publishDir "$params.outdir/${sample_id}", mode: 'copy'
@@ -176,18 +178,20 @@ process FASTQC {
 
 // Run Velvet for the specific kmer range - default will be 66-90% of read length
 process VELVET {
+    errorStrategy = 'ignore'
+    maxRetries = 1
     cpus 2
     tag "Running Velvet on $sample_id"
     publishDir "$params.outdir/${sample_id}", mode: 'copy'
 
     input:
-    tuple val(sample_id), path("${sample_id}_R1.fq.gz"), path("${sample_id}_R2.fq.gz")
+    tuple val(sample_id), path("${sample_id}.R1.fq.gz"), path("${sample_id}.R2.fq.gz")
     output:
     tuple val(sample_id), path("${sample_id}.velvet_contigs.fa")
 
     script:
     """
-    VelvetOptimiser.pl -s "$params.min_k" -e "$params.max_k" --p ${sample_id} -t 2 --o '-very_clean yes' -f '-shortPaired -separate -fastq.gz ${sample_id}_R1.fq.gz ${sample_id}_R2.fq.gz'
+    VelvetOptimiser.pl -s "$params.min_k" -e "$params.max_k" --p ${sample_id} -t 2 --o '-very_clean yes' -f '-shortPaired -separate -fastq.gz ${sample_id}.R1.fq.gz ${sample_id}.R2.fq.gz'
     mv ${sample_id}_data_*/contigs.fa ${sample_id}.velvet_contigs.fa
     rm ${sample_id}_data_*/*
     """
@@ -195,26 +199,28 @@ process VELVET {
 
 // Run kraken2, writing both genus and species assignments to file
 process KRAKEN {
+    errorStrategy 'ignore'
     cpus 2
     tag "Running Kraken2 on $sample_id"
     publishDir "$params.outdir/${sample_id}", mode: 'copy'
 
     input:
-    tuple val(sample_id), path("${sample_id}_R1.fq.gz"), path("${sample_id}_R2.fq.gz")
+    tuple val(sample_id), path("${sample_id}.R1.fq.gz"), path("${sample_id}.R2.fq.gz")
 
     output:
     tuple path("${sample_id}.kraken2_results.txt"), path("${sample_id}.kraken2.out")
 
     script:
     """
-    kraken2 --db $baseDir/DB/ --output txc --use-names --report ${sample_id}.kraken2.out --paired ${sample_id}_R1.fq.gz ${sample_id}_R2.fq.gz
+    kraken2 --db $baseDir/DB/ --output txc --use-names --report ${sample_id}.kraken2.out --paired ${sample_id}.R1.fq.gz ${sample_id}.R2.fq.gz
     awk '\$4=="G"' ${sample_id}.kraken2.out | sort -k4,4 -gr | awk '{print "$sample_id","kraken2_genus",\$6":"\$1","}' OFS=","| head -1 > ${sample_id}.kraken2_results.txt
-    awk '\$4=="S"' ${sample_id}.kraken2.tout | sort -k4,4 -gr | awk '{print "$sample_id","kraken2_species",\$6" "\$7":"\$1","}' OFS=","| head -1 >> ${sample_id}.kraken2_results.txt
+    awk '\$4=="S"' ${sample_id}.kraken2.out | sort -k4,4 -gr | awk '{print "$sample_id","kraken2_species",\$6" "\$7":"\$1","}' OFS=","| head -1 >> ${sample_id}.kraken2_results.txt
     """
 }
 
 // Run pneumoKITy
 process PK {
+    errorStrategy 'ignore'
     tag "Running pneumoKITy on $sample_id"
     publishDir "$params.outdir/${sample_id}", mode: 'copy'
 
@@ -233,6 +239,7 @@ process PK {
 
 // Run CheckM
 process CHECKM {
+    errorStrategy 'ignore'
     tag "Running CHECKM on $sample_id"
     publishDir "$params.outdir/${sample_id}", mode: 'copy'
 
@@ -251,18 +258,19 @@ process CHECKM {
 
 // Calculate variant site heterozygosity using minimap2 and BCFtools. Deleting BAMs at the end to save space. 
 process SHET {
+    errorStrategy 'ignore'
     tag "Calculating heterozygosity of $sample_id"
     publishDir "$params.outdir/${sample_id}", mode: 'copy'
 
     input:
-    tuple val(sample_id), path("${sample_id}_R1.fq.gz"), path("${sample_id}_R2.fq.gz")
+    tuple val(sample_id), path("${sample_id}.R1.fq.gz"), path("${sample_id}.R2.fq.gz")
 
     output:
     path "${sample_id}.hetperc_results.txt"
 
     script:
     """
-    minimap2 -R '@RG\\tSM:DRAK\\tID:DRAK' -ax sr $baseDir/DB/$params.ref_assembly ${sample_id}_R1.fq.gz ${sample_id}_R2.fq.gz | samtools sort -O BAM -o ${sample_id}.bam - 
+    minimap2 -R '@RG\\tSM:DRAK\\tID:DRAK' -ax sr $baseDir/DB/$params.ref_assembly ${sample_id}.R1.fq.gz ${sample_id}.R2.fq.gz | samtools sort -O BAM -o ${sample_id}.bam - 
     bcftools mpileup -I -f $baseDir/DB/$params.ref_assembly ${sample_id}.bam | bcftools call -mv - | bcftools view -i 'QUAL>=20' | bcftools query -f '[%GT]\n' - | awk '{if(\$0=="0/1" || \$0=="1/2"){nmw+=1}}END{print ((nmw*100)/NR)}' | awk '{print "${sample_id}","perc_het_vars",\$1,""}' OFS=',' > ${sample_id}.hetperc_results.txt
     rm ${sample_id}.bam
     """
@@ -270,6 +278,7 @@ process SHET {
 
 // Run seroBA
 process SBA {
+    errorStrategy 'ignore'
     tag "Running seroBA on $sample_id"
     publishDir "$params.outdir/${sample_id}", mode: 'copy'
 
@@ -288,6 +297,7 @@ process SBA {
 
 // Use a custom python script to calculate assembly statistics
 process STATS {
+    errorStrategy 'ignore'
     tag "Calculating assembly stats of $sample_id"
     publishDir "$params.outdir/${sample_id}", mode: 'copy'
 
@@ -305,6 +315,7 @@ process STATS {
 
 // Run BUSCO using the specified database (config file)
 process BUSCO {
+    errorStrategy 'ignore'
     tag "Running BUSCO on $sample_id"
     publishDir "$params.outdir/${sample_id}", mode: 'copy'
 
@@ -323,6 +334,7 @@ process BUSCO {
 
 // Run Prokka
 process PROKKA {
+    errorStrategy 'ignore'
     cpus 4
     tag "Running Prokka on $sample_id"
     publishDir "$params.outdir/${sample_id}", mode: 'copy'
@@ -343,6 +355,7 @@ process PROKKA {
 
 // Run Mash
 process MASH {
+    errorStrategy 'ignore'
     cpus 1
     tag "Running Mash on $sample_id"
     publishDir "$params.outdir/${sample_id}", mode: 'copy'
@@ -362,6 +375,7 @@ process MASH {
 
 // Assign GPS clusters
 process GPSC {
+    errorStrategy 'ignore'
     cpus 1
     tag "Assigning GPSCs to $sample_id"
     publishDir "$params.outdir/${sample_id}", mode: 'copy'
@@ -382,6 +396,7 @@ process GPSC {
 
 // Run QUAST
 process QUAST {
+    errorStrategy 'ignore'
     cpus 1
     tag "Assigning GPSCs to $sample_id"
     publishDir "$params.outdir/${sample_id}", mode: 'copy'
@@ -400,6 +415,7 @@ process QUAST {
 
 // Assign MLST alleles
 process MLST {
+    errorStrategy 'ignore'
     cpus 1
     tag "Assigned MLST alleles to $sample_id"
     publishDir "$params.outdir/${sample_id}", mode: 'copy'
