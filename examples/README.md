@@ -2,14 +2,13 @@
 
 ### Downloading test data
 ```
-# Download high-quality Streptococcus pneumoniae FASTQ files
-
+# Download high-quality Streptococcus pneumoniae FASTQ files (SAMEA1408274)
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR107/ERR107504/ERR107504_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR107/ERR107504/ERR107504_2.fastq.gz
                                                                                                                                                              
-# Download high-quality Streptococcus pneumoniae FASTQ files (SAMEA2234452	)
+# Download high-quality Streptococcus pneumoniae FASTQ files (SAMEA2234452)
 wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR449/ERR449780/ERR449780_1.fastq.gz
 wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR449/ERR449780/ERR449780_2.fastq.gz
-
-
 
 # Download contaminated (different species) Streptococcus pneumoniae FASTQ files (SAMEA1025813) 
 wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR066/ERR066215/ERR066215_1.fastq.gz 
