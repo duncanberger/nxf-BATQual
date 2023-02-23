@@ -74,13 +74,13 @@ workflow MAIN_A {
     main:
     FASTP(reads)
 //    FASTQC(reads)
-    VELVET(FASTP.out)
+//    VELVET(FASTP.out)
 //    KRAKEN(reads)
-    BUSCO(VELVET.out)
-    STATS(VELVET.out)
+//    BUSCO(VELVET.out)
+//    STATS(VELVET.out)
 //    PROKKA(VELVET.out)
 //    CHECKM(VELVET.out)
-//    SHET(FASTP.out)
+    SHET(FASTP.out)
 //    MASH(VELVET.out)
     if (params.pneumo == true & params.run_GPSC == true ) {
         GPSC(VELVET.out)
@@ -92,7 +92,7 @@ workflow MAIN_A {
 		SBA(reads)
 		}
 	else {}
-    QUAST(VELVET.out)
+//    QUAST(VELVET.out)
     }
 
 // FASTA workflow with conditional execution of processes specific to Streptococcus pneumoniae
@@ -271,8 +271,7 @@ process SHET {
     script:
     """
     minimap2 -R '@RG\\tSM:DRAK\\tID:DRAK' -ax sr $baseDir/DB/$params.ref_assembly ${sample_id}.R1.fq.gz ${sample_id}.R2.fq.gz | samtools sort -O BAM -o ${sample_id}.bam - 
-    bcftools mpileup -I -f $baseDir/DB/$params.ref_assembly ${sample_id}.bam | bcftools call -mv - | bcftools view -i 'QUAL>=20' | bcftools query -f '[%GT]\n' - | awk '{if(\$0=="0/1" || \$0=="1/2"){nmw+=1}}END{print ((nmw*100)/NR)}' | awk '{print "${sample_id}","perc_het_vars",\$1,""}' OFS=',' > ${sample_id}.hetperc_results.txt
-    rm ${sample_id}.bam
+    freebayes -iXu -b ${sample_id}.bam --min-coverage 5 --limit-coverage 30 -f $baseDir/DB/$params.ref_assembly | bcftools view -i 'QUAL>=20' | bcftools query -f '[%GT]\n' - | awk '{if(\$0=="0/1" || \$0=="1/2"){nmw+=1}}END{print ((nmw*100)/NR)}' | awk '{print "${sample_id}","perc_het_vars",\$1,""}' OFS=',' > ${sample_id}.hetperc_results.txt
     """
 }
 
