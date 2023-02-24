@@ -112,11 +112,11 @@ workflow MAIN_B {
     CHECKM(fastas)
     MASH(fastas)
 	if (params.pneumo == true & params.run_GPSC == true ) {
-        GPSC(VELVET.out)
-		PK(VELVET.out)
+        GPSC(fastas)
+		PK(fastas)
 		}
 	else if (params.pneumo == true & params.run_GPSC == false ) {
-		PK(VELVET.out)
+		PK(fastas)
 		}
 	else {}
     QUAST(fastas)
