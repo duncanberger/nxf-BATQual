@@ -397,7 +397,7 @@ process GPSC {
 process QUAST {
     errorStrategy 'ignore'
     cpus 1
-    tag "Assigning GPSCs to $sample_id"
+    tag "Running QUAST on $sample_id"
     publishDir "$params.outdir/${sample_id}", mode: 'copy'
 
     input:
