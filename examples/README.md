@@ -14,7 +14,7 @@ wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR449/ERR449780/ERR449780_2.fastq.gz
 wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR066/ERR066215/ERR066215_1.fastq.gz 
 wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR066/ERR066215/ERR066215_2.fastq.gz
 
-# Download contaminated (same species) Streptococcus pneumoniae FASTQ files (SAMEA1025813) 
+# Download contaminated (same species) Streptococcus pneumoniae FASTQ files (SAMEA3389673) 
 wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR120/007/ERR1202187/ERR1202187_1.fastq.gz
 wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR120/007/ERR1202187/ERR1202187_2.fastq.gz
 
