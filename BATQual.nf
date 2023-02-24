@@ -368,7 +368,7 @@ process MASH {
     script:
     """
     mash sketch ${sample_id}.velvet_contigs.fa
-    mash dist $baseDir/DB/refseq.genomes.k21s1000.msh ${sample_id}.velvet_contigs.fa.msh | awk '\$4<0.05' | sort -k3,3 -g | head -5  | cut -f1,2 -d"_" | while read file; do grep \$file $baseDir/DB/assembly_summary_genbank.txt; done | cut -f8 | cut -f1,2 -d" " | uniq | paste -sd';' | awk -F '\t' '{print "${sample_id}","MASH_hit",\$1,""}' OFS=',' > ${sample_id}.mash_results.txt
+    mash dist $baseDir/DB/refseq.genomes.k21s1000.msh ${sample_id}.velvet_contigs.fa.msh | awk '\$4<0.05' | sort -k3,3 -g | head -5  | cut -f1,2 -d"_" | cut -f1 -d"." | while read file; do grep \$file $baseDir/DB/assembly_summary_genbank.txt; done | cut -f8 | cut -f1,2 -d" " | uniq | paste -sd';' | awk -F '\t' '{print "${sample_id}","MASH_hit",\$1,""}' OFS=',' > ${sample_id}.mash_results.txt
     """
 }
 
