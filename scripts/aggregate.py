@@ -54,7 +54,7 @@ def main(argv,out):
 	rx3 = aggregate(dfx)
 	rx3.to_csv(args.input+"/"+args.output+"/"+args.output+".wide.txt", sep=',', index=True)
 	# Make plots
-	plot_all(args.input+"/"+args.output+"/"+args.output+".wide.txt",rx3, args.completeness_threshold, args.contamination_threshold, args.strain_heterogeneity_threshold, args.busco_completeness_threshold, args.busco_duplication_threshold, args.busco_fragmented_threshold, args.busco_missing_threshold, args.assembly_length_threshold_min, args.assembly_length_threshold_max, args.gc_threshold_min, args.gc_threshold_max, args.gap_sum_threshold, args.gap_count_threshold, args.perc_het_vars_threshold, args.scaffold_count_threshold, args.scaffold_N50_threshold)
+	plot_all(args.input+"/"+args.output+"/"+args.output+".pdf", args.input+"/"+args.output+"/"+args.output+".wide.txt",rx3, args.completeness_threshold, args.contamination_threshold, args.strain_heterogeneity_threshold, args.busco_completeness_threshold, args.busco_duplication_threshold, args.busco_fragmented_threshold, args.busco_missing_threshold, args.assembly_length_threshold_min, args.assembly_length_threshold_max, args.gc_threshold_min, args.gc_threshold_max, args.gap_sum_threshold, args.gap_count_threshold, args.perc_het_vars_threshold, args.scaffold_count_threshold, args.scaffold_N50_threshold)
 
 def add_label_column(input, completeness_threshold, contamination_threshold, strain_heterogeneity_threshold, busco_completeness_threshold, busco_duplication_threshold, busco_fragmented_threshold, busco_missing_threshold, assembly_length_threshold_min, assembly_length_threshold_max, gc_threshold_min, gc_threshold_max, gap_sum_threshold, gap_count_threshold, perc_het_vars_threshold, scaffold_count_threshold, scaffold_N50_threshold, target_species, kraken_match_threshold_species, kraken_match_threshold_genus, target_genus):
 	# Organise the importatation of data from multiple folders
@@ -179,13 +179,13 @@ def aggregate(input):
 	df3 = df3.rename(columns={'count': 'fail_counts'})
 	return df3
 
-def plot_all(inputstring,input, completeness_threshold, contamination_threshold, strain_heterogeneity_threshold, busco_completeness_threshold, busco_duplication_threshold, busco_fragmented_threshold, busco_missing_threshold, assembly_length_threshold_min, assembly_length_threshold_max, gc_threshold_min, gc_threshold_max, gap_sum_threshold, gap_count_threshold, perc_het_vars_threshold, scaffold_count_threshold, scaffold_N50_threshold):
+def plot_all(outputstring, inputstring,input, completeness_threshold, contamination_threshold, strain_heterogeneity_threshold, busco_completeness_threshold, busco_duplication_threshold, busco_fragmented_threshold, busco_missing_threshold, assembly_length_threshold_min, assembly_length_threshold_max, gc_threshold_min, gc_threshold_max, gap_sum_threshold, gap_count_threshold, perc_het_vars_threshold, scaffold_count_threshold, scaffold_N50_threshold):
 	df=pd.read_csv(inputstring)
 	sns.set_style("white")
 	sns.set_theme()
 	sns.set(style="ticks")
 	# Open PDF and plot figures across 3 pages (up to 8 plots per page)
-	pdf_pages = PdfPages("aggregated_plots.pdf")
+	pdf_pages = PdfPages(outputstring)
 	fig, ((axs1, axs2), (axs3, axs4), (axs5, axs6), (axs7, axs8)  ) = plt.subplots(4, 2, figsize=(8, 12))
 
 	if "assembly_length_bp" in df.columns:
