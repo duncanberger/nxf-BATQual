@@ -40,8 +40,14 @@ wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR387/SRR387657/SRR387657_2.fastq.gz
 
 ```
 ### Running the pipeline
-
+```
+# Run the pipeline using all samples
+./nextflow BATQual.nf --input example_fastq.csv --mode fastq --min_k 91 --max_k 133 --outdir example_run
+```
 ### Aggregating results
-
+``` 
+# Aggregate all runs
+python scripts/aggregate.py --input example_run
+```
 ### Checking results
 
