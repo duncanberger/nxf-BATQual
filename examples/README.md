@@ -50,4 +50,3 @@ wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR387/SRR387657/SRR387657_2.fastq.gz
 python scripts/aggregate.py --input example_run
 ```
 ### Checking results
-
