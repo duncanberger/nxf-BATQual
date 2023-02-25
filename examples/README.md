@@ -57,7 +57,7 @@ python scripts/aggregate.py --input example_run
 |**SAMEA1023762**|2.05|14803|342|45786|227|
 |**SAMEA1024102**|2.17|15818|557|28507|$\mathsf{\color{red}{437}}$|
 |**SAMEA1024779**|1.95|45222|194|56344|180|
-|**SAMEA1025813**|$\mathsf{\color{red}{5.93}}$|3314|5847|10710|$\mathsf{\color{red}{1687}}$|
+|**SAMEA1025813**|$\mathsf{\color{red}{5.93}}$|$\mathsf{\color{red}{3314}}$|$\mathsf{\color{red}{5847}}$|10710|$\mathsf{\color{red}{1687}}$|
 |**SAMEA1408274**|2.24|41157|221|69004|178|
 |**SAMEA2234452**|2.17|54605|152|64127|133|
 |**SAMEA2382970**|2.22|66028|255|95094|191|
