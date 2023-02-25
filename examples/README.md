@@ -1,6 +1,6 @@
 # Testing BATQual
 
-### Downloading test data
+## Downloading test data
 ```
 # Download high-quality Streptococcus pneumoniae FASTQ files (SAMEA1408274)
 wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR107/ERR107504/ERR107504_1.fastq.gz
@@ -39,18 +39,18 @@ wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR387/SRR387657/SRR387657_1.fastq.gz
 wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR387/SRR387657/SRR387657_2.fastq.gz
 
 ```
-### Running the pipeline
+## Running the pipeline
 ```
 # Run the pipeline using all samples
 ./nextflow BATQual.nf --input example_fastq.csv --mode fastq --min_k 91 --max_k 133 --outdir example_run
 ```
-### Aggregating results
+## Aggregating results
 ``` 
 # Aggregate all runs
 python scripts/aggregate.py --input example_run
 ```
-### Interpreting results
-#### Contiguity $\mathsf{\color{red}{}}$
+## Interpreting results
+### Contiguity $\mathsf{\color{red}{}}$
 |Sample|Assembly length (Mb)|Contig N50 (bp)|Contigs (count)|Scaffold N50 (bp)|Scaffolds (count)|
 |------|------------------|-------------|------------|---------------|---------------|
 |**SAMD00110690**|$\mathsf{\color{red}{4.24}}$|$\mathsf{\color{red}{628}}$|$\mathsf{\color{red}{7492}}$|$\mathsf{\color{red}{634}}$|$\mathsf{\color{red}{7452}}$|
@@ -65,7 +65,7 @@ python scripts/aggregate.py --input example_run
 |**SAMN00761799**|2.07|117890|101|149613|79|
 |**SAMN10131018**|$\mathsf{\color{red}{2.28}}$|75456|204|75716|170|
 
-#### Completeness 
+### Completeness 
 |Sample|BUSCO (Complete & single-copy)|BUSCO (Complete & duplicated)|BUSCO (Fragmented)|BUSCO (Missing)|Completeness (CheckM)|Gaps (count)|Gaps (% of assembly)|Gaps sum, bp)
 |------|------------------------------|-----------------------------|------------------|---------------|---------------------|------------|--------------------|-------|
 |**SAMD00110690**|$\mathsf{\color{red}{29.1}}$|$\mathsf{\color{red}{15.9}}$|$\mathsf{\color{red}{34.1}}$|$\mathsf{\color{red}{20.9}}$|90.1|40|0.03|1082
@@ -80,7 +80,7 @@ python scripts/aggregate.py --input example_run
 |**SAMN00761799**|99.8|0|0.2|0|92.74|22|0.05|1097
 |**SAMN10131018**|100|0|0|0|93.29|34|0.03|599
 
-#### Species identification 
+### Species identification 
 
 |Sample|MASH_hit|kraken2_genus|kraken2_species|mlst_species|GC_perc|
 |------|--------|-------------|---------------|------------|-------|
@@ -96,7 +96,7 @@ python scripts/aggregate.py --input example_run
 |**SAMN00761799**|$\mathsf{\color{red}{Streptococcus }}$ $\mathsf{\color{red}{ mitis}}$|Streptococcus|$\mathsf{\color{red}{Streptococcus }}$ $\mathsf{\color{red}{ mitis}}$|spneumoniae|39.85|
 |**SAMN10131018**|$\mathsf{\color{red}{Streptococcus }}$ $\mathsf{\color{red}{ pseudopneumoniae}}$|Streptococcus|$\mathsf{\color{red}{Streptococcus }}$ $\mathsf{\color{red}{ pseudopneumoniae}}$|spneumoniae|39.91|
 
-#### Contamination 
+### Contamination 
 |Sample|Heterozygous variants (%)|BUSCO (Complete & duplicated)|Contamination (CheckM)|Strain Heterogenity (CheckM)|GC (%)|
 |------|-------------|-------------------------|--------------------|---------------------------|-------|
 |**SAMD00110690**|$\mathsf{\color{red}{79.83}}$|$\mathsf{\color{red}{15.9}}$|$\mathsf{\color{red}{117.59}}$|$\mathsf{\color{red}{83.5}}$|39.61|
@@ -111,7 +111,7 @@ python scripts/aggregate.py --input example_run
 |**SAMN00761799**|0.62|0|2.61|0|39.85|
 |**SAMN10131018**|1.96|0|4.15|0|39.91|
 
-#### Typing
+### Typing
 |Sample|aroE|ddl|gdh|gki|recP|spi|xpt|Serotype (PneumoKITy)|
 |------|----------------|---------------|---------------|---------------|----------------|---------------|---------------|-------------------|
 |**SAMD00110690**|588?|863?|$\mathsf{\color{red}{4;11}}$|673?|549?|$\mathsf{\color{red}{4;6}}$|1079?|10A|
