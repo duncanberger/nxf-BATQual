@@ -51,7 +51,7 @@ python scripts/aggregate.py --input example_run
 ```
 ### Interpreting results
 #### Contiguity $\mathsf{\color{red}{}}$
-sample|Assembly length (Mb)|Contig N50 (bp)|Contigs (count)|Scaffold N50 (bp)|Scaffolds (count)|
+|Sample|Assembly length (Mb)|Contig N50 (bp)|Contigs (count)|Scaffold N50 (bp)|Scaffolds (count)|
 |------|------------------|-------------|------------|---------------|---------------|
 |**SAMD00110690**|$\mathsf{\color{red}{4.24}}$|$\mathsf{\color{red}{628}}$|$\mathsf{\color{red}{7492}}$|$\mathsf{\color{red}{634}}$|$\mathsf{\color{red}{7452}}$|
 |**SAMEA1023762**|2.05|14803|342|45786|227|
@@ -66,7 +66,7 @@ sample|Assembly length (Mb)|Contig N50 (bp)|Contigs (count)|Scaffold N50 (bp)|Sc
 |**SAMN10131018**|$\mathsf{\color{red}{2.28}}$|75456|204|75716|170|
 
 #### Completeness 
-|sample|BUSCO (Complete & single-copy)|BUSCO (Complete & duplicated)|BUSCO (Fragmented)|BUSCO (Missing)|Completeness (CheckM)|Gaps (count)|Gaps (% of assembly)|Gaps sum, bp)
+|Sample|BUSCO (Complete & single-copy)|BUSCO (Complete & duplicated)|BUSCO (Fragmented)|BUSCO (Missing)|Completeness (CheckM)|Gaps (count)|Gaps (% of assembly)|Gaps sum, bp)
 |------|------------------------------|-----------------------------|------------------|---------------|---------------------|------------|--------------------|-------|
 |**SAMD00110690**|$\mathsf{\color{red}{29.1}}$|$\mathsf{\color{red}{15.9}}$|$\mathsf{\color{red}{34.1}}$|$\mathsf{\color{red}{20.9}}$|90.1|40|0.03|1082
 |**SAMEA1023762**|97.3|0|$\mathsf{\color{red}{1.7}}$|$\mathsf{\color{red}{1}}$|98.44|$\mathsf{\color{red}{115}}$|0.34|6881
@@ -82,7 +82,7 @@ sample|Assembly length (Mb)|Contig N50 (bp)|Contigs (count)|Scaffold N50 (bp)|Sc
 
 #### Species identification 
 
-|sample|MASH_hit|kraken2_genus|kraken2_species|mlst_species|GC_perc|
+|Sample|MASH_hit|kraken2_genus|kraken2_species|mlst_species|GC_perc|
 |------|--------|-------------|---------------|------------|-------|
 |**SAMD00110690**|Streptococcus pneumoniae|Streptococcus|Streptococcus pneumoniae|spneumoniae|39.61|
 |**SAMEA1023762**|Streptococcus pneumoniae|Streptococcus|Streptococcus pneumoniae|spneumoniae|39.63|
@@ -97,7 +97,7 @@ sample|Assembly length (Mb)|Contig N50 (bp)|Contigs (count)|Scaffold N50 (bp)|Sc
 |**SAMN10131018**|$\mathsf{\color{red}{Streptococcus }}$ $\mathsf{\color{red}{ pseudopneumoniae}}$|Streptococcus|$\mathsf{\color{red}{Streptococcus }}$ $\mathsf{\color{red}{ pseudopneumoniae}}$|spneumoniae|39.91|
 
 #### Contamination 
-|sample|Heterozygous variants (%)|BUSCO (Complete & duplicated)|Contamination (CheckM)|Strain Heterogenity (CheckM)|GC (%)|
+|Sample|Heterozygous variants (%)|BUSCO (Complete & duplicated)|Contamination (CheckM)|Strain Heterogenity (CheckM)|GC (%)|
 |------|-------------|-------------------------|--------------------|---------------------------|-------|
 |**SAMD00110690**|$\mathsf{\color{red}{79.83}}$|$\mathsf{\color{red}{15.9}}$|$\mathsf{\color{red}{117.59}}$|$\mathsf{\color{red}{83.5}}$|39.61|
 |**SAMEA1023762**|4.67|0|0.78|0|39.63|
@@ -112,7 +112,7 @@ sample|Assembly length (Mb)|Contig N50 (bp)|Contigs (count)|Scaffold N50 (bp)|Sc
 |**SAMN10131018**|1.96|0|4.15|0|39.91|
 
 #### Typing
-|sample|aroE|ddl|gdh|gki|recP|spi|xpt|Serotype (PneumoKITy)|
+|Sample|aroE|ddl|gdh|gki|recP|spi|xpt|Serotype (PneumoKITy)|
 |------|----------------|---------------|---------------|---------------|----------------|---------------|---------------|-------------------|
 |**SAMD00110690**|588?|863?|$\mathsf{\color{red}{4;11}}$|673?|549?|$\mathsf{\color{red}{4;6}}$|1079?|10A|
 |**SAMEA1023762**|10|17|16|40|1|17|1|7F/7A|
