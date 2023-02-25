@@ -84,15 +84,15 @@ python scripts/aggregate.py --input example_run
 
 |Sample|MASH_hit|kraken2_genus|kraken2_species|mlst_species|GC_perc|
 |------|--------|-------------|---------------|------------|-------|
-|**SAMD00110690**|*Streptococcus pneumoniae*|Streptococcus|*Streptococcus pneumoniae*|spneumoniae|39.61|
-|**SAMEA1023762**|*Streptococcus pneumoniae*|Streptococcus|*Streptococcus pneumoniae*|spneumoniae|39.63|
-|**SAMEA1024102**|*Streptococcus pneumoniae*|Streptococcus|*Streptococcus pneumoniae*|spneumoniae|39.58|
-|**SAMEA1024779**|*Streptococcus pneumoniae*|Streptococcus|*Streptococcus pneumoniae*|spneumoniae|39.81|
-|**SAMEA1025813**|$\mathsf{\color{red}{Bacillus }}$ $\mathsf{\color{red}{ subtilis;}}$ $\mathsf{\color{red}{Alkalihalobacillus }}$ $\mathsf{\color{red}{ gibsonii;}}$ $\mathsf{\color{red}{Bacillus }}$ $\mathsf{\color{red}{ sp.;}}$ $\mathsf{\color{red}{Bacillus }}$ $\mathsf{\color{red}{ subtilis}}$|Streptococcus|*Streptococcus pneumoniae*|$\mathsf{\color{red}{NA}}$| $\mathsf{\color{red}{42.5}}$|
-|**SAMEA1408274**|*Streptococcus pneumoniae*|Streptococcus|*Streptococcus pneumoniae*|spneumoniae|39.52|
-|**SAMEA2234452**|*Streptococcus pneumoniae*|Streptococcus|*Streptococcus pneumoniae*|spneumoniae|39.61|
+|**SAMD00110690**|Streptococcus pneumoniae|Streptococcus|Streptococcus pneumoniae|spneumoniae|39.61|
+|**SAMEA1023762**|Streptococcus pneumoniae|Streptococcus|Streptococcus pneumoniae|spneumoniae|39.63|
+|**SAMEA1024102**|Streptococcus pneumoniae|Streptococcus|Streptococcus pneumoniae|spneumoniae|39.58|
+|**SAMEA1024779**|Streptococcus pneumoniae|Streptococcus|Streptococcus pneumoniae|spneumoniae|39.81|
+|**SAMEA1025813**|$\mathsf{\color{red}{Bacillus }}$ $\mathsf{\color{red}{ subtilis;}}$ $\mathsf{\color{red}{Alkalihalobacillus }}$ $\mathsf{\color{red}{ gibsonii;}}$ $\mathsf{\color{red}{Bacillus }}$ $\mathsf{\color{red}{ sp.;}}$ $\mathsf{\color{red}{Bacillus }}$ $\mathsf{\color{red}{ subtilis}}$|Streptococcus|Streptococcus pneumoniae|$\mathsf{\color{red}{NA}}$| $\mathsf{\color{red}{42.5}}$|
+|**SAMEA1408274**|Streptococcus pneumoniae|Streptococcus|Streptococcus pneumoniae|spneumoniae|39.52|
+|**SAMEA2234452**|Streptococcus pneumoniae|Streptococcus|Streptococcus pneumoniae|spneumoniae|39.61|
 |**SAMEA2382970**|$\mathsf{\color{red}{Streptococcus }}$ $\mathsf{\color{red}{ pneumoniae;}}$ $\mathsf{\color{red}{Streptococcus }}$ $\mathsf{\color{red}{ salivarius;}}$ $\mathsf{\color{red}{Streptococcus }}$ $\mathsf{\color{red}{ sp.}}$|Streptococcus|$\mathsf{\color{red}{Streptococcus }}$ $\mathsf{\color{red}{salivarius}}$ |$\mathsf{\color{red}{NA}}$|39.79|
-|**SAMEA3389673**|*Streptococcus pneumoniae*|Streptococcus|*Streptococcus pneumoniae*|spneumoniae|39.68|
+|**SAMEA3389673**|Streptococcus pneumoniae|Streptococcus|Streptococcus pneumoniae|spneumoniae|39.68|
 |**SAMN00761799**|$\mathsf{\color{red}{Streptococcus }}$ $\mathsf{\color{red}{ mitis}}$|Streptococcus|$\mathsf{\color{red}{Streptococcus }}$ $\mathsf{\color{red}{ mitis}}$|spneumoniae|39.85|
 |**SAMN10131018**|$\mathsf{\color{red}{Streptococcus }}$ $\mathsf{\color{red}{ pseudopneumoniae}}$|Streptococcus|$\mathsf{\color{red}{Streptococcus }}$ $\mathsf{\color{red}{ pseudopneumoniae}}$|spneumoniae|39.91|
 
