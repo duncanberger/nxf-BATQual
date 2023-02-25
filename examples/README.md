@@ -14,17 +14,18 @@ wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR449/ERR449780/ERR449780_2.fastq.gz
 wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR066/ERR066215/ERR066215_1.fastq.gz 
 wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR066/ERR066215/ERR066215_2.fastq.gz
 
-# Download contaminated (same species) Streptococcus pneumoniae FASTQ files (SAMEA3389673) 
-wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR120/007/ERR1202187/ERR1202187_1.fastq.gz
-wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR120/007/ERR1202187/ERR1202187_2.fastq.gz
+# Download contaminated (same species) Streptococcus pneumoniae FASTQ files (SAMD00110690)
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/DRR121/DRR121429/DRR121429_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/DRR121/DRR121429/DRR121429_2.fastq.gz
+
 
 # Download Streptococcus pneumoniae FASTQ files that yield low quality assemblies (SAMEA1023762)
 wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR047/ERR047984/ERR047984_1.fastq.gz
 wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR047/ERR047984/ERR047984_2.fastq.gz
 
-# Download Streptococcus pneumoniae FASTQ files that yield low quality assemblies (SAMEA1024779)
- wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR050/ERR050026/ERR050026_1.fastq.gz
- wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR050/ERR050026/ERR050026_2.fastq.gz
+# Download Streptococcus pneumoniae FASTQ files that yield low quality assemblies (SAMEA1024102)
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR047/ERR047972/ERR047972_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR047/ERR047972/ERR047972_2.fastq.gz
 
 # Download FASTQ files of a species falsely identified as Streptococcus pneumoniae (SAMEA2382970)
 wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR563/ERR563704/ERR563704_1.fastq.gz
