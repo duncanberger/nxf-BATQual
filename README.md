@@ -260,6 +260,7 @@ The output will be written to results/$sample_ID/* which will contain the follow
 1. `aggregated_stats.long.txt` :        Aggregated statistics row ('long') format.
 2. `aggregated_stats.wide.txt` :        Aggregated statistics column ('wide') format.
 3. `aggregated_plots.pdf` :             Plots of each metric, with relevant cutoffs plotted. 
+4. 'multiqc_report.html' :              MultQC reports (FASTQC, QUAST and Kraken2 summaries)
 
 ## Example datasets <a name="examples"></a>
 A full guide to running through the pipeline with exemplar read datasets for a variety of possible scenarios can be found [`here`](https://github.com/duncanberger/nxf-BATQual/tree/main/examples).
