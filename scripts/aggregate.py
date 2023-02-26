@@ -15,9 +15,9 @@ def main(argv,out):
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--input', help='Folder to process', default="results")
 	parser.add_argument('--output', help="Output file name ['aggregated_stats.*']", default="aggregated_stats")
-	parser.add_argument('--completeness_threshold', help="CheckM completeness threshold [99]", default=99)
-	parser.add_argument('--contamination_threshold', help="CheckM contamination threshold [1]", default=1)
-	parser.add_argument('--strain_heterogeneity_threshold', help="CheckM heterogeneity threshold [0.1]", default=0.1)
+	parser.add_argument('--completeness_threshold', help="CheckM completeness threshold [90]", default=90)
+	parser.add_argument('--contamination_threshold', help="CheckM contamination threshold [5]", default=5)
+	parser.add_argument('--strain_heterogeneity_threshold', help="CheckM heterogeneity threshold [40]", default=40)
 	parser.add_argument('--busco_completeness_threshold', help="BUSCO completeness threshold (%) [95]", default=95)
 	parser.add_argument('--busco_duplication_threshold', help="BUSCO duplication threshold (%) [1]", default=1)
 	parser.add_argument('--busco_fragmented_threshold', help="BUSCO fragmented threshold (%) [1]", default=1)
@@ -27,13 +27,13 @@ def main(argv,out):
 	parser.add_argument('--gc_threshold_min', help="GC content, lower threshold (%) [39.2]", default=39.2)
 	parser.add_argument('--gc_threshold_max', help="GC content, upper threshold (%) [40]", default=40)
 	parser.add_argument('--gap_sum_threshold', help="Total gap length (bp) [5631]", default=5631)
-	parser.add_argument('--gap_count_threshold', help="Total gap count [26]", default=26)
+	parser.add_argument('--gap_count_threshold', help="Total gap count [50]", default=50)
 	parser.add_argument('--perc_het_vars_threshold', help="Proportion of heterozygous variants (%) [15]", default=15)
 	parser.add_argument('--scaffold_count_threshold', help="Maximum number of scaffolds per assembly [286]", default=286)
 	parser.add_argument('--scaffold_N50_threshold', help="Minimum scaffold N50 [24454]", default=24454)
 	parser.add_argument('--target_species', help="Closest MASH hit (top 5) [Streptococcus pneumoniae]", default="Streptococcus pneumoniae")
 	parser.add_argument('--target_genus', help="Closest MASH hit (top 5) [Streptococcus]", default="Streptococcus")
-	parser.add_argument('--kraken_match_threshold_species', help="Minimum percentage of reads coverged by the --target_species [50]", default=50)
+	parser.add_argument('--kraken_match_threshold_species', help="Minimum percentage of reads coverged by the --target_species [25]", default=25)
 	parser.add_argument('--kraken_match_threshold_genus', help="Minimum percentage of reads coverged by the --target_genus [50]", default=50)
 
 	args = parser.parse_args(argv)
@@ -42,19 +42,19 @@ def main(argv,out):
 	subprocess.call(instring, shell=True)
 	# Write a command and run multiqc
 	mqc = "multiqc --outdir "+args.input+"/"+args.output+"/ "+args.input+"/*/"
-	subprocess.call(mqc, shell=True)
+#	subprocess.call(mqc, shell=True)
 	# Run the first function, to parse output files, aggregate results, identify failed assemblies
 	result = add_label_column(args.input, args.completeness_threshold, args.contamination_threshold, args.strain_heterogeneity_threshold, args.busco_completeness_threshold, args.busco_duplication_threshold, args.busco_fragmented_threshold, args.busco_missing_threshold, args.assembly_length_threshold_min, args.assembly_length_threshold_max, args.gc_threshold_min, args.gc_threshold_max, args.gap_sum_threshold, args.gap_count_threshold, args.perc_het_vars_threshold, args.scaffold_count_threshold, args.scaffold_N50_threshold, args.target_species, args.kraken_match_threshold_species, args.kraken_match_threshold_genus, args.target_genus)
 	# Reformat output
 	dfx = pd.DataFrame([sub.split(",") for sub in result])
 	dfx.columns =['sample', 'metric', 'result', 'status']
 	# Write to file
-	dfx.to_csv(args.input+"/"+args.output+"/"+args.output+".long.txt", sep=',', index=False)
+	dfx.to_csv(args.input+"/"+args.output+"/"+args.output+".long.csv", sep=',', index=False)
 	# Aggregate results to a reformatted table and write to file
 	rx3 = aggregate(dfx)
-	rx3.to_csv(args.input+"/"+args.output+"/"+args.output+".wide.txt", sep=',', index=True)
+	rx3.to_csv(args.input+"/"+args.output+"/"+args.output+".wide.csv", sep=',', index=True)
 	# Make plots
-	plot_all(args.input+"/"+args.output+"/"+args.output+".pdf", args.input+"/"+args.output+"/"+args.output+".wide.txt",rx3, args.completeness_threshold, args.contamination_threshold, args.strain_heterogeneity_threshold, args.busco_completeness_threshold, args.busco_duplication_threshold, args.busco_fragmented_threshold, args.busco_missing_threshold, args.assembly_length_threshold_min, args.assembly_length_threshold_max, args.gc_threshold_min, args.gc_threshold_max, args.gap_sum_threshold, args.gap_count_threshold, args.perc_het_vars_threshold, args.scaffold_count_threshold, args.scaffold_N50_threshold)
+	plot_all(args.input+"/"+args.output+"/"+args.output+".pdf", args.input+"/"+args.output+"/"+args.output+".wide.csv",rx3, args.completeness_threshold, args.contamination_threshold, args.strain_heterogeneity_threshold, args.busco_completeness_threshold, args.busco_duplication_threshold, args.busco_fragmented_threshold, args.busco_missing_threshold, args.assembly_length_threshold_min, args.assembly_length_threshold_max, args.gc_threshold_min, args.gc_threshold_max, args.gap_sum_threshold, args.gap_count_threshold, args.perc_het_vars_threshold, args.scaffold_count_threshold, args.scaffold_N50_threshold)
 
 def add_label_column(input, completeness_threshold, contamination_threshold, strain_heterogeneity_threshold, busco_completeness_threshold, busco_duplication_threshold, busco_fragmented_threshold, busco_missing_threshold, assembly_length_threshold_min, assembly_length_threshold_max, gc_threshold_min, gc_threshold_max, gap_sum_threshold, gap_count_threshold, perc_het_vars_threshold, scaffold_count_threshold, scaffold_N50_threshold, target_species, kraken_match_threshold_species, kraken_match_threshold_genus, target_genus):
 	# Organise the importatation of data from multiple folders
@@ -165,6 +165,11 @@ def add_label_column(input, completeness_threshold, contamination_threshold, str
 				result.append(f"{sample_id},{metric},{species},PASS")
 			else:
 				result.append(f"{sample_id},{metric},{species},FAIL")
+		elif "mlst_allele" in metric:
+			if ';' in str(value) or '?' in str(value) or str(value).strip() == '':
+				result.append(f"{sample_id},{metric},{value},FAIL")
+			else:
+				result.append(f"{sample_id},{metric},{value},PASS")
 		else:
 			result.append(f"{sample_id},{metric},{value},NA")
 	return result
@@ -365,7 +370,7 @@ def plot_all(outputstring, inputstring,input, completeness_threshold, contaminat
 	fig.subplots_adjust(hspace=0.4, wspace =0.4)
 	pdf_pages.savefig(fig)
 
-	fig, ((csx12,csx7),(csx8, csx13),(csx14,csv5), (csv3,csv4)) = plt.subplots(4, 2, figsize=(8, 12))
+	fig, ((csx12,csx7), (csv3,csv4),(csv5,csx14),(csx13,csx8)) = plt.subplots(4, 2, figsize=(8, 12))
 
 	if "CHECKM_Strain_heterogeneity" in df.columns:
 		sns.histplot(data=df, x="CHECKM_Strain_heterogeneity", bins=30, ax=csx12)
