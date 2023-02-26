@@ -7,9 +7,11 @@
 * [Installation](#install)
 * [Running BATQual](#run)
 * [Aggregation and quality control](#aggregate)
+* [Example datasets](#examples)
 * [Tips: Memory use and efficiency](#mem)
 * [Tips: Adjusting config files](#tips_adj)
 * [Components](#components)
+* [Citation](#cite)
 
 
 ## Introduction <a name="Introduction"></a>
@@ -259,8 +261,13 @@ The output will be written to results/$sample_ID/* which will contain the follow
 2. `aggregated_stats.wide.txt` :        Aggregated statistics column ('wide') format.
 3. `aggregated_plots.pdf` :             Plots of each metric, with relevant cutoffs plotted. 
 
+## Example datasets <a name="examples"></a>
+A full guide to running through the pipeline with exemplar read datasets for a variety of possible scenarios can be found [`here`](https://github.com/duncanberger/nxf-BATQual/tree/main/examples).
+
 ## Tips: Memory use and efficiency <a name="mem"></a>
 
 ## Tips: Adjusting config files <a name="tips_adj"></a>
 
 ## Components <a name="components"></a>
+
+## Citation <a name="cite"></a>
