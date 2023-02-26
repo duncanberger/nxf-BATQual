@@ -50,6 +50,16 @@ wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR387/SRR387657/SRR387657_2.fastq.gz
 python scripts/aggregate.py --input example_run
 ```
 ## Interpreting results
+
+- The pipeline and 'aggregate.py' script will output several files in the 'results/aggregate/' folder. We'll use the 'aggregated_stats.wide.csv' file to flag problematic samples. As a reminder we're expecting:
+  -  Two high-quality *S. pnuemoniae* assemblies (pass all checks).
+  -  Two low-quality *S. pnuemoniae* assemblies (fail some assembly-quality checks).
+  -  One *S. pnuemoniae* assembly contaminated with the same species (Fail species checks and most likely other checks too).
+  -  One *S. pnuemoniae* assembly contaminated with a species from the Streptococcus genus (Fail species checks and most likely other checks too).
+  -  One *S. pnuemoniae* assembly contaminated with a species from a different genus (Fail species checks and most likely other checks too).
+  -  Two Streptococcal assemblies, which are not *S. pnuemoniae* (Fail species checks).
+<br/>
+
 ### Contiguity $\mathsf{\color{red}{}}$
 |Sample|Assembly length (Mb)|Contig N50 (bp)|Contigs (count)|Scaffold N50 (bp)|Scaffolds (count)|
 |------|------------------|-------------|------------|---------------|---------------|
@@ -64,6 +74,12 @@ python scripts/aggregate.py --input example_run
 |**SAMEA3389673**|2.21|74467|323|222119|272|
 |**SAMN00761799**|2.07|117890|101|149613|79|
 |**SAMN10131018**|$\mathsf{\color{red}{2.28}}$|75456|204|75716|170|
+<br/>
+
+- So, we can see that three assemblies have are larger than the default assembly size cutoff (2.26 Mb) and two (SAMD00110690, SAMEA1025813) are far bigger than expected. So these are most likely contaminted with at least one other distinct genome. 
+- Both of these assemblies are also very poorly assembled, which also could be a result of contamination preventing proper assembly.
+- SAMN10131018 is only marginally over the assembly size limit, so probably something has gone wrong, but it may not be a clear/obvious contaminant. 
+<br/>
 
 ### Completeness 
 |Sample|BUSCO (Complete & single-copy)|BUSCO (Complete & duplicated)|BUSCO (Fragmented)|BUSCO (Missing)|Completeness (CheckM)|Gaps (count)|Gaps (% of assembly)|Gaps sum, bp)
@@ -79,9 +95,14 @@ python scripts/aggregate.py --input example_run
 |**SAMEA3389673**|100|0|0|0|99.62|51|0.37|8106
 |**SAMN00761799**|99.8|0|0.2|0|92.74|22|0.05|1097
 |**SAMN10131018**|100|0|0|0|93.29|34|0.03|599
+<br/>
+
+- We can see that again two assemblies (SAMD00110690, SAMEA1025813) appear to only contain a subset of the expected Benchmarking Universal Single-Copy Orthologs (BUSCO) we'd expect with >15% duplicated again suggesting contaminants in these assemblies. 
+- We can also see that two other assemblies (SAMEA1023762, SAMEA1024102) have a slightly higher rate of fragmented BUSCOs than we see in other assemblies and more gaps, suggesting these assemblies are of slightly lower quality than the rest. 
+- SAMEA2382970 appears to have the lowest CheckM completeness score but a perfect BUSCO score. The could be a result of variation in the screening gene sets (or screening method) which might be less well suited to this assembly. Which suggests either it's from a different species or there is some issue with the per-base quality which is only flagged by CheckM (meaning it's most likely borderline). 
+<br/>
 
 ### Species identification 
-
 |Sample|MASH_hit|kraken2_genus|kraken2_species|mlst_species|GC_perc|
 |------|--------|-------------|---------------|------------|-------|
 |**SAMD00110690**|Streptococcus pneumoniae|Streptococcus|Streptococcus pneumoniae|spneumoniae|39.61|
@@ -95,6 +116,14 @@ python scripts/aggregate.py --input example_run
 |**SAMEA3389673**|Streptococcus pneumoniae|Streptococcus|Streptococcus pneumoniae|spneumoniae|39.68|
 |**SAMN00761799**|$\mathsf{\color{red}{Streptococcus }}$ $\mathsf{\color{red}{ mitis}}$|Streptococcus|$\mathsf{\color{red}{Streptococcus }}$ $\mathsf{\color{red}{ mitis}}$|spneumoniae|39.85|
 |**SAMN10131018**|$\mathsf{\color{red}{Streptococcus }}$ $\mathsf{\color{red}{ pseudopneumoniae}}$|Streptococcus|$\mathsf{\color{red}{Streptococcus }}$ $\mathsf{\color{red}{ pseudopneumoniae}}$|spneumoniae|39.91|
+<br/>
+
+- SAMEA1025813 was identified primarily as *Bacillus subtilis* by Mash but primarily *S. pnuemoniae* by Kraken2. This would suggest a mixture, probably biased towards *B. subtilis* given the GC% (*B. subtilis* expected GC = 43%) and genome size (expected genome size = 4.21 Mb).
+- Despite the oversized assembly, SAMD00110690 appears to be *S. pneumoniae*, both in Mash/Kraken2 hits and GC%. 
+- SAMEA2382970 is matches both *S. pneumoniae* and *S. salivarius*. However, there was no evidence of contamination, so most likely it is *S. salivarius*  and this species is just poorly represented in the Mash database, compared to *S. pneumoniae*. 
+- SAMN00761799 appears to be *S. mitis*.
+- SAMN10131018 appears to be *S. pseudopneumoniae* which explains the slightly larger assembly size. 
+<br/>
 
 ### Contamination 
 |Sample|Heterozygous variants (%)|BUSCO (Complete & duplicated)|Contamination (CheckM)|Strain Heterogenity (CheckM)|GC (%)|
@@ -110,6 +139,12 @@ python scripts/aggregate.py --input example_run
 |**SAMEA3389673**|4.54|0|2.1|0|39.68|
 |**SAMN00761799**|0.62|0|2.61|0|39.85|
 |**SAMN10131018**|1.96|0|4.15|0|39.91|
+<br/>
+
+- SAMD00110690 has a high rate of heterozygous variants suggesting multiple genomes within the assembly and very high contamination and Strain Heterogenity scores consistent with same/different species contamination  and same species contamination, respectively. 
+- SAMEA1025813 has a low heterozygous variant rate, but high BUSCO and CheckM contamination scores, which makes sense given that we don't expect *B. subtilis* reads to map to the *S. pneumoniae* assembly.
+- SAMEA2382970 does appear to have a very high rate of heterozygous variants but limited evidence of other contamination, suggesting either low level contamination or *S. salivarius* specific nuances (e.g. low mapping rates to the *S. pneumoniae* reference genome resulting in a bias towards heterozygous calls). 
+<br/>
 
 ### Typing
 |Sample|aroE|ddl|gdh|gki|recP|spi|xpt|Serotype (PneumoKITy)|
@@ -125,3 +160,20 @@ python scripts/aggregate.py --input example_run
 |**SAMEA3389673**|7|8|13|8|6|6|6|35B/35D|
 |**SAMN00761799**|~424|142|~477|501|93|393?|~153|$\mathsf{\color{red}{Below70-hit-PoorSequencequality}}$|
 |**SAMN10131018**|427|~447|~478|578?|373|~442|~735|$\mathsf{\color{red}{Below20-hit-possibleacapsularorganism}}$|
+<br/>
+
+- SAMD00110690 contains multiple MLST alleles, indicative of same species contamination.
+- SAMEA1025813 contains no MLST hits, suggesting it's not *S. pneumoniae*.
+- SAMEA2382970 contains no MLST hits, suggesting it's not *S. pneumoniae*, but it does have a weak hit to a serotype, indicating it is a different Streptococcal species. 
+- SAMN00761799 contains partial MLST hits (?) and novel alleles (~), suggesting it's not *S. pneumoniae*, but it does have a weak hit to a serotype, indicating it is a different Streptococcal species. 
+- SAMN10131018 contains partial MLST hits (?) and novel alleles (~), suggesting it's not *S. pneumoniae*, but it does have a weak hit to a serotype, indicating it is a different Streptococcal species. 
+
+### Overall assessment
+
+- High quality assemblies: SAMEA1408274, SAMEA2234452
+- Low-quality assemblies: SAMEA1023762, SAMEA1024102
+- Multiple *S. pneumoniae* genomes: SAMD00110690
+- *S. salivarius*, possibly also containing *S. pneumoniae*: SAMEA2382970
+- *S. mitis*: SAMN10131018
+- *S. pseudopneumoniae*: SAMN00761799
+- *B. subtilis* and amost certainly some *S. pneumoniae*: SAMEA1025813
