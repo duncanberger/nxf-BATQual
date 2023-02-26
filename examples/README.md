@@ -1,6 +1,6 @@
 # Testing BATQual
 
-- Below are a 9 test sequence read sets, covering both high-quality (ideal scenario) inputs and low-quality, contaminated or otherwise problematic inputs. 
+Below are a 9 test sequence read sets, covering both high-quality (ideal scenario) inputs and low-quality, contaminated or otherwise problematic inputs. 
 
 ## Downloading test data
 ```
