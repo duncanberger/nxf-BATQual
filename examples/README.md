@@ -170,10 +170,10 @@ python scripts/aggregate.py --input example_run
 
 ### Overall assessment
 
-- High quality assemblies: SAMEA1408274, SAMEA2234452
-- Low-quality assemblies: SAMEA1023762, SAMEA1024102
-- Multiple *S. pneumoniae* genomes: SAMD00110690
-- *S. salivarius*, possibly also containing *S. pneumoniae*: SAMEA2382970
-- *S. mitis*: SAMN10131018
-- *S. pseudopneumoniae*: SAMN00761799
-- *B. subtilis* and amost certainly some *S. pneumoniae*: SAMEA1025813
+- **High quality assemblies:** SAMEA1408274, SAMEA2234452
+- **Low-quality assemblies:** SAMEA1023762, SAMEA1024102
+- **Multiple *S. pneumoniae* genomes:** SAMD00110690
+- ***S. salivarius*, possibly also containing *S. pneumoniae*:** SAMEA2382970
+- ***S. mitis*:** SAMN10131018
+- ***S. pseudopneumoniae*:** SAMN00761799
+- ***B. subtilis* and amost certainly some *S. pneumoniae*:** SAMEA1025813
