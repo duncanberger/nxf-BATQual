@@ -275,6 +275,26 @@ A full guide to running through the pipeline with exemplar read datasets for a v
 
 ## Components <a name="components"></a>
 
-
+Key tools used by BATQual:
+- bcftools=1.8
+- biopython=1.77
+- checkm-genome=1.2.2
+- fastp=0.23.2
+- fastqc=0.11.9
+- kraken2=2.1.2
+- minimap2=2.24
+- multiqc=1.14
+- nextflow=22.10.6
+- numpy=1.24.2
+- pandas=1.5.3
+- poppunk=2.6.0
+- prokka=1.14.6
+- python=3.9.15
+- quast=5.2.0
+- samtools=1.15.1
+- scipy=1.10.0
+- seaborn=0.12.2
+- seroba=1.0.2
+- VelvetOptimiser=2.2.6
 
 ## Citation <a name="cite"></a>
