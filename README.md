@@ -266,12 +266,15 @@ The output will be written to results/$sample_ID/* which will contain the follow
 A full guide to running through the pipeline with exemplar read datasets for a variety of possible scenarios can be found [`here`](https://github.com/duncanberger/nxf-BATQual/tree/main/examples).
 
 ## Tips: Runtimes and efficiency <a name="mem"></a>
-- You can increase the rate of sample processing in a few ways. The most time consuming process is the Velvet assembly stage this can be sped up by decreasing the range of kmer sizes ('--min_k' and '--max_k' parameters) which VelvetOptiser uses. Higher read-depth inputs tend to have optimum kmer lengths ~127 bp, while lower read-depth/more error prone datasets are more suited to shorter kmers (70-95 bp). 
+- You can increase the rate of sample processing in a few ways. The most time consuming process is the Velvet assembly stage this can be sped up by decreasing the range of kmer sizes ('--min_k' and '--max_k' parameters) which VelvetOptimiser uses. Higher read-depth inputs tend to have optimum kmer lengths ~127 bp, while lower read-depth/more error prone datasets are more suited to shorter kmers (70-95 bp). 
 - Disabling the more time consuming processes can decrease run times. These include: the het_call, CheckM and Kraken2 stages. The downside being that you will lose these quality checks, but the option exists to turn these steps off. 
 - By default GPSCs are not assigned but the process exists and can be enabled. Poppunk is intended to run on multiple samples, but by default is run per-sample in this pipeline (for scenarios where you might only want to assemble a few samples). If you want to run Poppunk GPSC assignment at scale, I'd recommend running 'scripts/run_GPSC.sh' script. This will deposit output files, per-sample, in the matching directories, which can then be processed by the 'scripts/aggregate.py' script.
 
 ## Tips: Adjusting config files <a name="tips_adj"></a>
+- Parameters for the execution of BATQual can be found in the 'nextflow.config' file. These can be also be set on the command line during execution. 
 
 ## Components <a name="components"></a>
+
+
 
 ## Citation <a name="cite"></a>
