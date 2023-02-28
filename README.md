@@ -21,6 +21,9 @@
 
 **[Addition of executors to the pipeline is in progress]**
 
+**[Conda environment is functional but needs to be simplified]**
+
+
 ## Pipeline summary <a name="pipeline_summary"></a>
 
 ### Schematic overview 
