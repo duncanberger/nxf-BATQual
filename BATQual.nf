@@ -77,6 +77,7 @@ workflow MAIN_A {
     CHECKM(VELVET.out)
     SHET(FASTP.out)
     MASH(VELVET.out)
+// Set conditions under which serotyping and GPSC assignment will occur. 
     if (params.pneumo == true & params.run_GPSC == true ) {
         GPSC(VELVET.out)
 		PK(VELVET.out)
@@ -106,6 +107,7 @@ workflow MAIN_B {
     PROKKA(fastas)
     CHECKM(fastas)
     MASH(fastas)
+// Set conditions under which serotyping and GPSC assignment will occur. 
 	if (params.pneumo == true & params.run_GPSC == true ) {
         GPSC(fastas)
 		PK(fastas)
