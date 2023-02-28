@@ -3,7 +3,6 @@ import sys
 import glob
 import subprocess
 import pandas as pd
-from  collections import Counter
 import seaborn as sns
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
@@ -13,7 +12,8 @@ def main(argv,out):
 	if not len(argv):
 		argv.append('-h')
 	parser = argparse.ArgumentParser()
-	parser.add_argument('--input', help='Folder to process', default="results")
+	print("Note: 'aggregate.py is designed to be run on the output of BATQual.nf pipeline and run in the same directory as the pipeline was executed.")
+	parser.add_argument('--input', help='Folder to process', default="results", required=True)
 	parser.add_argument('--output', help="Output file name ['aggregated_stats.*']", default="aggregated_stats")
 	parser.add_argument('--completeness_threshold', help="CheckM completeness threshold [90]", default=90)
 	parser.add_argument('--contamination_threshold', help="CheckM contamination threshold [5]", default=5)
@@ -35,6 +35,13 @@ def main(argv,out):
 	parser.add_argument('--target_genus', help="Closest MASH hit (top 5) [Streptococcus]", default="Streptococcus")
 	parser.add_argument('--kraken_match_threshold_species', help="Minimum percentage of reads coverged by the --target_species [25]", default=25)
 	parser.add_argument('--kraken_match_threshold_genus', help="Minimum percentage of reads coverged by the --target_genus [50]", default=50)
+
+	try:
+		args = parser.parse_args()
+	except argparse.ArgumentError:
+		print("Error: Please provide a value for the --input argument.")
+		parser.print_help()
+		sys.exit(1)
 
 	args = parser.parse_args(argv)
 	# Make a directory for the aggregated output files
