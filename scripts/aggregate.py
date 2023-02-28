@@ -42,7 +42,7 @@ def main(argv,out):
 	subprocess.call(instring, shell=True)
 	# Write a command and run multiqc
 	mqc = "multiqc --outdir "+args.input+"/"+args.output+"/ "+args.input+"/*/"
-#	subprocess.call(mqc, shell=True)
+	subprocess.call(mqc, shell=True)
 	# Run the first function, to parse output files, aggregate results, identify failed assemblies
 	result = add_label_column(args.input, args.completeness_threshold, args.contamination_threshold, args.strain_heterogeneity_threshold, args.busco_completeness_threshold, args.busco_duplication_threshold, args.busco_fragmented_threshold, args.busco_missing_threshold, args.assembly_length_threshold_min, args.assembly_length_threshold_max, args.gc_threshold_min, args.gc_threshold_max, args.gap_sum_threshold, args.gap_count_threshold, args.perc_het_vars_threshold, args.scaffold_count_threshold, args.scaffold_N50_threshold, args.target_species, args.kraken_match_threshold_species, args.kraken_match_threshold_genus, args.target_genus)
 	# Reformat output
