@@ -7,6 +7,7 @@
 * [Installation](#install)
 * [Running BATQual](#run)
 * [Aggregation and quality control](#aggregate)
+* [Run PopPUNK (optional)](#poppunk)
 * [Example datasets](#examples)
 * [Tips: Memory use and efficiency](#mem)
 * [Tips: Adjusting config files](#tips_adj)
@@ -227,8 +228,26 @@ Each file is formatted into columns as follows:
 3. `results`: Metric results
 4. `status`: QC status, unpopulated except for pneumoKITy QC, to be populated at the next stage. 
 
+## Run PopPUNK (optional) <a name="poppunk"></a>
+
+PopPunk can be run as part of BATQual but as it runs individually (one sample at a time), it nearly doubles the runtime. You could run it as a final step (after all genomes have been assembled) to sidestep this problem, but you may want to run BATQual multiple times across different sample sets and so it's much simpler to split off PopPUNK GPSC assignment into it's own script.
+```
+# That script can be found and run in the following way:
+scripts/run_poppunk_FASTQ.sh --sample_list SAMPLE_LIST --baseDir BASE_DIR --threads THREADS
+```
+Where 'SAMPLE_LIST' is a single column list of samples and baseDir is the folder where BATQual was run (the location where the output folder was created.
+
+If you're just working with FASTA files then use this script:
+```
+scripts/run_poppunk_FASTA.sh --input_list INPUT_LIST --baseDir BASE_DIR --threads THREADS
+```
+Where 'INPUT_LIST' is the same *.csv file you provided to BATQual (col 1:sample_id, col 2: FASTA location) with your FASTA file locations. baseDir is the folder where BATQual was run (the location where the output folder was created.
+
+Once either of these scripts have run, it will output your GPSC assignment results in each sample directory which can then be further processed with 'aggregate.py'.
+
+
 ## Aggregation and quality control <a name="aggregate"></a>
-To aggregate the results across multiple isolates and runs, I have written an accessory script to produce merged output tables and plot the results.
+To aggregate the results across multiple isolates and runs, I have written an accessory script to produce merged output tables and plot the results. Again 
 
 You can run the script as follows (where results is the name of the folder specified by the '--output' parameter:
 ```
