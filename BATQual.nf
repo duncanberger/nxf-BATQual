@@ -22,9 +22,6 @@ Run options:
 	--name			Name for the pipeline run. If not specified, Nextflow will automatically generate a random mnemonic.
 	--outdir		The output directory where the results will be saved ["results"]
 
-Filtering options:
-	--minContigLength	Filter for minimum contig length in output [0]
-
 Skip metrics:
 	--run_GPSC	Run GPSC estimation [false]
 	--pneumo	Run tools specific to Streptococcus pnuemoniae [false]
@@ -73,15 +70,15 @@ workflow MAIN_A {
      .set {reads}
     main:
     FASTP(reads)
-//    FASTQC(reads)
-//    VELVET(FASTP.out)
-//    KRAKEN(reads)
-//    BUSCO(VELVET.out)
-//    STATS(VELVET.out)
-//    PROKKA(VELVET.out)
-//    CHECKM(VELVET.out)
+    FASTQC(reads)
+    VELVET(FASTP.out)
+    KRAKEN(reads)
+    BUSCO(VELVET.out)
+    STATS(VELVET.out)
+    PROKKA(VELVET.out)
+    CHECKM(VELVET.out)
     SHET(FASTP.out)
-//    MASH(VELVET.out)
+    MASH(VELVET.out)
     if (params.pneumo == true & params.run_GPSC == true ) {
         GPSC(VELVET.out)
 		PK(VELVET.out)
@@ -92,7 +89,7 @@ workflow MAIN_A {
 		SBA(reads)
 		}
 	else {}
-//    QUAST(VELVET.out)
+    QUAST(VELVET.out)
     }
 
 // FASTA workflow with conditional execution of processes specific to Streptococcus pneumoniae
