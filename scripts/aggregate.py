@@ -38,21 +38,27 @@ def main(argv,out):
 
 	args = parser.parse_args(argv)
 	# Make a directory for the aggregated output files
-	instring="mkdir -p "+args.input+"/"+args.output+"/"
-	subprocess.call(instring, shell=True)
+	mkdir_cmd="mkdir -p "+args.input+"/"+args.output+"/"
+	subprocess.call(mkdir_cmd, shell=True)
+
 	# Write a command and run multiqc
 	mqc = "multiqc --outdir "+args.input+"/"+args.output+"/ "+args.input+"/*/"
 	subprocess.call(mqc, shell=True)
+
 	# Run the first function, to parse output files, aggregate results, identify failed assemblies
 	result = add_label_column(args.input, args.completeness_threshold, args.contamination_threshold, args.strain_heterogeneity_threshold, args.busco_completeness_threshold, args.busco_duplication_threshold, args.busco_fragmented_threshold, args.busco_missing_threshold, args.assembly_length_threshold_min, args.assembly_length_threshold_max, args.gc_threshold_min, args.gc_threshold_max, args.gap_sum_threshold, args.gap_count_threshold, args.perc_het_vars_threshold, args.scaffold_count_threshold, args.scaffold_N50_threshold, args.target_species, args.kraken_match_threshold_species, args.kraken_match_threshold_genus, args.target_genus)
+	
 	# Reformat output
 	dfx = pd.DataFrame([sub.split(",") for sub in result])
 	dfx.columns =['sample', 'metric', 'result', 'status']
+	
 	# Write to file
 	dfx.to_csv(args.input+"/"+args.output+"/"+args.output+".long.csv", sep=',', index=False)
+	
 	# Aggregate results to a reformatted table and write to file
 	rx3 = aggregate(dfx)
 	rx3.to_csv(args.input+"/"+args.output+"/"+args.output+".wide.csv", sep=',', index=True)
+	
 	# Make plots
 	plot_all(args.input+"/"+args.output+"/"+args.output+".pdf", args.input+"/"+args.output+"/"+args.output+".wide.csv",rx3, args.completeness_threshold, args.contamination_threshold, args.strain_heterogeneity_threshold, args.busco_completeness_threshold, args.busco_duplication_threshold, args.busco_fragmented_threshold, args.busco_missing_threshold, args.assembly_length_threshold_min, args.assembly_length_threshold_max, args.gc_threshold_min, args.gc_threshold_max, args.gap_sum_threshold, args.gap_count_threshold, args.perc_het_vars_threshold, args.scaffold_count_threshold, args.scaffold_N50_threshold)
 
@@ -61,16 +67,22 @@ def add_label_column(input, completeness_threshold, contamination_threshold, str
 	pattern = f"{input}/*/*_results.txt"
 	file_paths = glob.glob(pattern)
 	contents = ""
+
 	# Read data in and split lines
 	for path in file_paths:
 		with open(path, "r") as f:
 			contents += f.read()
 	lines = contents.splitlines()
 	result = []
-	# For each relevant metric, identify whether it's a PASS or FAIL based on default or user defined thresholds
+
+	# For each relevant metric, identify whether it's a PASS or FAIL based on default or user defined thresholds. Coded manually for each metric (for now) to account for variety of input types and filtering thresholds. 
 	for line in lines:
 		columns = line.strip().split(',')
+
+		# Rename columns (not necessary just easier to keep track of everything)
 		sample_id, metric, value, backup = columns[0], columns[1], columns[2], columns[3]
+
+		# For each metric which a QC cutoff, subset to only include that metric, determine whether it is above or below the threshold and write a string in the fourth column based on the value. 
 		if metric == "CHECKM_Completeness":
 			if float(value) >= completeness_threshold:
 				result.append(f"{sample_id},{metric},{value},PASS")
@@ -175,12 +187,17 @@ def add_label_column(input, completeness_threshold, contamination_threshold, str
 	return result
 
 def aggregate(input):
+	# Pivot input DataFrame to create table of metrics by sample
+	df2 = input.pivot(index='sample', columns='metric', values='result')
+	xf1 = input.loc[input['status']=='FAIL'].groupby('sample')['status'].agg({'count'})
+
 	# Merge data table from add_label_column with a table of counts of FAIL metrics (per-sample)
-	df = input
-	df2 = df.pivot(index='sample', columns='metric', values='result')
-	xf1 = df.loc[df['status']=='FAIL'].groupby('sample')['status'].agg({'count'})
 	df3 = df2.merge(xf1, left_on='sample', right_on='sample',how='left').fillna("NA")
+
+	# Replace NA values with zeros, but only in the failure count column 
 	df3[['count']] = df3[['count']].replace("NA", 0)
+
+	# Rename that count of failures column
 	df3 = df3.rename(columns={'count': 'fail_counts'})
 	return df3
 
