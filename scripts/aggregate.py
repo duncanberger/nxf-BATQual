@@ -208,8 +208,11 @@ def plot_all(outputstring, inputstring,input, completeness_threshold, contaminat
 	sns.set(style="ticks")
 	# Open PDF and plot figures across 3 pages (up to 8 plots per page)
 	pdf_pages = PdfPages(outputstring)
+
+	# Set the layout of the first page, defining each subplot name
 	fig, ((axs1, axs2), (axs3, axs4), (axs5, axs6), (axs7, axs8)  ) = plt.subplots(4, 2, figsize=(8, 12))
 
+	# For each metric (e.g. assembly length), select the relevant data, design the subplot, or, if the metric is not included, create a blank space. 
 	if "assembly_length_bp" in df.columns:
 		sns.histplot(data=df, x="assembly_length_bp", bins=50, ax=axs1)
 		axs1.set_xlabel("Assembly length (bp)", fontsize=8, fontdict={"weight": "bold"})
@@ -488,6 +491,7 @@ def plot_all(outputstring, inputstring,input, completeness_threshold, contaminat
 		csx14.tick_params(axis='y', labelsize=6)
 	else:
 		csx14.set_visible(False)
+	
 	# Remove spacing
 	sns.despine()
 	# Fix spacing on page and between plots
@@ -497,7 +501,7 @@ def plot_all(outputstring, inputstring,input, completeness_threshold, contaminat
 
 	fig, (dsx1,dsx2) = plt.subplots(1, 2, figsize=(8, 3))
 
-
+	# Same as above but select only the 10 most prevalent serotypes
 	if "pneumoKITy_serotype" in df.columns:
 		top_serotypes = df["pneumoKITy_serotype"].value_counts().nlargest(10).index.tolist()
 		df_top = df[df["pneumoKITy_serotype"].isin(top_serotypes)]
@@ -515,6 +519,7 @@ def plot_all(outputstring, inputstring,input, completeness_threshold, contaminat
 	else:
 		dsx1.set_visible(False)
 
+	# Same as above but select only the 10 most prevalent serotypes
 	if "seroBA_serotype" in df.columns:
 		top_serotypes = df["seroBA_serotype"].value_counts().nlargest(10).index.tolist()
 		df_top = df[df["seroBA_serotype"].isin(top_serotypes)]
