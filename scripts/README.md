@@ -10,8 +10,5 @@ Merges results of >=1 run of BATQual and outputs tables and figures for QC and f
 
 ### run_poppunk.sh
 
-(In development, not implemented) Runs poppunk on the output of BATQual, implemented as a more efficient means of calculating GPSCs compared to running poppunk, per-sample with each execution of the pipeline. 
-
-### cleanup.sh
-
-(In development, not implemented) Simple script designed to remove old work/* files which are no longer needed by BATQual - to save space. 
+(In development) Runs poppunk on the output of BATQual, implemented as a more efficient means of calculating GPSCs compared to running poppunk, per-sample with each execution of the pipeline. 
+- *To do: * Add help message, add better input checks, add parameter to set threads and max memory usage, add final command to delete unnecessary outputs. 
