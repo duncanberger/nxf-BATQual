@@ -3,6 +3,7 @@
 # Define default values
 sample_list=""
 baseDir=""
+threads=4  # Default value for number of threads is 1
 
 # Parse command-line parameters
 while [[ $# -gt 0 ]]
@@ -16,6 +17,11 @@ do
             ;;
         --baseDir)
             baseDir="$2"
+            shift # past argument
+            shift # past value
+            ;;
+        --threads)  # New case for num_threads parameter
+            threads="$2"
             shift # past argument
             shift # past value
             ;;
@@ -39,10 +45,7 @@ do
     echo $sample_id $baseDir/$sample_id/$sample_id.velvet_contigs.fa | tr ' ' '\t'
 done < "$sample_list" > run_GPSC.list
 
-# Run Poppunk on the combined input (giving a list of all relevant accessions)
-poppunk_assign --db $baseDir/DB/GPS_v6 --distances $baseDir/DB/GPS_v6/GPS_v6.dists --query GPSC_input.txt --output out_GPSC --external-clustering $baseDir/DB/GPS_v6_external_clusters.csv --threads 5
-
-# Split the result into individual files and place them back in each samples directory
+echo "poppunk_assign --db $baseDir/DB/GPS_v6 --distances $baseDir/DB/GPS_v6/GPS_v6.dists --query GPSC_input.txt --output out_GPSC --external-clustering $baseDir/DB/GPS_v6_external_clusters.csv --threads $threads"
 while read -r sample_id
 do
 grep $sample_id out_GPSC_external_clusters.csv | awk -F, '{print $1,"GPSC",$2,""}' OFS=',' > $baseDir/$sample_id/$sample_id.GPSC_results.txt
