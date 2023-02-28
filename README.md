@@ -253,6 +253,9 @@ You can run the script as follows (where results is the name of the folder speci
 ```
 python scripts/aggregate.py --input results
 ```
+### Required input 
+- `--input` : 'Folder to process' (No default, this is the output folder from BATQual which by default is called 'results/'
+
 ### Optional input
 #### Output parameter
 - `--output` : Output file name [aggregated_stats.* ]
