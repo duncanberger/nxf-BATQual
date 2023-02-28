@@ -54,12 +54,12 @@ python scripts/aggregate.py --input example_run
 ## Interpreting results
 
 - The pipeline and 'aggregate.py' script will output several files in the 'results/aggregate/' folder. We'll use the 'aggregated_stats.wide.csv' file to flag problematic samples. As a reminder we're expecting:
-  -  Two high-quality *S. pnuemoniae* assemblies (pass all checks).
-  -  Two low-quality *S. pnuemoniae* assemblies (fail some assembly-quality checks).
-  -  One *S. pnuemoniae* assembly contaminated with the same species (Fail species checks and most likely other checks too).
-  -  One *S. pnuemoniae* assembly contaminated with a species from the Streptococcus genus (Fail species checks and most likely other checks too).
-  -  One *S. pnuemoniae* assembly contaminated with a species from a different genus (Fail species checks and most likely other checks too).
-  -  Two Streptococcal assemblies, which are not *S. pnuemoniae* (Fail species checks).
+  -  Two high-quality *S. pneumoniae* assemblies (pass all checks).
+  -  Two low-quality *S. pneumoniae* assemblies (fail some assembly-quality checks).
+  -  One *S. pneumoniae* assembly contaminated with the same species (Fail species checks and most likely other checks too).
+  -  One *S. pneumoniae* assembly contaminated with a species from the Streptococcus genus (Fail species checks and most likely other checks too).
+  -  One *S. pneumoniae* assembly contaminated with a species from a different genus (Fail species checks and most likely other checks too).
+  -  Two Streptococcal assemblies, which are not *S. pneumoniae* (Fail species checks).
 <br/>
 
 ### Contiguity $\mathsf{\color{red}{}}$
@@ -120,7 +120,7 @@ python scripts/aggregate.py --input example_run
 |**SAMN10131018**|$\mathsf{\color{red}{Streptococcus }}$ $\mathsf{\color{red}{ pseudopneumoniae}}$|Streptococcus|$\mathsf{\color{red}{Streptococcus }}$ $\mathsf{\color{red}{ pseudopneumoniae}}$|spneumoniae|39.91|
 <br/>
 
-- SAMEA1025813 was identified primarily as *Bacillus subtilis* by Mash but primarily *S. pnuemoniae* by Kraken2. This would suggest a mixture, probably biased towards *B. subtilis* given the GC% (*B. subtilis* expected GC = 43%) and genome size (expected genome size = 4.21 Mb).
+- SAMEA1025813 was identified primarily as *Bacillus subtilis* by Mash but primarily *S. pneumoniae* by Kraken2. This would suggest a mixture, probably biased towards *B. subtilis* given the GC% (*B. subtilis* expected GC = 43%) and genome size (expected genome size = 4.21 Mb).
 - Despite the oversized assembly, SAMD00110690 appears to be *S. pneumoniae*, both in Mash/Kraken2 hits and GC%. 
 - SAMEA2382970 is matches both *S. pneumoniae* and *S. salivarius*. However, there was no evidence of contamination, so most likely it is *S. salivarius*  and this species is just poorly represented in the Mash database, compared to *S. pneumoniae*. 
 - SAMN00761799 appears to be *S. mitis*.
