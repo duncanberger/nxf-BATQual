@@ -43,10 +43,14 @@ fi
 cat $input_list | tr ',' '\t' > GPSC_input.txt
 
 # Run Poppunk on all samples
-echo "poppunk_assign --db $baseDir/DB/GPS_v6 --distances $baseDir/DB/GPS_v6/GPS_v6.dists --query GPSC_input.txt --output out_GPSC --external-clustering $baseDir/DB/GPS_v6_external_clusters.csv --threads $threads"
+poppunk_assign --db $baseDir/DB/GPS_v6 --distances $baseDir/DB/GPS_v6/GPS_v6.dists --query GPSC_input.txt --output out_GPSC --external-clustering $baseDir/DB/GPS_v6_external_clusters.csv --threads $threads
+
+# Split GPSC output and write individual result files into each sample directory (for further processing by aggregate.py)
+grep -v sample_id $input_list | cut -f1 -d, > tempx.txt
 
 # Split GPSC output and write individual result files into each sample directory (for further processing by aggregate.py)
 while read -r sample_id
 do
+echo $sample_id
 grep $sample_id out_GPSC_external_clusters.csv | awk -F, '{print $1,"GPSC",$2,""}' OFS=',' > $baseDir/$sample_id/$sample_id.GPSC_results.txt
-done < "$input_list"
+done < tempx.txt
