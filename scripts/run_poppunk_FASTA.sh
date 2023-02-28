@@ -51,6 +51,5 @@ grep -v sample_id $input_list | cut -f1 -d, > tempx.txt
 # Split GPSC output and write individual result files into each sample directory (for further processing by aggregate.py)
 while read -r sample_id
 do
-echo $sample_id
 grep $sample_id out_GPSC_external_clusters.csv | awk -F, '{print $1,"GPSC",$2,""}' OFS=',' > $baseDir/$sample_id/$sample_id.GPSC_results.txt
 done < tempx.txt
