@@ -227,7 +227,7 @@ To aggregate the results across multiple isolates and runs, I have written an ac
 
 You can run the script as follows (where results is the name of the folder specified by the '--output' parameter:
 ```
-python scripts/filter.py --input results
+python scripts/aggregate.py --input results
 ```
 ### Optional input
 #### Output parameter
