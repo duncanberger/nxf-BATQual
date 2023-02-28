@@ -19,9 +19,9 @@
 
 **[Note: BATQual is currently being developed and has only been run internally]** <br />
 
-**[Addition of executors to the pipeline is in progress]**
+**[Note: Addition of executors to the pipeline is in progress - most likely will default to Slurm]**
 
-**[Conda environment is functional but needs to be simplified]**
+**[Note: Conda environment is functional but needs to be simplified]**
 
 
 ## Pipeline summary <a name="pipeline_summary"></a>
