@@ -1,10 +1,11 @@
 #!/usr/bin/env nextflow
 
+// Write help message
 def helpMessage() {
 	log.info"""
 Usage:
-	nextflow run batqual.nf --input read_locations.csv --mode fastq
-	nextflow run batqual.nf --input fasta_locations.csv --mode fasta
+	nextflow run BATQual.nf --input read_locations.csv --mode fastq
+	nextflow run BATQual.nf --input fasta_locations.csv --mode fasta
 
 Mandatory arguments:
 	--input			Path to csv file with read locations
@@ -18,8 +19,6 @@ BUSCO options:
 	--lineage		Specify the BUSCO lineage to be used ["lactobacillales_odb10"]
 
 Run options:
-	--threads		Number of threads to use [3]
-	--name			Name for the pipeline run. If not specified, Nextflow will automatically generate a random mnemonic.
 	--outdir		The output directory where the results will be saved ["results"]
 
 Skip metrics:
@@ -29,7 +28,7 @@ Skip metrics:
     """.stripIndent()
 }
 
-// Set default params for relevant inputs
+// Set default params for mandatory inputs
 params.help = null
 params.input = null
 params.mode = null
@@ -50,11 +49,10 @@ if (!params.mode){
     exit 0
 }
 
-// Set default params for relevant inputs
+// Set default params for optional inputs
 params.no_GPSC = true
 params.pneumo = false
 params.run_GPSC = false
-input_dir = file(params.inputdir)
 params.index = file(params.input)
 
 
