@@ -17,8 +17,9 @@
 ## Introduction <a name="Introduction"></a>
 **BATQual** is a Nextflow pipeline for performing assembling, annotation and typing bacterial genomes. It's designed to work on either Illumina short-reads or assembled genomes. It was primarily developed to assemble and type _Streptococcus pneumoniae_ genomes and so there is a specific mode '--pneumo' which will enable serotyping and cluster assignment tools specific to this species, if it's required. 
 
-[Note: BATQual is currently being developed and has only been run internally]
-[Addition of executors to the pipeline is in progress]
+**[Note: BATQual is currently being developed and has only been run internally]** <br />
+
+**[Addition of executors to the pipeline is in progress]**
 
 ## Pipeline summary <a name="pipeline_summary"></a>
 
