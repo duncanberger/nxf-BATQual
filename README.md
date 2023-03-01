@@ -58,7 +58,7 @@ When processing genome assemblies ('--mode fasta'), the pipeline will omit read-
 4. Evaluate assembly using [`QUAST`](https://quast.sourceforge.net/)
 5. Estimate most likely species based on the closet [`MASH`](https://github.com/marbl/Mash) hits in the RefSeq database
 6. Perform assembly-based pneumococcal serotyping using [`pneumoKITy`](https://github.com/sanger-pathogens/seroba)
-7. Assign Global Pneumococcal Sequence Clusters [`GPSCs`](https://www.pneumogen.net/gps/) using popunk [`PopPunk`](https://poppunk.net/)
+7. Assign Global Pneumococcal Sequence Clusters [`GPSCs`](https://www.pneumogen.net/gps/) using popunk [`PopPUNK`](https://poppunk.net/)
 8. Perform multilocus sequence typing using [`mlst_check`](https://github.com/sanger-pathogens/mlst_check)
 9. Annotate each genome using [`Prokka`](https://github.com/tseemann/prokka)
 
@@ -230,7 +230,7 @@ Each file is formatted into columns as follows:
 
 ## Run PopPUNK (optional) <a name="poppunk"></a>
 
-PopPunk can be run as part of BATQual but as it runs individually (one sample at a time), it nearly doubles the runtime. You could run it as a final step (after all genomes have been assembled) to sidestep this problem, but you may want to run BATQual multiple times across different sample sets and so it's much simpler to split off PopPUNK GPSC assignment into it's own script.
+PopPUNK can be run as part of BATQual but as it runs individually (one sample at a time), it nearly doubles the runtime. You could run it as a final step (after all genomes have been assembled) to sidestep this problem, but you may want to run BATQual multiple times across different sample sets and so it's much simpler to split off PopPUNK GPSC assignment into it's own script.
 ```
 # That script can be found and run in the following way:
 scripts/run_poppunk_FASTQ.sh --sample_list SAMPLE_LIST --baseDir BASE_DIR --threads THREADS
@@ -295,7 +295,7 @@ A full guide to running through the pipeline with exemplar read datasets for a v
 ## Tips: Best practices, tool selection, memory use and efficiency <a name="mem"></a>
 - You can increase the rate of sample processing in a few ways. The most time consuming process is the VelvetOptimiser assembly stage this can be sped up by decreasing the range of kmer sizes ('--min_k' and '--max_k' parameters) which VelvetOptimiser uses. Higher read-depth inputs tend to have optimum kmer lengths ~127 bp, while lower read-depth/more error prone datasets are more suited to shorter kmers (70-95 bp). 
 - Disabling the more time consuming processes can decrease run times. These include: the het_call, CheckM and Kraken2 stages. The downside being that you will lose these quality checks, but the option exists to turn these steps off. 
-- By default GPSCs are not assigned but the process exists and can be enabled. Poppunk is intended to run on multiple samples, but by default is run per-sample in this pipeline (for scenarios where you might only want to assemble a few samples). If you want to run Poppunk GPSC assignment at scale, I'd recommend running 'scripts/run_GPSC.sh' script. This will deposit output files, per-sample, in the matching directories, which can then be processed by the 'scripts/aggregate.py' script.
+- By default GPSCs are not assigned but the process exists and can be enabled. PopPUNK is intended to run on multiple samples, but by default is run per-sample in this pipeline (for scenarios where you might only want to assemble a few samples). If you want to run PopPUNK GPSC assignment at scale, I'd recommend running 'scripts/run_GPSC.sh' script. This will deposit output files, per-sample, in the matching directories, which can then be processed by the 'scripts/aggregate.py' script.
 
 ## Tips: Adjusting config files <a name="tips_adj"></a>
 - Parameters for the execution of BATQual can be found in the 'nextflow.config' file. These can be also be set on the command line during execution. 
