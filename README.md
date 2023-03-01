@@ -58,7 +58,7 @@ When processing genome assemblies ('--mode fasta'), the pipeline will omit read-
 4. Evaluate assembly using [`QUAST`](https://quast.sourceforge.net/)
 5. Estimate most likely species based on the closet [`MASH`](https://github.com/marbl/Mash) hits in the RefSeq database
 6. Perform assembly-based pneumococcal serotyping using [`pneumoKITy`](https://github.com/sanger-pathogens/seroba)
-7. Assign Global Pneumococcal Sequence Clusters [`GPSCs`](https://www.pneumogen.net/gps/)) using popunk ([`PopPunk`](https://poppunk.net/)
+7. Assign Global Pneumococcal Sequence Clusters [`GPSCs`](https://www.pneumogen.net/gps/) using popunk [`PopPunk`](https://poppunk.net/)
 8. Perform multilocus sequence typing using [`mlst_check`](https://github.com/sanger-pathogens/mlst_check)
 9. Annotate each genome using [`Prokka`](https://github.com/tseemann/prokka)
 
