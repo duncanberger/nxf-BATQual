@@ -24,7 +24,7 @@
 
 **[Note: Conda environment is functional but needs to be simplified]**
 
-
+**[Note: At present we are deliberately not including scaffolding, gap-closing and antimicrobial resistance prediction steps based on stakeholder requests. I may build this functionality into the pipeline at a later date as an optional extra]** 
 ## Pipeline summary <a name="pipeline_summary"></a>
 
 ### Schematic overview 
