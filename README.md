@@ -34,33 +34,33 @@
 #### FASTQ processing
 When processing Illumina sequencing reads ('--mode fastq'), the pipeline will perform the following steps:
 
-1. Trim adaptors from reads ([`fastp`](https://github.com/OpenGene/fastp)).
-2. Assess read quality using ([`FASTQC`](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)). 
-3. Assemble one genome per-isolate using ([`VelvetOptimiser`](https://github.com/tseemann/VelvetOptimiser)).
-4. Estimate heterozygosity with the read data to check for contamination using ([`minimap`](https://github.com/lh3/minimap2)) and ([`BCFtools`](https://samtools.github.io/bcftools/bcftools.html)).
-5. Estimate read contamination using([`Kraken2`](https://github.com/DerrickWood/kraken2))
-6. Calculate standard assembly statistics using a custom script ([`asm_stats.py`](https://github.com/duncanberger/nxf-BATQual/blob/main/scripts/asm_stats.py))
-7. Estimate assembly completeness using ([`BUSCO`](https://busco.ezlab.org/))
-8. Check for assembly completeness and contamination using ([`CheckM`](https://github.com/Ecogenomics/CheckM))
-9. Evaluate assembly using ([`QUAST`](https://quast.sourceforge.net/)) 
-10. Estimate most likely species based on the closet ([`MASH`](https://github.com/marbl/Mash)) hits in the RefSeq database
-11. Perform read-based pneumococcal serotyping using ([`seroBA`](https://github.com/sanger-pathogens/seroba))
-12. Perform assembly-based pneumococcal serotyping using ([`pneumoKITy`](https://github.com/sanger-pathogens/seroba))
-13. Assign Global Pneumococcal Sequence Clusters ([`GPSCs`](https://www.pneumogen.net/gps/)) using popunk ([`PopPunk`](https://poppunk.net/)) 
-14. Perform multilocus sequence typing using ([`mlst`](https://github.com/tseemann/mlst))
-15. Annotate each genome using ([`Prokka`](https://github.com/tseemann/prokka)) 
+1. Trim adaptors from reads [`fastp`](https://github.com/OpenGene/fastp).
+2. Assess read quality using [`FASTQC`](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
+3. Assemble one genome per-isolate using [`VelvetOptimiser`](https://github.com/tseemann/VelvetOptimiser)
+4. Estimate heterozygosity with the read data to check for contamination using [`minimap`](https://github.com/lh3/minimap2), [`freebayes`](https://github.com/freebayes/freebayes) and [`BCFtools`](https://samtools.github.io/bcftools/bcftools.html)
+5. Estimate read contamination using [`Kraken2`](https://github.com/DerrickWood/kraken2)
+6. Calculate standard assembly statistics using a custom script [`asm_stats.py`](https://github.com/duncanberger/nxf-BATQual/blob/main/scripts/asm_stats.py)
+7. Estimate assembly completeness using [`BUSCO`](https://busco.ezlab.org/)
+8. Check for assembly completeness and contamination using [`CheckM`](https://github.com/Ecogenomics/CheckM)
+9. Evaluate assembly using [`QUAST`](https://quast.sourceforge.net/)
+10. Estimate most likely species based on the closet [`MASH`](https://github.com/marbl/Mash) hits in the RefSeq database
+11. Perform read-based pneumococcal serotyping using [`seroBA`](https://github.com/sanger-pathogens/seroba)
+12. Perform assembly-based pneumococcal serotyping using [`pneumoKITy`](https://github.com/sanger-pathogens/seroba)
+13. Assign Global Pneumococcal Sequence Clusters [`GPSCs`](https://www.pneumogen.net/gps/) using [`PopPUNK`](https://poppunk.net/)
+14. Perform multilocus sequence typing using [`mlst`](https://github.com/tseemann/mlst)
+15. Annotate each genome using [`Prokka`](https://github.com/tseemann/prokka)
 
 #### FASTA processing
 When processing genome assemblies ('--mode fasta'), the pipeline will omit read-specific steps:
-1. Calculate standard assembly statistics using a custom script ([`asm_stats.py`](https://github.com/duncanberger/nxf-BATQual/blob/main/scripts/asm_stats.py))
-2. Estimate assembly completeness using ([`BUSCO`](https://busco.ezlab.org/))
-3. Check for assembly completeness and contamination using ([`CheckM`](https://github.com/Ecogenomics/CheckM))
-4. Evaluate assembly using ([`QUAST`](https://quast.sourceforge.net/)) 
-5. Estimate most likely species based on the closet ([`MASH`](https://github.com/marbl/Mash)) hits in the RefSeq database
-6. Perform assembly-based pneumococcal serotyping using ([`pneumoKITy`](https://github.com/sanger-pathogens/seroba))
-7. Assign Global Pneumococcal Sequence Clusters ([`GPSCs`](https://www.pneumogen.net/gps/)) using popunk ([`PopPunk`](https://poppunk.net/)) 
-8. Perform multilocus sequence typing using ([`mlst_check`](https://github.com/sanger-pathogens/mlst_check))
-9. Annotate each genome using ([`Prokka`](https://github.com/tseemann/prokka)) 
+1. Calculate standard assembly statistics using a custom script [`asm_stats.py`](https://github.com/duncanberger/nxf-BATQual/blob/main/scripts/asm_stats.py)
+2. Estimate assembly completeness using [`BUSCO`](https://busco.ezlab.org/)
+3. Check for assembly completeness and contamination using [`CheckM`](https://github.com/Ecogenomics/CheckM)
+4. Evaluate assembly using [`QUAST`](https://quast.sourceforge.net/)
+5. Estimate most likely species based on the closet [`MASH`](https://github.com/marbl/Mash) hits in the RefSeq database
+6. Perform assembly-based pneumococcal serotyping using [`pneumoKITy`](https://github.com/sanger-pathogens/seroba)
+7. Assign Global Pneumococcal Sequence Clusters [`GPSCs`](https://www.pneumogen.net/gps/)) using popunk ([`PopPunk`](https://poppunk.net/)
+8. Perform multilocus sequence typing using [`mlst_check`](https://github.com/sanger-pathogens/mlst_check)
+9. Annotate each genome using [`Prokka`](https://github.com/tseemann/prokka)
 
 ## Installation <a name="install"></a>
 ### Software
