@@ -194,9 +194,6 @@ The `-resume` parameter will re-start the pipeline if it has been previously run
 #### BUSCO 
 - `--lineage` : Specify the BUSCO lineage to be used ["lactobacillales_odb10"].
 
-#### Assembly filtering
-- `--minContigLength` : Filter for minimum contig length in output [0].
-
 #### Output
 - `--outdir` : The output directory where the results will be saved ["results"]. <br />
 - `--name` : Name for the pipeline run. If not specified, Nextflow will automatically generate a random mnemonic.
