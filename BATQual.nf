@@ -24,7 +24,10 @@ Run options:
 Skip metrics:
 	--run_GPSC	Run GPSC estimation [false]
 	--pneumo	Run tools specific to Streptococcus pnuemoniae [false]
-	
+	--no_CheckM	Don't run CheckM [false]
+	--no_Kraken2	Don't run Kraken2 [false]
+	--no_HET_call	Don't call heterozygous variants [false]
+	--no_Prokka	Don't annotate genomes [false]
     """.stripIndent()
 }
 
@@ -54,7 +57,10 @@ params.no_GPSC = true
 params.pneumo = false
 params.run_GPSC = false
 params.index = file(params.input)
-
+params.no_HET_call = false
+params.no_CheckM = false
+params.no_Prokka = false
+params.no_Kraken2 = false
 
 // FASTQ workflow with conditional execution of processes specific to Streptococcus pneumoniae
 workflow MAIN_A {
@@ -70,13 +76,26 @@ workflow MAIN_A {
     FASTP(reads)
     FASTQC(reads)
     VELVET(FASTP.out)
+    if (params.no_Kraken2 == false ) {
     KRAKEN(reads)
+    }
+    else {}
     BUSCO(VELVET.out)
     STATS(VELVET.out)
+    if (params.no_Prokka == false ) {
     PROKKA(VELVET.out)
+    }
+    else {}
+    if (params.no_CheckM == false ) {
     CHECKM(VELVET.out)
+    }
+    else {}
+    if (params.no_HET_call == false ) {
     SHET(FASTP.out)
+    }
+    else {}
     MASH(VELVET.out)
+
 // Set conditions under which serotyping and GPSC assignment will occur. 
     if (params.pneumo == true & params.run_GPSC == true ) {
         GPSC(VELVET.out)
@@ -104,8 +123,14 @@ workflow MAIN_B {
     main:
     BUSCO(fastas)
     STATS(fastas)
-    PROKKA(fastas)
-    CHECKM(fastas)
+    if (params.no_Prokka == false ) {
+    PROKKA(VELVET.out)
+    }
+    else {}
+    if (params.no_CheckM == false ) {
+    CHECKM(VELVET.out)
+    }
+    else {}
     MASH(fastas)
 // Set conditions under which serotyping and GPSC assignment will occur. 
 	if (params.pneumo == true & params.run_GPSC == true ) {
