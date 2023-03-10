@@ -63,19 +63,7 @@ python scripts/aggregate.py --input example_run
 <br/>
 
 ### Contiguity 
-|Sample|Assembly length (Mb)|Contig N50 (bp)|Contigs (count)|Scaffold N50 (bp)|Scaffolds (count)|
-|------|------------------|-------------|------------|---------------|---------------|
-|**SAMD00110690**|4.24|628|7492|634|7452|
-|**SAMEA1023762**|2.05|14803|342|45786|227|
-|**SAMEA1024102**|2.17|15818|557|28507|437|
-|**SAMEA1024779**|1.95|45222|194|56344|180|
-|**SAMEA1025813**|5.93|3314|5847|10710|1687|
-|**SAMEA1408274**|2.24|41157|221|69004|178|
-|**SAMEA2234452**|2.17|54605|152|64127|133|
-|**SAMEA2382970**|2.22|66028|255|95094|191|
-|**SAMEA3389673**|2.21|74467|323|222119|272|
-|**SAMN00761799**|2.07|117890|101|149613|79|
-|**SAMN10131018**|2.28|75456|204|75716|170|
+![image](https://user-images.githubusercontent.com/29282405/224370800-5a2aefe1-c86f-4ca9-9ee6-4f8b7333b827.png)
 <br/>
 
 - So, we can see that three assemblies have are larger than the default assembly size cutoff (2.26 Mb) and two (SAMD00110690, SAMEA1025813) are far bigger than expected. So these are most likely contaminted with at least one other distinct genome. 
@@ -84,19 +72,7 @@ python scripts/aggregate.py --input example_run
 <br/>
 
 ### Completeness 
-|Sample|BUSCO (Complete & single-copy)|BUSCO (Complete & duplicated)|BUSCO (Fragmented)|BUSCO (Missing)|Completeness (CheckM)|Gaps (count)|Gaps (% of assembly)|Gaps sum, bp)
-|------|------------------------------|-----------------------------|------------------|---------------|---------------------|------------|--------------------|-------|
-|**SAMD00110690**|29.1|15.9|34.1|20.9|90.1|40|0.03|1082
-|**SAMEA1023762**|97.3|0|1.7|1|98.44|115|0.34|6881
-|**SAMEA1024102**|96.8|0|2.7|0.5|98.27|120|0.26|5561
-|**SAMEA1024779**|100|0|0|0|99.58|14|0.03|494
-|**SAMEA1025813**|72.4|27.4|0.2|0|99.79|4160|3.58|212399
-|**SAMEA1408274**|100|0|0|0|99.36|43|0.11|2560
-|**SAMEA2234452**|100|0|0|0|99.31|19|0.05|1023
-|**SAMEA2382970**|99|0.2|0.2|0.6|84.56|64|0.17|3824
-|**SAMEA3389673**|100|0|0|0|99.62|51|0.37|8106
-|**SAMN00761799**|99.8|0|0.2|0|92.74|22|0.05|1097
-|**SAMN10131018**|100|0|0|0|93.29|34|0.03|599
+![image](https://user-images.githubusercontent.com/29282405/224370706-214b8806-30dd-4e2e-9fee-2cf35db707eb.png)
 <br/>
 
 - We can see that again two assemblies (SAMD00110690, SAMEA1025813) appear to only contain a subset of the expected Benchmarking Universal Single-Copy Orthologs (BUSCO) we'd expect with >15% duplicated again suggesting contaminants in these assemblies. 
@@ -105,19 +81,7 @@ python scripts/aggregate.py --input example_run
 <br/>
 
 ### Species identification 
-|Sample|MASH_hit|kraken2_genus|kraken2_species|mlst_species|GC_perc|
-|------|--------|-------------|---------------|------------|-------|
-|**SAMD00110690**|Streptococcus pneumoniae|Streptococcus|Streptococcus pneumoniae|spneumoniae|39.61|
-|**SAMEA1023762**|Streptococcus pneumoniae|Streptococcus|Streptococcus pneumoniae|spneumoniae|39.63|
-|**SAMEA1024102**|Streptococcus pneumoniae|Streptococcus|Streptococcus pneumoniae|spneumoniae|39.58|
-|**SAMEA1024779**|Streptococcus pneumoniae|Streptococcus|Streptococcus pneumoniae|spneumoniae|39.81|
-|**SAMEA1025813**|Bacillus   subtilis; Alkalihalobacillus   gibsonii; Bacillus   sp.; Bacillus   subtilis|Streptococcus|Streptococcus pneumoniae|NA| 42.5|
-|**SAMEA1408274**|Streptococcus pneumoniae|Streptococcus|Streptococcus pneumoniae|spneumoniae|39.52|
-|**SAMEA2234452**|Streptococcus pneumoniae|Streptococcus|Streptococcus pneumoniae|spneumoniae|39.61|
-|**SAMEA2382970**|Streptococcus   pneumoniae; Streptococcus   salivarius; Streptococcus   sp.|Streptococcus|Streptococcus  salivarius |NA|39.79|
-|**SAMEA3389673**|Streptococcus pneumoniae|Streptococcus|Streptococcus pneumoniae|spneumoniae|39.68|
-|**SAMN00761799**|Streptococcus   mitis|Streptococcus|Streptococcus   mitis|spneumoniae|39.85|
-|**SAMN10131018**|Streptococcus   pseudopneumoniae|Streptococcus|Streptococcus   pseudopneumoniae|spneumoniae|39.91|
+![image](https://user-images.githubusercontent.com/29282405/224370486-88826f64-7412-4e8c-b9e4-7562cc4e0842.png)
 <br/>
 
 - SAMEA1025813 was identified primarily as *Bacillus subtilis* by Mash but primarily *S. pneumoniae* by Kraken2. This would suggest a mixture, probably biased towards *B. subtilis* given the GC% (*B. subtilis* expected GC = 43%) and genome size (expected genome size = 4.21 Mb).
@@ -128,19 +92,7 @@ python scripts/aggregate.py --input example_run
 <br/>
 
 ### Contamination 
-|Sample|Heterozygous variants (%)|BUSCO (Complete & duplicated)|Contamination (CheckM)|Strain Heterogenity (CheckM)|GC (%)|
-|------|-------------|-------------------------|--------------------|---------------------------|-------|
-|**SAMD00110690**|79.83|15.9|117.59|83.5|39.61|
-|**SAMEA1023762**|4.67|0|0.78|0|39.63|
-|**SAMEA1024102**|5.46|0|0.38|50|39.58|
-|**SAMEA1024779**|4.82|0|0.83|33.33|39.81|
-|**SAMEA1025813**|4.68|27.4|85.95|1.63|42.5|
-|**SAMEA1408274**|4.68|0|0.33|0|39.52|
-|**SAMEA2234452**|3.89|0|1.33|0|39.61|
-|**SAMEA2382970**|81.60|0.2|8.24|2.99|39.79|
-|**SAMEA3389673**|4.54|0|2.1|0|39.68|
-|**SAMN00761799**|0.62|0|2.61|0|39.85|
-|**SAMN10131018**|1.96|0|4.15|0|39.91|
+![image](https://user-images.githubusercontent.com/29282405/224370221-7793be1d-5f18-4d1c-8d4f-b082783bd921.png)
 <br/>
 
 - SAMD00110690 has a high rate of heterozygous variants suggesting multiple genomes within the assembly and very high contamination and Strain Heterogenity scores consistent with same/different species contamination  and same species contamination, respectively. 
@@ -149,19 +101,8 @@ python scripts/aggregate.py --input example_run
 <br/>
 
 ### Typing
-|Sample|aroE|ddl|gdh|gki|recP|spi|xpt|Serotype (PneumoKITy)|
-|------|----|---|---|---|----|---|---|---------------------|
-|**SAMD00110690**|588?|863?|4;11|673?|549?|4;6|1079?|10A|
-|**SAMEA1023762**|10|17|16|40|1|17|1|7F/7A|
-|**SAMEA1024102**|1|8|5|4|16|11?|1|14|
-|**SAMEA1024779**|15|262|15|34|16|6|14|8|
-|**SAMEA1025813**|NA|NA|NA|NA|NA|NA|NA|NA|
-|**SAMEA1408274**|5|4|6|1|2|6|3|Serogroup_6_(6E)|
-|**SAMEA2234452**|5|27|7|4|10|10|1|6A/6B|
-|**SAMEA2382970**|NA|NA|NA|NA|NA|NA|NA|Below20-hit-possibleacapsularorganism|
-|**SAMEA3389673**|7|8|13|8|6|6|6|35B/35D|
-|**SAMN00761799**|~424|142|~477|501|93|393?|~153|Below70-hit-PoorSequencequality|
-|**SAMN10131018**|427|~447|~478|578?|373|~442|~735|Below20-hit-possibleacapsularorganism|
+![image](https://user-images.githubusercontent.com/29282405/224370078-2ffb37ee-1632-4a5b-bfaf-74576da0c222.png)
+
 <br/>
 
 - SAMD00110690 contains multiple MLST alleles, indicative of same species contamination.
