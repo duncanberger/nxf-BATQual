@@ -349,7 +349,7 @@ process BUSCO {
     script:
     """
     busco -i ${sample_id}.velvet_contigs.fa -m geno -o ${sample_id}_BUSCO --offline -c 1 -l $baseDir/DB/"$params.lineage"
-    grep "C:" ${sample_id}_BUSCO/short_summary.specific.lactobacillales_odb10.*.txt | cut -f2 | tr ':' '\n' | cut -f1 -d "%" | head -6 | tail -4 | paste <(printf "BUSCO_complete_single_copy\nBUSCO_complete_duplicated\nBUSCO_fragmented\nBUSCO_missing\n") - | awk '{print "${sample_id}",\$1,\$2,""}' OFS="," > ${sample_id}.BUSCO_results.txt
+    grep "C:" ${sample_id}_BUSCO/short_summary.specific.*.txt | cut -f2 | tr ':' '\n' | cut -f1 -d "%" | head -6 | tail -4 | paste <(printf "BUSCO_complete_single_copy\nBUSCO_complete_duplicated\nBUSCO_fragmented\nBUSCO_missing\n") - | awk '{print "${sample_id}",\$1,\$2,""}' OFS="," > ${sample_id}.BUSCO_results.txt
     """
 }
 
