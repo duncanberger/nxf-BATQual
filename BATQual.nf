@@ -274,7 +274,7 @@ process CHECKM {
 
     script:
     """
-    checkm taxonomy_wf -x fa --tab_table -f ${sample_id}_check.tbl species "Streptococcus pneumoniae" ./ ${sample_id}_test
+    checkm taxonomy_wf -x fa --tab_table -f ${sample_id}_check.tbl domain "Bacteria" ./ ${sample_id}_test
     cat ${sample_id}_check.tbl | cut -f12,13,14 | sed 's/ /_/g' | awk -F'\t' '{ for (i=1; i<=NF; i++) a[i]= (a[i]? a[i] FS \$i: \$i) } END{ for (i in a) print a[i] }'| awk '{print "${sample_id},CHECKM_"\$1,\$2,""}' OFS="," > ${sample_id}.checkM_results.txt
     """
 }
