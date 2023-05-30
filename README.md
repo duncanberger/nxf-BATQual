@@ -139,7 +139,8 @@ mv GCA_000026665.1_ASM2666v1_genomic.fna DB/
 
 # Index the FASTA
 cd DB/
-samtools index GCA_000026665.1_ASM2666v1_genomic.fna
+samtools faidx GCA_000026665.1_ASM2666v1_genomic.fna
+bwa index GCA_000026665.1_ASM2666v1_genomic.fna
 
 # Then add the assembly name to 'main.config' file at the 'ref_assembly=' row
 ```
