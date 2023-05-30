@@ -95,6 +95,7 @@ workflow MAIN_A {
     }
     else {}
     MASH(VELVET.out)
+    MLST(VELVET.out)
 
 // Set conditions under which serotyping and GPSC assignment will occur. 
     if (params.pneumo == true & params.run_GPSC == true ) {
@@ -124,11 +125,11 @@ workflow MAIN_B {
     BUSCO(fastas)
     STATS(fastas)
     if (params.no_Prokka == false ) {
-    PROKKA(VELVET.out)
+    PROKKA(fastas)
     }
     else {}
     if (params.no_CheckM == false ) {
-    CHECKM(VELVET.out)
+    CHECKM(fastas)
     }
     else {}
     MASH(fastas)
@@ -368,7 +369,7 @@ process PROKKA {
 
     script:
     """
-    prokka --cpus 4 --outdir prokka_${sample_id}/ --locustag B_SPN ${sample_id}.velvet_contigs.fa --genus Streptococcus --species pneumoniae --compliant --centre BDI --prefix ${sample_id}.prokka --strain ${sample_id}    
+    prokka --cpus 4 --outdir prokka_${sample_id}/ --locustag B_SPN ${sample_id}.velvet_contigs.fa --compliant --centre BDI --prefix ${sample_id}.prokka --strain ${sample_id}    
     mv prokka_${sample_id}/* ./
     awk '{if (\$1=="gene:") {print "${sample_id}","n_genes",\$2,""} }' OFS=','  ${sample_id}.prokka.txt > ${sample_id}.prokka_results.txt
     """
