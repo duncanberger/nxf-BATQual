@@ -13,7 +13,8 @@ Mandatory arguments:
 
 Velvet options:
 	--min_k			Minimum k-mer length for assembly [90]
-	--max_k			Maximum k-mer length for assembly [141] 
+	--max_k			Maximum k-mer length for assembly [141]
+	--step			Number of hash values to skip each increment from min_k to max_k [2] 
 
 BUSCO options:
 	--lineage		Specify the BUSCO lineage to be used ["lactobacillales_odb10"]
@@ -214,7 +215,7 @@ process VELVET {
 
     script:
     """
-    VelvetOptimiser.pl -s "$params.min_k" -e "$params.max_k" --p ${sample_id} -t 2 --o '-very_clean yes' -f '-shortPaired -separate -fastq.gz ${sample_id}.R1.fq.gz ${sample_id}.R2.fq.gz'
+    VelvetOptimiser.pl -s "$params.min_k" -e "$params.max_k" --p ${sample_id} -x "$params.step" -t 2 --o '-very_clean yes' -f '-shortPaired -separate -fastq.gz ${sample_id}.R1.fq.gz ${sample_id}.R2.fq.gz'
     mv ${sample_id}_data_*/contigs.fa ${sample_id}.velvet_contigs.fa
     rm ${sample_id}_data_*/*
     """
