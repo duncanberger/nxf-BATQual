@@ -190,7 +190,9 @@ The `-resume` parameter will re-start the pipeline if it has been previously run
 ### Optional input
 #### Velvet assembly
 - `--min_k` : Minimum k-mer length for velvet genome assembly [90]. <br />
-- `--max_k` : Minimum k-mer length for velvet genome assembly [141].
+- `--max_k` : Minimum k-mer length for velvet genome assembly [141]. <br />
+- `--step` : Number of hash values to skip each increment min_k to max_k [2].
+
 
 #### BUSCO 
 - `--lineage` : Specify the BUSCO lineage to be used ["lactobacillales_odb10"].
