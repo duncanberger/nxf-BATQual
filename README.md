@@ -193,9 +193,16 @@ The `-resume` parameter will re-start the pipeline if it has been previously run
 - `--max_k` : Minimum k-mer length for velvet genome assembly [141]. <br />
 - `--step` : Number of hash values to skip each increment min_k to max_k [2].
 
-
 #### BUSCO 
 - `--lineage` : Specify the BUSCO lineage to be used ["lactobacillales_odb10"].
+
+#### Skip steps
+- `--run_GPSC` : Run GPSC estimation [false]
+- `--pneumo` : Run tools specific to Streptococcus pnuemoniae [false]
+- `--no_CheckM` : Don't run CheckM [false]
+- `--no_Kraken2` : Don't run Kraken2 [false]
+- `--no_HET_call` : Don't call heterozygous variants [false]
+- `--no_Prokka` : Don't annotate genomes [false]
 
 #### Output
 - `--outdir` : The output directory where the results will be saved ["results"]. <br />
