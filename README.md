@@ -34,7 +34,7 @@
 #### FASTQ processing
 When processing Illumina sequencing reads ('--mode fastq'), the pipeline will perform the following steps:
 
-1. Trim adaptors from reads [`fastp`](https://github.com/OpenGene/fastp).
+1. Trim adaptors from reads [`fastp`](https://github.com/OpenGene/fastp)
 2. Assess read quality using [`FASTQC`](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
 3. Assemble one genome per-isolate using [`VelvetOptimiser`](https://github.com/tseemann/VelvetOptimiser)
 4. Estimate heterozygosity with the read data to check for contamination using [`minimap`](https://github.com/lh3/minimap2), [`freebayes`](https://github.com/freebayes/freebayes) and [`BCFtools`](https://samtools.github.io/bcftools/bcftools.html)
